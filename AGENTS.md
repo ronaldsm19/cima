@@ -45,7 +45,9 @@ employees, vacations, clients and projects. Two admin users + employee portal.
   Spanish with voseo ("Registrá", "Agregá"). Use the literal error/empty-state
   texts from `docs/design/README.md`.
 - Soft delete (`deletedAt`) on Employee/Client/Project; money mutations write
-  `AuditLog`.
+  `AuditLog`. **Never filter `deletedAt: null` directly** — on MongoDB that
+  misses documents where the field is unset. Always spread `notDeleted` from
+  `lib/db/filters.ts`.
 
 ## Commands
 

@@ -1,7 +1,9 @@
 "use client";
 
+import { LogOut } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { logout } from "@/lib/actions/auth";
 import { NAV_GROUPS, type BadgeTone, type NavItem } from "./nav";
 
 export interface SidebarProps {
@@ -77,10 +79,20 @@ export function Sidebar({ allowedHrefs, badges, userName, userRoleLabel }: Sideb
         <div className="flex size-8 flex-none items-center justify-center rounded-full bg-[#1D3229] text-[12px] font-bold text-[#7FD3AE]">
           {initials(userName)}
         </div>
-        <div className="min-w-0 leading-tight">
+        <div className="min-w-0 flex-1 leading-tight">
           <div className="truncate text-[12.5px] font-semibold text-[#F2F7F4]">{userName}</div>
           <div className="truncate text-[11px] text-[#7E8D86]">{userRoleLabel}</div>
         </div>
+        <form action={logout}>
+          <button
+            type="submit"
+            title="Cerrar sesión"
+            className="flex size-7 items-center justify-center rounded-lg text-[#7E8D86] transition-colors duration-[140ms] hover:bg-white/[0.08] hover:text-[#F2F7F4]"
+          >
+            <LogOut size={14} strokeWidth={1.8} aria-hidden />
+            <span className="sr-only">Cerrar sesión</span>
+          </button>
+        </form>
       </div>
     </aside>
   );

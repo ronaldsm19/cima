@@ -1,4 +1,5 @@
 import { requireUser, hasPermission } from "@/lib/auth/access";
+import { notDeleted } from "@/lib/db/filters";
 import { prisma } from "@/lib/db/prisma";
 import { Header } from "@/components/shell/Header";
 import { Sidebar } from "@/components/shell/Sidebar";
@@ -16,11 +17,11 @@ async function getBadgeCounts(): Promise<Record<string, number | null>> {
   try {
     const today = todayCR();
     const [empleados, clientes, vencidos, pendientes] = await Promise.all([
-      prisma.employee.count({ where: { deletedAt: null, status: "ACTIVO" } }),
-      prisma.client.count({ where: { deletedAt: null } }),
+      prisma.employee.count({ where: { ...notDeleted, status: "ACTIVO" } }),
+      prisma.client.count({ where: { ...notDeleted } }),
       prisma.project.count({
         where: {
-          deletedAt: null,
+          ...notDeleted,
           status: { notIn: ["ENTREGADO", "CANCELADO"] },
           dueDate: { lt: today },
         },

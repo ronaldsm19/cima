@@ -140,6 +140,8 @@ model User {
 
   auditLogs     AuditLog[]
   notifications Notification[]
+
+  @@map("users")
 }
 
 /// Configurable permission matrix, editable by SUPER_ADMIN in the UI.
@@ -152,6 +154,7 @@ model RolePermission {
   updatedAt     DateTime @updatedAt
 
   @@unique([role, permissionKey])
+  @@map("role_permissions")
 }
 
 model AuditLog {
@@ -169,6 +172,7 @@ model AuditLog {
   @@index([entity, entityId])
   @@index([actorId, createdAt])
   @@index([createdAt])
+  @@map("audit_logs")
 }
 
 // ── Employees ────────────────────────────────────────────────────────────────
@@ -205,6 +209,7 @@ model Employee {
   users               User[]
 
   @@index([status])
+  @@map("employees")
 }
 
 /// Salary is historic: a raise creates a new contract row, never overwrites.
@@ -221,6 +226,7 @@ model EmploymentContract {
   validTo      String? // null = current
 
   @@index([employeeId, validFrom])
+  @@map("employment_contracts")
 }
 
 // ── Payroll ──────────────────────────────────────────────────────────────────
@@ -247,6 +253,7 @@ model PayrollPeriod {
 
   @@unique([year, month, numero, type])
   @@index([status])
+  @@map("payroll_periods")
 }
 
 /// One line per employee per period.
@@ -294,6 +301,7 @@ model PayrollItem {
 
   @@unique([periodId, employeeId])
   @@index([employeeId])
+  @@map("payroll_items")
 }
 
 /// Bonos, viáticos, adelantos, embargos, solidarista y deducciones puntuales.
@@ -318,6 +326,7 @@ model PayrollAdjustment {
   createdAt   DateTime       @default(now())
 
   @@index([employeeId, recurring])
+  @@map("payroll_adjustments")
 }
 
 /// Legal parameters versioned by fiscal validity — editable in Configuración
@@ -342,6 +351,8 @@ model PayrollParameterSet {
 
   isrBrackets IsrBracket[]
   periods     PayrollPeriod[]
+
+  @@map("payroll_parameter_sets")
 }
 
 /// Monthly ISR brackets (marginal). Amount limits in cents.
@@ -355,6 +366,7 @@ model IsrBracket {
   tasaPct        Float // 10 = 10 %
 
   @@unique([parameterSetId, orden])
+  @@map("isr_brackets")
 }
 
 // ── Vacations & holidays ─────────────────────────────────────────────────────
@@ -373,6 +385,7 @@ model VacationRequest {
 
   @@index([employeeId, startDate])
   @@index([status])
+  @@map("vacation_requests")
 }
 
 /// Manual balance corrections (mandatory reason, audited) and seed opening balances.
@@ -387,6 +400,7 @@ model VacationAdjustment {
   createdAt   DateTime @default(now())
 
   @@index([employeeId])
+  @@map("vacation_adjustments")
 }
 
 model Holiday {
@@ -399,6 +413,7 @@ model Holiday {
   year            Int
 
   @@index([year])
+  @@map("holidays")
 }
 
 // ── Clients & projects ───────────────────────────────────────────────────────
@@ -421,6 +436,8 @@ model Client {
   updatedAt   DateTime   @updatedAt
 
   projects Project[]
+
+  @@map("clients")
 }
 
 /// totalAbonado / saldoPendiente / primaCubierta / vencido are DERIVED in
@@ -456,6 +473,7 @@ model Project {
 
   @@index([clientId])
   @@index([status])
+  @@map("projects")
 }
 
 model ProjectStatusHistory {
@@ -469,6 +487,7 @@ model ProjectStatusHistory {
   note        String?
 
   @@index([projectId, changedAt])
+  @@map("project_status_history")
 }
 
 /// Abonos del cliente contra un proyecto.
@@ -486,6 +505,7 @@ model ClientPayment {
   createdAt    DateTime  @default(now())
 
   @@index([projectId, date])
+  @@map("client_payments")
 }
 
 /// Feeds the EMPLEADO portal's "mis proyectos".
@@ -500,6 +520,7 @@ model ProjectAssignment {
 
   @@unique([projectId, employeeId])
   @@index([employeeId])
+  @@map("project_assignments")
 }
 
 /// Gastos y viáticos por proyecto — rentabilidad = agreedAmount − Σ expenses.
@@ -517,6 +538,7 @@ model ProjectExpense {
   createdAt      DateTime    @default(now())
 
   @@index([projectId, date])
+  @@map("project_expenses")
 }
 
 // ── Notifications ────────────────────────────────────────────────────────────
@@ -535,4 +557,5 @@ model Notification {
 
   @@index([userId, readAt])
   @@index([createdAt])
+  @@map("notifications")
 }
