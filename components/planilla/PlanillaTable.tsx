@@ -7,6 +7,7 @@ import { useMemo, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { AvatarInitials } from "@/components/ds/AvatarInitials";
 import { Pill } from "@/components/ds/Pill";
+import { EmployeeModal } from "@/components/empleados/EmployeeModal";
 import { approvePlanilla, markPaid, updatePlanillaLine } from "@/lib/actions/planilla";
 import { formatCRC } from "@/lib/format/currency";
 import { MODALIDAD_LABEL, type PlanillaDTO, type PlanillaLineDTO } from "@/lib/planilla/dto";
@@ -35,6 +36,7 @@ export function PlanillaTable({ data }: { data: PlanillaDTO }) {
   const [inputs, setInputs] = useState<Record<string, Inputs>>(() => initialInputs(data.lines));
   const [sel, setSel] = useState<Set<string>>(new Set());
   const [detalle, setDetalle] = useState<string | null>(null);
+  const [altaModal, setAltaModal] = useState(false);
   const [pending, startTransition] = useTransition();
 
   const editable = data.status === "BORRADOR" && data.permisos.editar;
@@ -159,9 +161,11 @@ export function PlanillaTable({ data }: { data: PlanillaDTO }) {
         </span>
 
         <div className="ml-auto flex flex-wrap items-center gap-2">
-          <button type="button" className={ghostBtn} disabled title="Llega con la ficha de empleados (Fase 5)">
-            <Plus size={14} strokeWidth={2} aria-hidden /> Agregar empleado
-          </button>
+          {editable ? (
+            <button type="button" className={ghostBtn} onClick={() => setAltaModal(true)}>
+              <Plus size={14} strokeWidth={2} aria-hidden /> Agregar empleado
+            </button>
+          ) : null}
           {data.permisos.marcarPagos ? (
             <button
               type="button"
@@ -302,6 +306,10 @@ export function PlanillaTable({ data }: { data: PlanillaDTO }) {
           Ver historial de períodos
         </Link>
       </p>
+
+      {altaModal ? (
+        <EmployeeModal params={data.params} onClose={() => setAltaModal(false)} />
+      ) : null}
     </div>
   );
 }
