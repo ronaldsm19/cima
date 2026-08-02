@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { Pill } from "@/components/ds/Pill";
+import { AssignmentsCard } from "@/components/proyectos/AssignmentsCard";
 import {
   createProject,
   registrarAbono,
@@ -358,6 +359,16 @@ export function ProjectForm({ mode }: { mode: Mode }) {
               </button>
             </div>
           </div>
+        ) : null}
+
+        {/* ── Equipo asignado ── */}
+        {dto ? (
+          <AssignmentsCard
+            projectId={dto.id}
+            asignados={dto.asignados}
+            disponibles={dto.empleadosDisponibles}
+            canEdit={permisos.crud}
+          />
         ) : null}
       </section>
 

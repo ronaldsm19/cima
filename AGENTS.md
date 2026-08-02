@@ -45,9 +45,15 @@ employees, vacations, clients and projects. Two admin users + employee portal.
   Spanish with voseo ("Registrá", "Agregá"). Use the literal error/empty-state
   texts from `docs/design/README.md`.
 - Soft delete (`deletedAt`) on Employee/Client/Project; money mutations write
-  `AuditLog`. **Never filter `deletedAt: null` directly** — on MongoDB that
-  misses documents where the field is unset. Always spread `notDeleted` from
-  `lib/db/filters.ts`.
+  `AuditLog`.
+- **MongoDB null-vs-unset**: `{ campo: null }` does NOT match documents where
+  the field was never written. Any "has no value" filter must spread
+  `nullOrUnset("campo")` (or `notDeleted`) from `lib/db/filters.ts`; prefer
+  updating by `id` when you just created the row. The inverse
+  (`{ campo: { not: null } }`) is safe as-is.
+- Notifications go through `notify()` in `lib/notifications/notify.ts` (writes
+  the in-app row and sends the SMTP email); it never throws, so a mail failure
+  can't roll back the business action that triggered it.
 
 ## Commands
 

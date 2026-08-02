@@ -6,6 +6,7 @@ import { centsToString } from "@/lib/db/money";
 import { prisma } from "@/lib/db/prisma";
 import { projectDerived } from "@/lib/db/projectTotals";
 import { todayCR } from "@/lib/format/dates";
+import { listAssignableEmployees } from "@/lib/portal/data";
 import { projectPill } from "@/lib/projects/status";
 import type { ProjectFormValues } from "./form";
 import type { PillTone } from "@/components/ds/Pill";
@@ -31,6 +32,8 @@ export interface ProyectoDTO {
   rentabilidad: string; // monto acordado − gastos
   historialEstados: { de: string | null; a: string; fecha: string }[];
   clientes: { id: string; nombre: string }[];
+  asignados: { employeeId: string; nombre: string; rol: string | null }[];
+  empleadosDisponibles: { id: string; nombre: string; puesto: string }[];
   permisos: { crud: boolean; abonos: boolean; gastos: boolean };
 }
 
@@ -46,6 +49,7 @@ export async function getProyectoDTO(
       payments: { orderBy: { date: "asc" } },
       expenses: { orderBy: { date: "asc" } },
       statusHistory: { orderBy: { changedAt: "asc" } },
+      assignments: { include: { employee: { select: { fullName: true } } } },
     },
   });
   if (!project || project.deletedAt !== null) return null;
@@ -126,6 +130,12 @@ export async function getProyectoDTO(
       fecha: h.changedAt.toISOString().slice(0, 10),
     })),
     clientes: clientes.map((c) => ({ id: c.id, nombre: c.name })),
+    asignados: project.assignments.map((a) => ({
+      employeeId: a.employeeId,
+      nombre: a.employee.fullName,
+      rol: a.roleInProject,
+    })),
+    empleadosDisponibles: await listAssignableEmployees(),
     permisos: { crud, abonos: abonosPerm, gastos: gastosPerm },
   };
 }

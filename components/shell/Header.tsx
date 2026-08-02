@@ -4,9 +4,15 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SCREEN_TITLES } from "./nav";
 
-/** 66px fixed header: screen title/subtitle left, mono clock right.
- *  The period selector slots in between (Phase 3). */
-export function Header({ periodSlot }: { periodSlot?: React.ReactNode }) {
+/** 66px fixed header: screen title/subtitle left, period selector, bell and
+ *  mono clock on the right. */
+export function Header({
+  periodSlot,
+  bellSlot,
+}: {
+  periodSlot?: React.ReactNode;
+  bellSlot?: React.ReactNode;
+}) {
   const pathname = usePathname();
   const screen = Object.entries(SCREEN_TITLES).find(([prefix]) =>
     pathname.startsWith(prefix),
@@ -25,6 +31,7 @@ export function Header({ periodSlot }: { periodSlot?: React.ReactNode }) {
         ) : null}
       </div>
       {periodSlot}
+      {bellSlot}
       <Clock />
     </header>
   );

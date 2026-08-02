@@ -7,9 +7,12 @@ import { requirePermissionAction } from "@/lib/auth/access";
 import { centsToString, decimalToCents } from "@/lib/db/money";
 import { getParameterSetById, toPlainParams } from "@/lib/db/params";
 import { prisma } from "@/lib/db/prisma";
-import { todayCR } from "@/lib/format/dates";
+import { formatCRC } from "@/lib/format/currency";
+import { formatDateCR, todayCR } from "@/lib/format/dates";
+import { notify, ownerIds, userIdForEmployee } from "@/lib/notifications/notify";
 import { adjustmentsForPeriod, contractInForce } from "@/lib/planilla/data";
 import { computeLine } from "@/lib/planilla/compute";
+import { periodLabel } from "@/lib/planilla/periods";
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
 
@@ -172,6 +175,15 @@ export async function approvePlanilla(periodId: string): Promise<ActionResult> {
       });
     });
 
+    const netoTotal = updates.reduce((acc, u) => acc.plus(u.result.neto), new Decimal(0));
+    await notify({
+      userIds: await ownerIds(user.id),
+      type: "PLANILLA_APROBADA",
+      title: `Planilla aprobada · ${periodLabel(period)}`,
+      body: `${updates.length} líneas por ${formatCRC(netoTotal)} netos. Aprobada por ${user.name}. Los montos quedaron congelados.`,
+      link: "/planilla",
+    });
+
     revalidatePath("/planilla");
     revalidatePath("/panel");
     return { ok: true };
@@ -232,6 +244,25 @@ export async function markPaid(itemIds: string[], pagado: boolean): Promise<Acti
         });
       }
     });
+
+    // Each paid employee with portal access gets their own notice
+    if (pagado) {
+      await Promise.all(
+        items.map(async (item) => {
+          const userIds = await userIdForEmployee(item.employeeId);
+          if (userIds.length === 0) return;
+          await notify({
+            userIds,
+            type: "PAGO_APLICADO",
+            title: "Te aplicaron el pago del período",
+            body:
+              `${periodLabel(item.period)} · neto ${item.neto != null ? formatCRC(centsToString(item.neto)) : "por confirmar"}` +
+              ` · aplicado el ${formatDateCR(today)}.`,
+            link: "/mi",
+          });
+        }),
+      );
+    }
 
     revalidatePath("/planilla");
     revalidatePath("/panel");

@@ -6,6 +6,7 @@ import { requirePermissionAction } from "@/lib/auth/access";
 import { prisma } from "@/lib/db/prisma";
 import { vacationBalance } from "@/lib/db/vacations";
 import { formatDateCR } from "@/lib/format/dates";
+import { notify, ownerIds, userIdForEmployee } from "@/lib/notifications/notify";
 import {
   businessDaysInRange,
   formatDays,
@@ -101,21 +102,28 @@ export async function registrarVacaciones(
           summary: `Vacaciones registradas · ${employee.fullName} · ${formatDays(dias)} días`,
         },
       });
-      // Notify the owner when the assistant registers (prompt-01 rule)
-      const owners = await tx.user.findMany({
-        where: { role: "SUPER_ADMIN", active: true, id: { not: user.id } },
-      });
-      if (owners.length > 0) {
-        await tx.notification.createMany({
-          data: owners.map((o) => ({
-            userId: o.id,
-            type: "VACACION_APROBADA",
-            title: `Vacaciones de ${employee.fullName}`,
-            body: `${formatDays(dias)} días hábiles · del ${formatDateCR(startDate)} al ${formatDateCR(endDate)} · registrado por ${user.name}`,
-            link: "/vacaciones",
-          })),
-        });
-      }
+    });
+
+    // Owner gets notified when someone else registers (prompt-01 rule); the
+    // employee gets told about their own approved days. Outside the
+    // transaction: a mail hiccup must not undo the registration.
+    const [owners, empleadoUser] = await Promise.all([
+      ownerIds(user.id),
+      userIdForEmployee(values.employeeId),
+    ]);
+    await notify({
+      userIds: owners,
+      type: "VACACION_APROBADA",
+      title: `Vacaciones de ${employee.fullName}`,
+      body: `${formatDays(dias)} días hábiles, del ${formatDateCR(startDate)} al ${formatDateCR(endDate)}. Registrado por ${user.name}.`,
+      link: "/vacaciones",
+    });
+    await notify({
+      userIds: empleadoUser.filter((id) => id !== user.id),
+      type: "VACACION_APROBADA",
+      title: "Tus vacaciones quedaron registradas",
+      body: `Del ${formatDateCR(startDate)} al ${formatDateCR(endDate)} · ${formatDays(dias)} días hábiles. Tu saldo queda en ${formatDays(saldo.saldo - dias)} días.`,
+      link: "/mi",
     });
 
     revalidatePath("/vacaciones");
