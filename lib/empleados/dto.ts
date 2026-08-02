@@ -25,6 +25,7 @@ export interface FichaEmpleadoDTO {
   };
   historial: {
     itemId: string;
+    periodId: string;
     periodo: string;
     pagadoEl: string | null;
     bruto: string;

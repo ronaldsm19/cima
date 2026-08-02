@@ -176,10 +176,14 @@ export function PlanillaTable({ data }: { data: PlanillaDTO }) {
               Marcar como pagado
             </button>
           ) : null}
-          {data.permisos.generarColillas ? (
-            <button type="button" className={ghostBtn} disabled title="Llega con los reportes (Fase 9)">
+          {data.permisos.generarColillas && data.status !== "BORRADOR" ? (
+            <Link
+              href={`/planilla/${data.periodId}/colillas`}
+              className={ghostBtn}
+              title="Abre las colillas del período para imprimir"
+            >
               <FileText size={14} strokeWidth={2} aria-hidden /> Generar colillas
-            </button>
+            </Link>
           ) : null}
           {data.status === "BORRADOR" && data.permisos.aprobar ? (
             <button
@@ -291,6 +295,7 @@ export function PlanillaTable({ data }: { data: PlanillaDTO }) {
             line={detalleLine}
             bd={breakdowns.get(detalleLine.itemId)!}
             horas={inputs[detalleLine.itemId]?.horas ?? "0"}
+            periodId={data.periodId}
             canMarkPaid={data.permisos.marcarPagos}
             busy={pending}
             onClose={() => setDetalle(null)}

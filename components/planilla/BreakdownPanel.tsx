@@ -19,6 +19,7 @@ export function BreakdownPanel({
   line,
   bd,
   horas,
+  periodId,
   canMarkPaid,
   busy,
   onClose,
@@ -27,6 +28,7 @@ export function BreakdownPanel({
   line: PlanillaLineDTO;
   bd: LineBreakdown;
   horas: string | number;
+  periodId: string;
   canMarkPaid: boolean;
   busy: boolean;
   onClose: () => void;
@@ -161,6 +163,14 @@ export function BreakdownPanel({
               Marcar como pagado
             </button>
           )
+        ) : null}
+        {line.snapshot ? (
+          <Link
+            href={`/planilla/${periodId}/colilla/${line.itemId}`}
+            className="flex h-[34px] items-center rounded-[10px] border border-control-border bg-surface px-3 text-[13px] font-semibold text-[#2C3A33] transition-colors duration-[140ms] hover:bg-app"
+          >
+            Colilla
+          </Link>
         ) : null}
         <Link
           href={`/empleados/${line.employeeId}`}

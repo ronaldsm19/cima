@@ -118,6 +118,7 @@ export async function getFichaEmpleado(
     .slice(0, 6)
     .map((i) => ({
       itemId: i.id,
+      periodId: i.periodId,
       periodo: periodLabel(i.period),
       pagadoEl: i.paidAt,
       bruto: centsToString(i.bruto!),

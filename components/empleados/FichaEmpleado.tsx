@@ -276,9 +276,12 @@ function TabPagos({ ficha }: { ficha: FichaEmpleadoDTO }) {
               <td className="num-right px-2 text-ink-dim">−{formatCRC(h.deducciones)}</td>
               <td className="num-right px-2 font-semibold">{formatCRC(h.neto)}</td>
               <td className="px-4 text-right">
-                <span className="cursor-not-allowed text-[12.5px] font-semibold text-ink-faint" title="Llega con los reportes (Fase 9)">
+                <Link
+                  href={`/planilla/${h.periodId}/colilla/${h.itemId}`}
+                  className="text-[12.5px] font-semibold text-brand hover:underline"
+                >
                   Ver colilla
-                </span>
+                </Link>
               </td>
             </tr>
           ))}

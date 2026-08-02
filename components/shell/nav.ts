@@ -2,8 +2,11 @@ import type { LucideIcon } from "lucide-react";
 import {
   Building2,
   CalendarDays,
+  FileSpreadsheet,
   Folder,
   LayoutDashboard,
+  ScrollText,
+  Settings,
   Table,
   User,
 } from "lucide-react";
@@ -69,6 +72,24 @@ export const NAV_GROUPS: NavGroup[] = [
         permission: "proyectos.ver",
         badge: { key: "proyectosVencidos", tone: "red" },
       },
+    ],
+  },
+  {
+    title: "Administración",
+    items: [
+      {
+        href: "/reportes",
+        label: "Reportes",
+        icon: FileSpreadsheet,
+        permission: "reportes.generar",
+      },
+      {
+        href: "/configuracion",
+        label: "Configuración",
+        icon: Settings,
+        permission: "configuracion.parametros",
+      },
+      { href: "/auditoria", label: "Bitácora", icon: ScrollText, permission: "auditoria.ver" },
     ],
   },
 ];
