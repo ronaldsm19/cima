@@ -1,14 +1,18 @@
-import { Folder } from "lucide-react";
-import { EmptyState } from "@/components/ds/EmptyState";
+import { notFound } from "next/navigation";
+import { ProjectForm } from "@/components/proyectos/ProjectForm";
 import { requirePermission } from "@/lib/auth/access";
+import { getProyectoDTO } from "@/lib/proyectos/data";
 
-export default async function ProyectoPage() {
-  await requirePermission("proyectos.ver");
-  return (
-    <EmptyState
-      icon={Folder}
-      title="El formulario de proyecto llega en la Fase 6"
-      detail="Acá van los datos del proyecto, el registro de abonos y el panel de saldo en vivo."
-    />
-  );
+export default async function ProyectoPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const user = await requirePermission("proyectos.ver");
+  const { id } = await params;
+
+  const dto = await getProyectoDTO(id, user.role);
+  if (!dto) notFound();
+
+  return <ProjectForm mode={{ kind: "edit", dto }} />;
 }
