@@ -2,9 +2,12 @@ import { requireUser, hasPermission } from "@/lib/auth/access";
 import { notDeleted } from "@/lib/db/filters";
 import { prisma } from "@/lib/db/prisma";
 import { Header } from "@/components/shell/Header";
+import { PeriodSelector } from "@/components/shell/PeriodSelector";
 import { Sidebar } from "@/components/shell/Sidebar";
 import { NAV_GROUPS } from "@/components/shell/nav";
 import { todayCR } from "@/lib/format/dates";
+import { listPeriodOptions } from "@/lib/planilla/data";
+import { currentPeriodKey } from "@/lib/planilla/periods";
 
 const ROLE_LABELS = {
   SUPER_ADMIN: "Dueño · acceso total",
@@ -27,7 +30,10 @@ async function getBadgeCounts(): Promise<Record<string, number | null>> {
         },
       }),
       prisma.payrollItem.count({
-        where: { paymentStatus: "PENDIENTE", period: { is: { status: { not: "PAGADA" } } } },
+        where: {
+          paymentStatus: "PENDIENTE",
+          period: { is: { ...currentPeriodKey(), type: "QUINCENAL" } },
+        },
       }),
     ]);
     return {
@@ -50,6 +56,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   );
   const allowedHrefs = allowed.filter((h): h is string => h !== null);
   const badges = await getBadgeCounts();
+  const showPeriodSelector = user.role !== "EMPLEADO";
+  const periodOptions = showPeriodSelector ? await listPeriodOptions().catch(() => []) : [];
 
   return (
     <div className="flex min-h-screen max-[960px]:flex-col">
@@ -60,7 +68,11 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         userRoleLabel={ROLE_LABELS[user.role]}
       />
       <div className="flex min-w-0 flex-1 flex-col">
-        <Header />
+        <Header
+          periodSlot={
+            periodOptions.length > 0 ? <PeriodSelector options={periodOptions} /> : undefined
+          }
+        />
         <main className="flex min-h-0 flex-1 flex-col gap-4 px-6 pb-6 pt-5">
           {children}
         </main>

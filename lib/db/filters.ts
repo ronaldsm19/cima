@@ -12,4 +12,4 @@
  */
 export const notDeleted = {
   OR: [{ deletedAt: null }, { deletedAt: { isSet: false } }],
-} as const;
+};
