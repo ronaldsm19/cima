@@ -300,7 +300,7 @@ function TabVacaciones({ ficha }: { ficha: FichaEmpleadoDTO }) {
           </span>
         </div>
         <Link
-          href="/vacaciones"
+          href={`/vacaciones?emp=${ficha.id}`}
           className="flex h-[30px] items-center gap-1.5 rounded-lg border border-control-border px-2.5 text-[12px] font-semibold text-[#2C3A33] transition-colors duration-[140ms] hover:bg-app"
         >
           <CalendarDays size={13} strokeWidth={2} aria-hidden /> Abrir calendario
