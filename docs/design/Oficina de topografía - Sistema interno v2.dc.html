@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;padding:0;background:#F4F6F3;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  *{box-sizing:border-box}
+  a{color:#0E6B4E;text-decoration:none}
+  a:hover{color:#0A5239;text-decoration:underline}
+  input,select,button,textarea{font-family:inherit;color:inherit}
+  input[type=checkbox]{accent-color:#0E6B4E;width:15px;height:15px;margin:0;cursor:pointer;border-radius:4px}
+  ::selection{background:#0E6B4E22}
+  [data-scroll]::-webkit-scrollbar{width:10px;height:10px}
+  [data-scroll]::-webkit-scrollbar-thumb{background:#D6DDD6;border-radius:99px;border:3px solid transparent;background-clip:content-box}
+  [data-scroll]::-webkit-scrollbar-thumb:hover{background:#BAC5BC;background-clip:content-box;border:3px solid transparent}
+  [data-scroll]::-webkit-scrollbar-track{background:transparent}
+  @media (max-width:960px){
+    [data-shell]{flex-direction:column}
+    [data-rail]{width:100%!important;flex-direction:row!important;align-items:center;overflow-x:auto;gap:4px!important;padding:8px 10px!important}
+    [data-railgroup]{display:flex;flex-direction:row;gap:4px!important}
+    [data-railtitle],[data-railfoot],[data-brandsub]{display:none!important}
+    [data-brand]{flex:none;margin:0 8px 0 0!important;padding:0 12px 0 0!important;border-right:1px solid rgba(255,255,255,0.10);border-bottom:0!important}
+    [data-navitem]{white-space:nowrap}
+    [data-two],[data-three]{grid-template-columns:1fr!important}
+    [data-metrics]{grid-template-columns:1fr 1fr!important}
+    [data-cajetin]{grid-template-columns:1fr 1fr!important}
+    [data-side]{width:100%!important;border-left:0!important;border-top:1px solid #E6EAE4}
+    [data-bar]{flex-wrap:wrap!important;height:auto!important;padding-top:12px!important;padding-bottom:12px!important}
+    [data-fold]{overflow:visible!important}
+    [data-cal]{grid-template-columns:1fr!important}
+  }
+</style>
+</helmet>
+
+<div data-shell="1" style="display:flex; align-items:stretch; min-height:100vh; background:#F4F6F3; color:#131A17; font-family:'Plus Jakarta Sans',system-ui,sans-serif; font-size:14px; line-height:1.5;">
+
+  <nav data-rail="1" style="width:236px; flex:none; background:#111E19; display:flex; flex-direction:column; gap:22px; padding:18px 14px 16px;">
+    <div data-brand="1" style="display:flex; align-items:center; gap:11px; padding:0 6px 16px; border-bottom:1px solid rgba(255,255,255,0.08);">
+      <span style="width:34px; height:34px; flex:none; border-radius:10px; background:linear-gradient(160deg,#1B9E70,#0B5C41); display:flex; align-items:center; justify-content:center;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#EAF7F1" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3 20h18L12 3Z"></path><path d="M12 11v9"></path><path d="m7.5 14 9 0"></path></svg>
+      </span>
+      <div style="min-width:0;">
+        <div style="font-size:13.5px; font-weight:700; color:#F2F7F4; letter-spacing:-0.01em; white-space:nowrap;">Morales &amp; Asoc.</div>
+        <div data-brandsub="1" style="font-size:11px; color:#7E8D86; white-space:nowrap;">Topografía · CFIA IC-4482</div>
+      </div>
+    </div>
+
+    <div data-railgroup="1" style="display:flex; flex-direction:column; gap:2px;">
+      <div data-railtitle="1" style="font-size:10.5px; font-weight:600; letter-spacing:0.09em; text-transform:uppercase; color:#67766E; padding:0 8px 8px;">Operación</div>
+      <button data-navitem="1" onClick="{{ nav.panel.go }}" style="{{ nav.panel.style }}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><rect x="3" y="3" width="7" height="9" rx="1.5"></rect><rect x="14" y="3" width="7" height="5" rx="1.5"></rect><rect x="14" y="12" width="7" height="9" rx="1.5"></rect><rect x="3" y="16" width="7" height="5" rx="1.5"></rect></svg>
+        <span>Panel</span>
+      </button>
+      <button data-navitem="1" onClick="{{ nav.planilla.go }}" style="{{ nav.planilla.style }}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><rect x="3" y="4" width="18" height="16" rx="2.5"></rect><path d="M3 9h18M9 9v11"></path></svg>
+        <span>Planilla</span>
+        <span style="{{ nav.planilla.badgeStyle }}">{{ nav.planilla.badge }}</span>
+      </button>
+      <button data-navitem="1" onClick="{{ nav.vacaciones.go }}" style="{{ nav.vacaciones.style }}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><rect x="3" y="5" width="18" height="16" rx="2.5"></rect><path d="M8 3v4M16 3v4M3 11h18"></path></svg>
+        <span>Vacaciones</span>
+      </button>
+    </div>
+
+    <div data-railgroup="1" style="display:flex; flex-direction:column; gap:2px;">
+      <div data-railtitle="1" style="font-size:10.5px; font-weight:600; letter-spacing:0.09em; text-transform:uppercase; color:#67766E; padding:0 8px 8px;">Registros</div>
+      <button data-navitem="1" onClick="{{ nav.empleado.go }}" style="{{ nav.empleado.style }}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><circle cx="12" cy="8" r="3.6"></circle><path d="M4.5 20a7.5 7.5 0 0 1 15 0"></path></svg>
+        <span>Empleados</span>
+        <span style="{{ nav.empleado.badgeStyle }}">{{ nav.empleado.badge }}</span>
+      </button>
+      <button data-navitem="1" onClick="{{ nav.cliente.go }}" style="{{ nav.cliente.style }}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><path d="M3 21V7l7-4 7 4v14"></path><path d="M17 21h4V11l-4-2"></path><path d="M7 11h3M7 15h3"></path></svg>
+        <span>Clientes</span>
+        <span style="{{ nav.cliente.badgeStyle }}">{{ nav.cliente.badge }}</span>
+      </button>
+      <button data-navitem="1" onClick="{{ nav.proyecto.go }}" style="{{ nav.proyecto.style }}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><path d="M4 4h9l3 3h4v13H4Z"></path><path d="M8 13h8M8 17h5"></path></svg>
+        <span>Proyectos</span>
+        <span style="{{ nav.proyecto.badgeStyle }}">{{ nav.proyecto.badge }}</span>
+      </button>
+    </div>
+
+    <div data-railfoot="1" style="margin-top:auto; display:flex; flex-direction:column; gap:14px;">
+      <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.07); border-radius:12px; padding:11px 12px 12px;">
+        <div style="font-size:10.5px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#67766E;">Estado de pantalla</div>
+        <div style="display:flex; gap:3px; margin-top:9px; background:rgba(0,0,0,0.25); border-radius:9px; padding:3px;">
+          <sc-for list="{{ demoModos }}" as="m" hint-placeholder-count="3">
+            <button onClick="{{ m.go }}" style="{{ m.style }}">{{ m.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px; padding:0 4px;">
+        <span style="width:32px; height:32px; flex:none; border-radius:50%; background:#1D3229; color:#7FD3AE; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;">EM</span>
+        <div style="min-width:0;">
+          <div style="font-size:12.5px; font-weight:600; color:#E8F0EB; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Esteban Morales</div>
+          <div style="font-size:11px; color:#67766E;">Dueño · acceso total</div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main style="flex:1; min-width:0; display:flex; flex-direction:column;">
+
+    <header data-bar="1" style="height:66px; flex:none; display:flex; align-items:center; gap:16px; padding:0 24px; background:#FFFFFF; border-bottom:1px solid #E6EAE4;">
+      <div style="min-width:0;">
+        <div style="font-size:17px; font-weight:700; letter-spacing:-0.02em; white-space:nowrap;">{{ tituloPantalla }}</div>
+        <div style="font-size:12.5px; color:#6B766F; white-space:nowrap;">{{ subtituloPantalla }}</div>
+      </div>
+      <div style="margin-left:auto; display:flex; align-items:center; gap:12px;">
+        <div style="display:flex; align-items:center; gap:7px; height:38px; padding:0 6px 0 12px; background:#F4F6F3; border:1px solid #E6EAE4; border-radius:10px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B766F" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2.5"></rect><path d="M8 3v4M16 3v4M3 11h18"></path></svg>
+          <select value="{{ periodo }}" onChange="{{ setPeriodo }}" style="border:0; background:transparent; font-size:13px; font-weight:600; color:#131A17; height:34px; outline:none; cursor:pointer;">
+            <option value="q2-jul">Quincena 2 · 16–31 jul 2026</option>
+            <option value="q1-jul">Quincena 1 · 01–15 jul 2026</option>
+            <option value="q2-jun">Quincena 2 · 16–30 jun 2026</option>
+          </select>
+        </div>
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:#8A938C; font-variant-numeric:tabular-nums; white-space:nowrap;">02/08/2026 · 08:12</div>
+      </div>
+    </header>
+
+    <div data-fold="1" style="flex:1; min-height:0; display:flex; flex-direction:column;">
+
+      <sc-if value="{{ hayError }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex; align-items:flex-start; gap:12px; margin:20px 24px 0; border:1px solid #F2D2CB; border-radius:14px; background:#FDF3F1; padding:14px 16px;">
+          <span style="width:30px; height:30px; flex:none; border-radius:9px; background:#F8E1DC; display:flex; align-items:center; justify-content:center;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C0392B" stroke-width="2" stroke-linecap="round"><path d="M12 8v5"></path><circle cx="12" cy="16.5" r="0.6" fill="#C0392B"></circle><path d="M10.3 3.9 2.6 17.4A2 2 0 0 0 4.3 20.4h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"></path></svg>
+          </span>
+          <div style="min-width:0;">
+            <div style="font-size:13.5px; font-weight:700; color:#A8321F;">{{ errorTitulo }}</div>
+            <div style="font-size:13px; color:#5C4A46; margin-top:3px; max-width:820px; text-wrap:pretty;">{{ errorDetalle }}</div>
+          </div>
+          <button onClick="{{ reintentar }}" style="margin-left:auto; flex:none; height:34px; padding:0 14px; border:1px solid #E7C6BE; background:#FFFFFF; color:#A8321F; border-radius:9px; font-size:13px; font-weight:600; cursor:pointer; transition:background-color 140ms;" style-hover="background-color:#FBEDEA">Reintentar</button>
+        </div>
+      </sc-if>
+
+      <!-- ══════════ 1 · PANEL ══════════ -->
+      <sc-if value="{{ esPanel }}" hint-placeholder-val="{{ true }}">
+        <div style="flex:1; min-height:0; display:flex; flex-direction:column; padding:20px 24px 24px; gap:16px;">
+
+          <sc-if value="{{ vacio }}" hint-placeholder-val="{{ false }}">
+            <div style="flex:1; display:flex; align-items:center; justify-content:center;">
+              <div style="background:#FFFFFF; border:1px solid #E6EAE4; border-radius:16px; box-shadow:0 1px 2px rgba(19,26,23,0.04), 0 18px 40px -30px rgba(19,26,23,0.5); padding:38px 40px; max-width:480px;">
+                <span style="width:42px; height:42px; border-radius:12px; background:#E9F3EE; display:flex; align-items:center; justify-content:center;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E6B4E" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2.5"></rect><path d="M8 3v4M16 3v4M3 11h18M12 15v3M10.5 16.5h3"></path></svg>
+                </span>
+                <div style="font-size:18px; font-weight:700; letter-spacing:-0.02em; margin-top:16px; text-wrap:pretty;">Todavía no hay períodos de planilla</div>
+                <div style="font-size:13.5px; color:#6B766F; margin-top:7px; text-wrap:pretty;">El panel muestra pagos pendientes, planilla del período y cuentas por cobrar apenas exista un período abierto.</div>
+                <button style="margin-top:20px; height:38px; padding:0 16px; border:0; background:#0E6B4E; color:#FFFFFF; border-radius:10px; font-size:13.5px; font-weight:600; cursor:pointer; box-shadow:0 1px 2px rgba(14,107,78,0.35);">Crear período de planilla</button>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ conDatos }}" hint-placeholder-val="{{ true }}">
+            <div data-metrics="1" style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px;">
+              <div style="background:#FFFFFF; border:1px solid #E6EAE4; border-radius:14px; padding:16px 18px 17px; box-shadow:0 1px 2px rgba(19,26,23,0.04);">
+                <div style="display:flex; align-items:center; gap:9px;">
+                  <span style="width:28px; height:28px; border-radius:8px; background:#E9F3EE; display:flex; align-items:center; justify-content:center;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0E6B4E" stroke-width="1.9" stroke-linecap="round"><rect x="2.5" y="6" width="19" height="12" rx="2.5"></rect><circle cx="12" cy="12" r="2.6"></circle></svg>
+                  </span>
+                  <span style="font-size:12px; font-weight:600; color:#6B766F;">Planilla del período</span>
+                </div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:600; letter-spacing:-0.02em; font-variant-numeric:tabular-nums; margin-top:12px;">{{ m1 }}</div>
+                <div style="font-size:12px; color:#8A938C; margin-top:3px;">{{ m1pie }}</div>
+              </div>
+              <div style="background:#FFFFFF; border:1px solid #E6EAE4; border-radius:14px; padding:16px 18px 17px; box-shadow:0 1px 2px rgba(19,26,23,0.04);">
+                <div style="display:flex; align-items:center; gap:9px;">
+                  <span style="width:28px; height:28px; border-radius:8px; background:#FBF1DC; display:flex; align-items:center; justify-content:center;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A8710A" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.5V12l3 2"></path></svg>
+                  </span>
+                  <span style="font-size:12px; font-weight:600; color:#6B766F;">Falta pagarles</span>
+                </div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:600; letter-spacing:-0.02em; font-variant-numeric:tabular-nums; margin-top:12px; color:#A8710A;">{{ m2 }}</div>
+                <div style="font-size:12px; color:#8A938C; margin-top:3px;">{{ m2pie }}</div>
+              </div>
+              <div style="background:#FFFFFF; border:1px solid #E6EAE4; border-radius:14px; padding:16px 18px 17px; box-shadow:0 1px 2px rgba(19,26,23,0.04);">
+                <div style="display:flex; align-items:center; gap:9px;">
+                  <span style="width:28px; height:28px; border-radius:8px; background:#E9F3EE; display:flex; align-items:center; justify-content:center;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0E6B4E" stroke-width="1.9" stroke-linecap="round"><path d="M4 19V5"></path><path d="m8 14 4-5 3.5 3L20 6"></path></svg>
+                  </span>
+                  <span style="font-size:12px; font-weight:600; color:#6B766F;">Cuentas por cobrar</span>
+                </div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:600; letter-spacing:-0.02em; font-variant-numeric:tabular-nums; margin-top:12px;">{{ m3 }}</div>
+                <div style="font-size:12px; color:#8A938C; margin-top:3px;">5 proyectos · 1 vencido</div>
+              </div>
+              <div style="background:#FFFFFF; border:1px solid #E6EAE4; border-radius:14px; padding:16px 18px 17px; box-shadow:0 1px 2px rgba(19,26,23,0.04);">
+                <div style="display:flex; align-items:center; gap:9px;">
+                  <span style="width:28px; height:28px; border-radius:8px; background:#EDF0EC; display:flex; align-items:center; justify-content:center;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4A554E" stroke-width="1.9" stroke-linecap="round"><path d="M4 5h9l3 3h4v11H4Z"></path></svg>
+                  </span>
+                  <span style="font-size:12px; font-weight:600; color:#6B766F;">Proyectos abiertos</span>
+                </div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:600; letter-spacing:-0.02em; font-variant-numeric:tabular-nums; margin-top:12px;">5</div>
+                <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;">
+                  <sc-for list="{{ porEstado }}" as="e" hint-placeholder-count="4">
+                    <span style="{{ e.style }}">{{ e.n }} {{ e.label }}</span>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+
+            <div data-two="1" style="flex:1; min-height:0; display:grid; grid-template-columns:1.4fr 1fr; gap:16px;">
+
+              <section style="display:flex; flex-direction:column; min-height:0; background:#FFFFFF; border:1px solid #E6EAE4; border-radius:14px; box-shadow:0 1px 2px rgba(19,26,23,0.04); overflow:hidden;">
+                <div style="flex:none; display:flex; align-items:center; gap:10px; height:54px; padding:0 18px; border-bottom:1px solid #EEF1EC;">
+                  <span style="font-size:14.5px; font-weight:700; letter-spacing:-0.01em;">Falta pagarles</span>
+                  <span style="display:inline-flex; align-items:center; height:21px; padding:0 8px; border-radius:99px; background:#FBF1DC; color:#8A5C08; font-size:11.5px; font-weight:700;">{{ pendientesCuenta }}</span>
+                  <button onClick="{{ irPlanilla }}" style="margin-left:auto; display:inline-flex; align-items:center; gap:6px; height:32px; padding:0 12px; border:1px solid #DDE3DC; background:#FFFFFF; color:#2C3A33; border-radius:9px; font-size:12.5px; font-weight:600; cursor:pointer; transition:background-color 140ms, border-color 140ms;" style-hover="background-color:#F4F6F3; border-color:#C6D0C7">Abrir planilla
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 5 7 7-7 7"></path></svg>
+                  </button>
+                </div>
+                <div data-scroll="1" style="flex:1; min-height:0; overflow:auto; padding:6px 8px;">
+                  <sc-for list="{{ pendientes }}" as="p" hint-placeholder-count="6">
+                    <div style="display:flex; align-items:center; gap:12px; height:52px; padding:0 10px; border-radius:10px; transition:background-color 140ms;" style-hover="background-color:#F7F9F6">
+                      <span style="width:32px; height:32px; flex:none; border-radius:50%; background:#EDF2EF; color:#3E6B58; display:flex; align-items:center; justify-content:center; font-size:11.5px; font-weight:700;">{{ p.ini }}</span>
+                      <div style="min-width:0;">
+                        <div style="font-size:13.5px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ p.nom }}</div>
+                        <div style="font-size:11.5px; color:#8A938C;">{{ p.modo }}</div>
+                      </div>
+                      <div style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:500; font-variant-numeric:tabular-nums; white-space:nowrap;">{{ p.neto }}</div>
+                      <button onClick="{{ p.pagar }}" style="flex:none; height:30px; padding:0 11px; border:1px solid #DDE3DC; background:#FFFFFF; color:#2C3A33; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap; transition:background-color 140ms, color 140ms, border-color 140ms;" style-hover="background-color:#0E6B4E; border-color:#0E6B4E; color:#FFFFFF">Marcar pagado</button>
+                    </div>
+                  </sc-for>
+                  <sc-if value="{{ sinPendientes }}" hint-placeholder-val="{{ false }}">
+                    <div style="padding:40px 14px; text-align:center;">
+                      <span style="width:38px; height:38px; border-radius:50%; background:#E4F4EC; display:inline-flex; align-items:center; justify-content:center;">
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#157F55" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"></path></svg>
+                      </span>
+                      <div style="font-size:14px; font-weight:600; margin-top:12px;">Todos los pagos están aplicados</div>
+                      <div style="font-size:12.5px; color:#8A938C; margin-top:3px;">No queda nadie pendiente en este período.</div>
+                    </div>
+                  </sc-if>
+                </div>
+              </section>
+
+              <section style="display:flex; flex-direction:column; min-height:0; background:#FFFFFF; border:1px solid #E6EAE4; border-radius:14px; box-shadow:0 1px 2px rgba(19,26,23,0.04); overflow:hidden;">
+                <div style="flex:none; display:flex; align-items:center; gap:10px; height:54px; padding:0 18px; border-bottom:1px solid #EEF1EC;">
+                  <span style="font-size:14.5px; font-weight:700; letter-spacing:-0.01em;">Cuentas por cobrar</span>
+                  <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:600; font-variant-numeric:tabular-nums;">{{ totalCobrar }}</span>
+                </div>
+                <div data-scroll="1" style="flex:1; min-height:0; overflow:auto; padding:6px 8px;">
+                  <sc-for list="{{ porCobrar }}" as="c" hint-placeholder-count="5">
+                    <div onClick="{{ c.abrir }}" style="display:flex; align-items:center; gap:12px; padding:10px; border-radius:10px; cursor:pointer; transition:background-color 140ms;" style-hover="background-color:#F7F9F6">
+                      <div style="min-width:0; flex:1;">
+                        <div style="display:flex; align-items:center; gap:7px;">
+                          <span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#8A938C;">{{ c.codigo }}</span>
+                          <span style="{{ c.pill }}">{{ c.estado }}</span>
+                        </div>
+                        <div style="font-size:13.5px; font-weight:600; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ c.cliente }}</div>
+                        <div style="font-size:11.5px; color:#8A938C; margin-top:1px;">{{ c.nota }}</div>
+                      </div>
+                      <div style="font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600; font-variant-numeric:tabular-nums; flex:none;">{{ c.saldo }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </section>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <!-- ══════════ 2 · PLANILLA ══════════ -->
+      <sc-if value="{{ esPlanilla }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1; min-height:0; display:flex;">
+          <div style="flex:1; min-width:0; display:flex; flex-direction:column; padding:20px 24px 24px;">
+
+            <sc-if value="{{ vacio }}" hint-placeholder-val="{{ false }}">
+              <div style="flex:1; display:flex; align-items:center; justify-content:center;">
+                <div style="background:#FFFFFF; border:1px solid #E6EAE4; border-radius:16px; box-shadow:0 1px 2px rgba(19,26,23,0.04), 0 18px 40px -30px rgba(19,26,23,0.5); padding:38px 40px; max-width:500px;">
+                  <div style="font-size:12px; font-weight:600; color:#6B766F;">Quincena 2 · 16–31 jul 2026</div>
+                  <div style="font-size:18px; font-weight:700; letter-spacing:-0.02em; margin-top:8px; text-wrap:pretty;">Este período no tiene empleados cargados</div>
+                  <div style="font-size:13.5px; color:#6B766F; margin-top:6px; text-wrap:pretty;">Agregá al primero para calcular la planilla, o traé la lista del corte anterior.</div>
+                  <div style="display:flex; gap:9px; margin-top:20px;">
+                    <button style="height:38px; padding:0 16px; border:0; background:#0E6B4E; color:#FFFFFF; border-radius:10px; font-size:13.5px; font-weight:600; cursor:pointer; box-shadow:0 1px 2px rgba(14,107,78,0.35);">Agregar empleado</button>
+                    <button style="height:38px; padding:0 16px; border:1px solid #DDE3DC; background:#FFFFFF; color:#2C3A33; border-radius:10px; font-size:13.5px; font-weight:600; cursor:pointer;">Copiar del período anterior</button>
+                  </div>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ conDatos }}" hint-placeholder-val="{{ true }}">
+              <div style="flex:none; display:flex; align-items:center; gap:12px; margin-bottom:14px; flex-wrap:wrap;">
+                <span style="{{ selPillStyle }}">{{ resumenSeleccion }}</span>
+                <div style="margin-left:auto; display:flex; gap:9px;">
+                  <button onClick="{{ abrirNuevoEmpleado }}" style="display:inline-flex; align-items:center; gap:7px; height:38px; padding:0 15px; border:1px solid #DDE3DC; background:#FFFFFF; color:#2C3A33; border-radius:10px; font-size:13.5px; font-weight:600; cursor:pointer; transition:background-color 140ms, border-color 140ms;" style-hover="background-color:#F4F6F3; border-color:#C6D0C7">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+                    Agregar empleado
+                  </button>
+                  <button onClick="{{ pagarLote }}" style="{{ btnLoteStyle }}">Marcar como pagado</button>
+                  <button onClick="{{ generarColillas }}" style="height:38px; padding:0 15px; border:1px solid #DDE3DC; background:#FFFFFF; color:#2C3A33; border-radius:10px; font-size:13.5px; font-weight:600; cursor:pointer; transition:background-color 140ms, border-color 140ms;" style-hover="background-color:#F4F6F3; border-color:#C6D0C7">Generar colillas</button>
+                  <button onClick="{{ aprobarPlanilla }}" style="display:inline-flex; align-items:center; gap:7px; height:38px; padding:0 15px; border:0; background:#0E6B4E; color:#FFFFFF; border-radius:10px; font-size:13.5px; font-weight:600; cursor:pointer; box-shadow:0 1px 2px rgba(14,107,78,0.35); transition:background-color 140ms;" style-hover="background-color:#0A5239">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"></path></svg>
+                    Aprobar planilla
+                  </button>
+                </div>
+              </div>
+
+              <div data-scroll="1" style="flex:1; min-height:0; overflow:auto; background:#FFFFFF; border:1px solid #E6EAE4; border-radius:14px; box-shadow:0 1px 2px rgba(19,26,23,0.04);">
+                <table style="width:100%; min-width:1120px; border-collapse:separate; border-spacing:0;">
+                  <thead>
+                    <tr>
+                      <th style="position:sticky; top:0; z-index:2; background:#FBFCFA; border-bottom:1px solid #E6EAE4; height:42px; padding:0 0 0 16px; width:34px; text-align:left; border-radius:14px 0 0 0;"><input type="checkbox" checked="{{ todosSel }}" onChange="{{ toggleTodos }}"></th>
+                      <th style="position:sticky; top:0; z-index:2; background:#FBFCFA; border-bottom:1px solid #E6EAE4; padding:0 12px; text-align:left; font-size:11.5px; font-weight:600; letter-spacing:0.03em; color:#8A938C;">Empleado</th>
+                      <th style="position:sticky; top:0; z-index:2; background:#FBFCFA; border-bottom:1px solid #E6EAE4; padding:0 12px; text-align:left; font-size:11.5px; font-weight:600; letter-spacing:0.03em; color:#8A938C;">Modo</th>
+                      <th style="position:sticky; top:0; z-index:2; background:#FBFCFA; border-bottom:1px solid #E6EAE4; padding:0 12px; text-align:right; font-size:11.5px; font-weight:600; letter-spacing:0.03em; color:#8A938C;">Base período</th>
+                      <th style="position:sticky; top:0; z-index:2; background:#FBFCFA; border-bottom:1px solid #E6EAE4; padding:0 12px; text-align:right; font-size:11.5px; font-weight:600; letter-spacing:0.03em; color:#8A938C;">H. extra</th>
+                      <th style="position:sticky; top:0; z-index:2; background:#FBFCFA; border-bottom:1px solid #E6EAE4; padding:0 12px; text-align:right; font-size:11.5px; font-weight:600; letter-spacing:0.03em; color:#8A938C;">Bruto</th>
+                      <th style="position:sticky; top:0; z-index:2; background:#FBFCFA; border-bottom:1px solid #E6EAE4; padding:0 12px; text-align:right; font-size:11.5px; font-weight:600; letter-spacing:0.03em; color:#8A938C;">CCSS</th>
+                      <th style="position:sticky; top:0; z-index:2; background:#FBFCFA; border-bottom:1px solid #E6EAE4; padding:0 12px; text-align:right; font-size:11.5px; font-weight:600; letter-spacing:0.03em; color:#8A938C;">Renta</th>
+                      <th style="position:sticky; top:0; z-index:2; background:#FBFCFA; border-bottom:1px solid #E6EAE4; padding:0 12px; text-align:right; font-size:11.5px; font-weight:600; letter-spacing:0.03em; color:#8A938C;">Adelanto</th>
+                      <th style="position:sticky; top:0; z-index:2; background:#FBFCFA; border-bottom:1px solid #E6EAE4; padding:0 12px; text-align:right; font-size:11.5px; font-weight:600; letter-spacing:0.03em; color:#8A938C;">Otras ded.</th>
+                      <th style="position:sticky; top:0; z-index:2; background:#FBFCFA; border-bottom:1px solid #E6EAE4; padding:0 12px; text-align:right; font-size:11.5px; font-weight:700; letter-spacing:0.03em; color:#4A554E;">Neto</th>
+                      <th style="position:sticky; top:0; z-index:2; background:#FBFCFA; border-bottom:1px solid #E6EAE4; padding:0 16px 0 12px; text-align:left; font-size:11.5px; font-weight:600; letter-spacing:0.03em; color:#8A938C; border-radius:0 14px 0 0;">Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <sc-for list="{{ filas }}" as="f" hint-placeholder-count="8">
+                      <tr onClick="{{ f.verDetalle }}" style="{{ f.trStyle }}" style-hover="background-color:#F7F9F6">
+                        <td style="padding:0 0 0 16px; border-bottom:1px solid #F0F3EF;" onClick="{{ f.stop }}"><input type="checkbox" checked="{{ f.sel }}" onChange="{{ f.toggle }}"></td>
+                        <td style="padding:0 12px; border-bottom:1px solid #F0F3EF;">
+                          <div style="display:flex; align-items:center; gap:10px;">
+                            <span style="width:28px; height:28px; flex:none; border-radius:50%; background:#EDF2EF; color:#3E6B58; display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:700;">{{ f.ini }}</span>
+                            <span style="font-size:13.5px; font-weight:600; white-space:nowrap;">{{ f.nom }}</span>
+                          </div>
+                        </td>
+                        <td style="padding:0 12px; border-bottom:1px solid #F0F3EF; font-size:12px; color:#6B766F; white-space:nowrap;">{{ f.modo }}</td>
+                        <td style="padding:0 12px; border-bottom:1px solid #F0F3EF; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums; white-space:nowrap;">{{ f.base }}</td>
+                        <td style="padding:0 6px 0 12px; border-bottom:1px solid #F0F3EF; text-align:right;" onClick="{{ f.stop }}">
+                          <input value="{{ f.horas }}" onChange="{{ f.setHoras }}" placeholder="0" style="{{ f.inputHoras }}">
+                        </td>
+                        <td style="padding:0 12px; border-bottom:1px solid #F0F3EF; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums; white-space:nowrap;">{{ f.bruto }}</td>
+                        <td style="padding:0 12px; border-bottom:1px solid #F0F3EF; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums; color:#8A938C; white-space:nowrap;">{{ f.ccss }}</td>
+                        <td style="padding:0 12px; border-bottom:1px solid #F0F3EF; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums; color:#8A938C; white-space:nowrap;">{{ f.renta }}</td>
+                        <td style="padding:0 6px 0 12px; border-bottom:1px solid #F0F3EF; text-align:right;" onClick="{{ f.stop }}">
+                          <input value="{{ f.adelanto }}" onChange="{{ f.setAdelanto }}" placeholder="0,00" style="{{ f.inputAdel }}">
+                        </td>
+                        <td style="padding:0 12px; border-bottom:1px solid #F0F3EF; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums; color:#8A938C; white-space:nowrap;">{{ f.otras }}</td>
+                        <td style="padding:0 12px; border-bottom:1px solid #F0F3EF; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:600; font-variant-numeric:tabular-nums; white-space:nowrap;">{{ f.neto }}</td>
+                        <td style="padding:0 16px 0 12px; border-bottom:1px solid #F0F3EF; white-space:nowrap;"><span style="{{ f.pill }}">{{ f.estado }}</span></td>
+                      </tr>
+                      <sc-if value="{{ f.error }}" hint-placeholder-val="{{ false }}">
+                        <tr>
+                          <td colspan="12" style="padding:0 16px 10px 58px; border-bottom:1px solid #F0F3EF;">
+                            <div style="display:flex; align-items:flex-start; gap:8px; background:#FDF3F1; border:1px solid #F2D2CB; border-radius:10px; padding:9px 12px;">
+                              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C0392B" stroke-width="2" stroke-linecap="round" style="flex:none; margin-top:1px;"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5"></path><circle cx="12" cy="16" r="0.6" fill="#C0392B"></circle></svg>
+                              <span style="font-size:12.5px; color:#8E3323; text-wrap:pretty;">{{ f.error }}</span>
+                            </div>
+                          </td>
+                        </tr>
+                      </sc-if>
+                    </sc-for>
+                    <tr style="height:52px; background:#FBFCFA;">
+                      <td style="border-radius:0 0 0 14px;"></td>
+                      <td style="padding:0 12px; font-size:12.5px; font-weight:700; color:#4A554E; white-space:nowrap;">Total · {{ totalFilas }} empleados</td>
+                      <td></td>
+                      <td style="padding:0 12px; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums; color:#6B766F;">{{ tBase }}</td>
+                      <td style="padding:0 12px; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:#6B766F;">{{ tHoras }}</td>
+                      <td style="padding:0 12px; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; font-variant-numeric:tabular-nums;">{{ tBruto }}</td>
+                      <td style="padding:0 12px; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums; color:#6B766F;">{{ tCcss }}</td>
+                      <td style="padding:0 12px; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums; color:#6B766F;">{{ tRenta }}</td>
+                      <td style="padding:0 12px; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums; color:#6B766F;">{{ tAdel }}</td>
+                      <td style="padding:0 12px; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums; color:#6B766F;">{{ tOtras }}</td>
+                      <td style="padding:0 12px; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:700; font-variant-numeric:tabular-nums;">{{ tNeto }}</td>
+                      <td style="border-radius:0 0 14px 0;"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div style="flex:none; margin-top:11px; font-size:12px; color:#8A938C;">Los empleados semanales muestran las dos semanas del período. Clic en una fila abre el desglose; las celdas de horas extra y adelantos se editan en línea.</div>
+            </sc-if>
+          </div>
+
+          <sc-if value="{{ detalleAbierto }}" hint-placeholder-val="{{ false }}">
+            <aside data-side="1" data-scroll="1" style="width:392px; flex:none; background:#FFFFFF; border-left:1px solid #E6EAE4; overflow:auto;">
+              <div style="display:flex; align-items:flex-start; gap:12px; padding:20px 20px 18px; border-bottom:1px solid #EEF1EC;">
+                <span style="width:40px; height:40px; flex:none; border-radius:50%; background:#EDF2EF; color:#3E6B58; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700;">{{ det.ini }}</span>
+                <div style="min-width:0;">
+                  <div style="font-size:15.5px; font-weight:700; letter-spacing:-0.01em;">{{ det.nom }}</div>
+                  <div style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#8A938C; margin-top:2px;">{{ det.ced }} · {{ det.puesto }}</div>
+                </div>
+                <button onClick="{{ cerrarDetalle }}" style="margin-left:auto; width:30px; height:30px; flex:none; border:1px solid #E6EAE4; background:#FFFFFF; color:#6B766F; border-radius:9px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background-color 140ms;" style-hover="background-color:#F4F6F3">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+                </button>
+              </div>
+              <div style="padding:16px 20px 22px;">
+                <sc-for list="{{ det.lineas }}" as="l" hint-placeholder-count="8">
+                  <div style="display:flex; align-items:baseline; gap:10px; padding:9px 0; border-bottom:1px solid #F3F5F1;">
+                    <span style="font-size:13px; color:{{ l.color }};">{{ l.label }}</span>
+                    <span style="font-size:11px; color:#A5AEA7;">{{ l.nota }}</span>
+                    <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums; color:{{ l.color }}; white-space:nowrap;">{{ l.monto }}</span>
+                  </div>
+                </sc-for>
+                <div style="display:flex; align-items:center; gap:10px; margin-top:16px; background:#F1F7F4; border:1px solid #DCE9E3; border-radius:12px; padding:14px 16px;">
+                  <span style="font-size:12.5px; font-weight:700; color:#2C3A33;">Neto a pagar</span>
+                  <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:700; font-variant-numeric:tabular-nums; color:#0E6B4E;">{{ det.neto }}</span>
+                </div>
+                <div style="margin-top:8px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:#8A938C;">{{ det.cta }}</div>
+                <div style="display:flex; gap:9px; margin-top:18px;">
+                  <button onClick="{{ det.pagar }}" style="{{ det.btnStyle }}">{{ det.btnLabel }}</button>
+                  <button onClick="{{ irFicha }}" style="height:38px; padding:0 15px; border:1px solid #DDE3DC; background:#FFFFFF; color:#2C3A33; border-radius:10px; font-size:13.5px; font-weight:600; cursor:pointer; transition:background-color 140ms;" style-hover="background-color:#F4F6F3">Ver ficha</button>
+                </div>
+              </div>
+            </aside>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <!-- ══════════ 3 · FICHA DE EMPLEADO ══════════ -->
+      <sc-if value="{{ esEmpleado }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1; min-height:0; display:flex; flex-direction:column; padding:20px 24px 28px; gap:16px;">
+
+          <div style="display:flex; gap:7px; flex-wrap:wrap; align-items:center;">
+            <sc-for list="{{ chipsEmpleados }}" as="c" hint-placeholder-count="8">
+              <button onClick="{{ c.go }}" style="{{ c.style }}">{{ c.nom }}</button>
+            </sc-for>
+            <button onClick="{{ abrirNuevoEmpleado }}" style="display:inline-flex; align-items:center; gap:6px; height:32px; padding:0 13px; border:1px dashed #B9C7BD; background:#FFFFFF; color:#0E6B4E; border-radius:99px; font-size:12.5px; font-weight:600; cursor:pointer; transition:background-color 140ms, border-color 140ms;" style-hover="background-color:#EDF5F1; border-color:#0E6B4E">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+              Agregar empleado
+            </button>
+          </div>
+
+          <div style="background:#FFFFFF; border:1px solid #E6EAE4; border-radius:14px; box-shadow:0 1px 2px rgba(19,26,23,0.04); overflow:hidden;">
+            <div style="display:flex; align-items:center; gap:14px; padding:18px 20px; border-bottom:1px solid #EEF1EC;">
+              <span style="width:52px; height:52px; flex:none; border-radius:50%; background:#EDF2EF; color:#3E6B58; display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:700;">{{ emp.ini }}</span>
+              <div style="min-width:0;">
+                <div style="display:flex; align-items:center; gap:9px; flex-wrap:wrap;">
+                  <span style="font-size:19px; font-weight:700; letter-spacing:-0.02em;">{{ emp.nom }}</span>
+                  <span style="display:inline-flex; align-items:center; gap:6px; height:22px; padding:0 10px; border-radius:99px; background:#E4F4EC; color:#12704A; font-size:11.5px; font-weight:700;"><span style="width:6px; height:6px; border-radius:50%; background:#157F55;"></span>Activo</span>
+                </div>
+                <div style="font-size:13px; color:#6B766F; margin-top:2px;">{{ emp.puesto }} · desde {{ emp.ingreso }}</div>
+              </div>
+            </div>
+            <div data-cajetin="1" style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr));">
+              <div style="padding:14px 20px 16px; border-right:1px solid #EEF1EC;">
+                <div style="font-size:11.5px; font-weight:600; color:#8A938C;">Cédula</div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:14.5px; font-variant-numeric:tabular-nums; margin-top:4px;">{{ emp.ced }}</div>
+              </div>
+              <div style="padding:14px 20px 16px; border-right:1px solid #EEF1EC;">
+                <div style="font-size:11.5px; font-weight:600; color:#8A938C;">Modalidad</div>
+                <div style="font-size:14.5px; font-weight:600; margin-top:4px; text-transform:capitalize;">{{ emp.modo }}</div>
+              </div>
+              <div style="padding:14px 20px 16px; border-right:1px solid #EEF1EC;">
+                <div style="font-size:11.5px; font-weight:600; color:#8A938C;">Salario base</div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:14.5px; font-weight:600; font-variant-numeric:tabular-nums; margin-top:4px;">{{ emp.base }}</div>
+              </div>
+              <div style="padding:14px 20px 16px;">
+                <div style="font-size:11.5px; font-weight:600; color:#8A938C;">Saldo de vacaciones</div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:14.5px; font-weight:600; font-variant-numeric:tabular-nums; margin-top:4px; color:#0E6B4E;">{{ emp.vacSaldo }} días</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:4px; background:#EBEFE9; border-radius:11px; padding:4px; width:fit-content;">
+            <sc-for list="{{ tabsEmp }}" as="t" hint-placeholder-count="3">
+              <button onClick="{{ t.go }}" style="{{ t.style }}">{{ t.label }}</button>
+            </sc-for>
+          </div>
+
+          <sc-if value="{{ tabContrato }}" hint-placeholder-val="{{ true }}">
+            <div data-two="1" style="display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start;">
+              <section style="background:#FFFFFF; border:1px solid #E6EAE4; border-radius:14px; box-shadow:0 1px 2px rgba(19,26,23,0.04);">
+                <div style="height:52px; display:flex; align-items:center; padding:0 20px; border-bottom:1px solid #EEF1EC; font-size:14.5px; font-weight:700; letter-spacing:-0.01em;">Contrato</div>
+                <div style="padding:6px 20px 16px;">
+                  <sc-for list="{{ emp.contrato }}" as="c" hint-placeholder-count="7">
+                    <div style="display:flex; align-items:baseline; gap:14px; padding:10px 0; border-bottom:1px solid #F3F5F1;">
+                      <span style="font-size:12.5px; color:#8A938C; flex:none;">{{ c.k }}</span>
+                      <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums; text-align:right; margin-left:auto;">{{ c.v }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </section>
+              <section style="background:#FFFFFF; border:1px solid #E6EAE4; border-radius:14px; box-shadow:0 1px 2px rgba(19,26,23,0.04);">
+                <div style="height:52px; display:flex; align-items:center; padding:0 20px; border-bottom:1px solid #EEF1EC; font-size:14.5px; font-weight:700; letter-spacing:-0.01em;">Deducciones fijas</div>
+                <div style="padding:6px 20px 16px;">
+                  <sc-for list="{{ emp.deducciones }}" as="c" hint-placeholder-count="5">
+                    <div style="display:flex; align-items:baseline; gap:14px; padding:10px 0; border-bottom:1px solid #F3F5F1;">
+                      <span style="font-size:12.5px; color:#8A938C; flex:none;">{{ c.k }}</span>
+                      <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums; text-align:right; margin-left:auto; color:{{ c.color }};">{{ c.v }}</span>
+                    </div>
+                  </sc-for>
+                  <div style="margin-top:14px; background:#F7F9F6; border-radius:10px; padding:11px 13px; font-size:12.5px; color:#6B766F; text-wrap:pretty;">La retención de renta se recalcula cada período con el bruto real, incluidas horas extra.</div>
+                </div>
+              </section>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ tabPagos }}" hint-placeholder-val="{{ false }}">
+            <section style="background:#FFFFFF; border:1px solid #E6EAE4; border-radius:14px; box-shadow:0 1px 2px rgba(19,26,23,0.04); overflow:hidden;">
+              <div data-scroll="1" style="overflow-x:auto;">
+                <table style="width:100%; min-width:680px; border-collapse:separate; border-spacing:0;">
+                  <thead>
+                    <tr>
+                      <th style="height:42px; text-align:left; padding:0 20px; background:#FBFCFA; border-bottom:1px solid #E6EAE4; font-size:11.5px; font-weight:600; color:#8A938C;">Período</th>
+                      <th style="text-align:left; padding:0 12px; background:#FBFCFA; border-bottom:1px solid #E6EAE4; font-size:11.5px; font-weight:600; color:#8A938C;">Pagado el</th>
+                      <th style="text-align:right; padding:0 12px; background:#FBFCFA; border-bottom:1px solid #E6EAE4; font-size:11.5px; font-weight:600; color:#8A938C;">Bruto</th>
+                      <th style="text-align:right; padding:0 12px; background:#FBFCFA; border-bottom:1px solid #E6EAE4; font-size:11.5px; font-weight:600; color:#8A938C;">Deducciones</th>
+                      <th style="text-align:right; padding:0 12px; background:#FBFCFA; border-bottom:1px solid #E6EAE4; font-size:11.5px; font-weight:700; color:#4A554E;">Neto</th>
+                      <th style="text-align:right; padding:0 20px 0 12px; background:#FBFCFA; border-bottom:1px solid #E6EAE4; font-size:11.5px; font-weight:600; color:#8A938C;">Colilla</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <sc-for list="{{ emp.pagos }}" as="p" hint-placeholder-count="6">
+                      <tr style="height:46px; transition:background-color 140ms;" style-hover="background-color:#F7F9F6">
+                        <td style="padding:0 20px; border-bottom:1px solid #F0F3EF; font-size:13.5px; font-weight:500; white-space:nowrap;">{{ p.periodo }}</td>
+                        <td style="padding:0 12px; border-bottom:1px solid #F0F3EF; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums; color:#8A938C;">{{ p.fecha }}</td>
+                        <td style="padding:0 12px; border-bottom:1px solid #F0F3EF; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums;">{{ p.bruto }}</td>
+                        <td style="padding:0 12px; border-bottom:1px solid #F0F3EF; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums; color:#8A938C;">{{ p.ded }}</td>
+                        <td style="padding:0 12px; border-bottom:1px solid #F0F3EF; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:600; font-variant-numeric:tabular-nums;">{{ p.neto }}</td>
+                        <td style="padding:0 20px 0 12px; border-bottom:1px solid #F0F3EF; text-align:right;"><a href="#" onClick="{{ noop }}" style="font-size:12.5px; font-weight:600;">Ver colilla</a></td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </sc-if>
+
+          <sc-if value="{{ tabVacaciones }}" hint-placeholder-val="{{ false }}">
+            <section style="background:#FFFFFF; border:1px solid #E6EAE4; border-radius:14px; box-shadow:0 1px 2px rgba(19,26,23,0.04); overflow:hidden;">
+              <div style="height:52px; display:flex; align-items:center; gap:12px; padding:0 20px; border-bottom:1px solid #EEF1EC;">
+                <span style="font-size:14.5px; font-weight:700; letter-spacing:-0.01em;">Vacaciones tomadas</span>
+                <button onClick="{{ irVacaciones }}" style="margin-left:auto; height:32px; padding:0 12px; border:1px solid #DDE3DC; background:#FFFFFF; border-radius:9px; font-size:12.5px; font-weight:600; color:#2C3A33; cursor:pointer; transition:background-color 140ms;" style-hover="background-color:#F4F6F3">Abrir calendario</button>
+              </div>
+              <sc-if value="{{ emp.sinVacaciones }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:38px 20px; text-align:center;">
+                  <div style="font-size:14.5px; font-weight:600;">{{ emp.nom }} no ha tomado vacaciones desde su ingreso</div>
+                  <div style="font-size:12.5px; color:#8A938C; margin-top:4px;">Saldo acumulado: {{ emp.vacSaldo }} días. Registrá el primer período desde el calendario.</div>
+                </div>
+              </sc-if>
+              <sc-for list="{{ emp.vacaciones }}" as="v" hint-placeholder-count="2">
+                <div style="display:flex; align-items:center; gap:14px; padding:13px 20px; border-bottom:1px solid #F0F3EF;">
+                  <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums;">{{ v.rango }}</span>
+                  <span style="font-size:12.5px; color:#8A938C;">{{ v.nota }}</span>
+                  <span style="margin-left:auto; display:inline-flex; align-items:center; gap:4px; height:22px; padding:0 10px; border-radius:99px; background:#EDF2EF; color:#3E6B58; font-size:11.5px; font-weight:700;">{{ v.dias }} días</span>
+                </div>
+              </sc-for>
+            </section>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <!-- ══════════ 4 · CALENDARIO DE VACACIONES ══════════ -->
+      <sc-if value="{{ esVacaciones }}" hint-placeholder-val="{{ false }}">
+        <div data-cal="1" style="flex:1; min-height:0; display:grid; grid-template-columns:1fr 350px; gap:16px; padding:20px 24px 28px; align-items:start;">
+          <section style="background:#FFFFFF; border:1px solid #E6EAE4; border-radius:14px; box-shadow:0 1px 2px rgba(19,26,23,0.04); overflow:hidden;">
+            <div style="height:52px; display:flex; align-items:center; gap:12px; padding:0 20px; border-bottom:1px solid #EEF1EC;">
+              <span style="font-size:14.5px; font-weight:700; letter-spacing:-0.01em;">Selección de rango</span>
+              <span style="font-size:12.5px; color:#8A938C;">Clic en el día de inicio y luego en el de regreso</span>
+              <button onClick="{{ limpiarRango }}" style="margin-left:auto; height:32px; padding:0 12px; border:1px solid #DDE3DC; background:#FFFFFF; border-radius:9px; font-size:12.5px; font-weight:600; color:#2C3A33; cursor:pointer; transition:background-color 140ms;" style-hover="background-color:#F4F6F3">Limpiar</button>
+            </div>
+            <div data-two="1" style="display:grid; grid-template-columns:1fr 1fr;">
+              <sc-for list="{{ meses }}" as="m" hint-placeholder-count="2">
+                <div style="{{ m.wrapStyle }}">
+                  <div style="font-size:14px; font-weight:700; letter-spacing:-0.01em; margin-bottom:12px; text-transform:capitalize;">{{ m.nombre }}</div>
+                  <div style="display:grid; grid-template-columns:repeat(7,1fr); gap:3px;">
+                    <sc-for list="{{ m.dow }}" as="d" hint-placeholder-count="7">
+                      <div style="text-align:center; font-size:11px; font-weight:600; color:#A5AEA7; padding-bottom:6px;">{{ d }}</div>
+                    </sc-for>
+                    <sc-for list="{{ m.dias }}" as="d" hint-placeholder-count="35">
+                      <button onClick="{{ d.pick }}" style="{{ d.style }}">{{ d.n }}</button>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex; gap:20px; flex-wrap:wrap; padding:14px 20px 16px; border-top:1px solid #EEF1EC;">
+              <span style="display:inline-flex; align-items:center; gap:8px; font-size:12.5px; color:#8A938C;"><span style="width:16px; height:16px; border-radius:6px; background:#F1F3EF;"></span>Fin de semana</span>
+              <span style="display:inline-flex; align-items:center; gap:8px; font-size:12.5px; color:#8A938C;"><span style="width:16px; height:16px; border-radius:6px; background:#FBF1DC; border:1px solid #EBD9A9;"></span>Feriado de ley</span>
+              <span style="display:inline-flex; align-items:center; gap:8px; font-size:12.5px; color:#8A938C;"><span style="width:16px; height:16px; border-radius:6px; background:#0E6B4E;"></span>Rango seleccionado</span>
+            </div>
+          </section>
+
+          <aside style="display:flex; flex-direction:column; gap:16px;">
+            <div style="background:#FFFFFF; border:1px solid #E6EAE4; border-radius:14px; box-shadow:0 1px 2px rgba(19,26,23,0.04);">
+              <div style="height:52px; display:flex; align-items:center; padding:0 20px; border-bottom:1px solid #EEF1EC; font-size:14.5px; font-weight:700; letter-spacing:-0.01em;">Empleado</div>
+              <div style="padding:16px 20px 18px;">
+                <select value="{{ vacEmp }}" onChange="{{ setVacEmp }}" style="width:100%; height:38px; border:1px solid #DDE3DC; border-radius:10px; background:#FFFFFF; padding:0 10px; font-size:13px; font-weight:500; outline:none; cursor:pointer;">
+                  <sc-for list="{{ opcionesEmpleado }}" as="o" hint-placeholder-count="8">
+                    <option value="{{ o.id }}">{{ o.nom }}</option>
+                  </sc-for>
+                </select>
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-top:14px;">
+                  <div style="background:#F7F9F6; border-radius:10px; padding:10px 12px;">
+                    <div style="font-size:11px; font-weight:600; color:#8A938C;">Acumulado</div>
+                    <div style="font-family:'IBM Plex Mono',monospace; font-size:16px; font-weight:600; font-variant-numeric:tabular-nums; margin-top:3px;">{{ vac.acum }}</div>
+                  </div>
+                  <div style="background:#F7F9F6; border-radius:10px; padding:10px 12px;">
+                    <div style="font-size:11px; font-weight:600; color:#8A938C;">Tomados</div>
+                    <div style="font-family:'IBM Plex Mono',monospace; font-size:16px; font-weight:600; font-variant-numeric:tabular-nums; margin-top:3px; color:#6B766F;">{{ vac.tomados }}</div>
+                  </div>
+                  <div style="background:#E9F3EE; border-radius:10px; padding:10px 12px;">
+                    <div style="font-size:11px; font-weight:600; color:#4F8570;">Saldo</div>
+                    <div style="font-family:'IBM Plex Mono',monospace; font-size:16px; font-weight:700; font-variant-numeric:tabular-nums; margin-top:3px; color:#0E6B4E;">{{ vac.saldo }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="background:#FFFFFF; border:1px solid #E6EAE4; border-radius:14px; box-shadow:0 1px 2px rgba(19,26,23,0.04);">
+              <div style="height:52px; display:flex; align-items:center; padding:0 20px; border-bottom:1px solid #EEF1EC; font-size:14.5px; font-weight:700; letter-spacing:-0.01em;">Rango solicitado</div>
+              <div style="padding:16px 20px 18px;">
+                <sc-if value="{{ vac.sinRango }}" hint-placeholder-val="{{ true }}">
+                  <div style="font-size:13px; color:#8A938C; text-wrap:pretty;">Todavía no hay días seleccionados. Elegí el día de inicio en el calendario para calcular los días hábiles.</div>
+                </sc-if>
+                <sc-if value="{{ vac.conRango }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; align-items:baseline; gap:10px; padding:8px 0; border-bottom:1px solid #F3F5F1;">
+                    <span style="font-size:12.5px; color:#8A938C;">Del</span>
+                    <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums;">{{ vac.desde }}</span>
+                  </div>
+                  <div style="display:flex; align-items:baseline; gap:10px; padding:8px 0; border-bottom:1px solid #F3F5F1;">
+                    <span style="font-size:12.5px; color:#8A938C;">Al</span>
+                    <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums;">{{ vac.hasta }}</span>
+                  </div>
+                  <div style="display:flex; align-items:baseline; gap:10px; padding:8px 0; border-bottom:1px solid #F3F5F1;">
+                    <span style="font-size:12.5px; color:#8A938C;">Feriados dentro</span>
+                    <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums; color:#A8710A;">{{ vac.feriados }}</span>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:10px; margin-top:14px; background:#F1F7F4; border:1px solid #DCE9E3; border-radius:12px; padding:13px 16px;">
+                    <span style="font-size:12.5px; font-weight:700; color:#2C3A33;">Días hábiles</span>
+                    <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:700; font-variant-numeric:tabular-nums; color:#0E6B4E;">{{ vac.habiles }}</span>
+                  </div>
+                  <sc-if value="{{ vac.excede }}" hint-placeholder-val="{{ false }}">
+                    <div style="margin-top:12px; background:#FDF3F1; border:1px solid #F2D2CB; border-radius:12px; padding:11px 13px;">
+                      <div style="font-size:12.5px; font-weight:700; color:#A8321F;">Excede el saldo</div>
+                      <div style="font-size:12.5px; color:#5C4A46; margin-top:3px; text-wrap:pretty;">{{ vac.mensajeError }}</div>
+                    </div>
+                  </sc-if>
+                  <button onClick="{{ registrarVac }}" style="{{ vac.btnStyle }}">Registrar vacaciones</button>
+                </sc-if>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </sc-if>
+
+      <!-- ══════════ 5 · FICHA DE CLIENTE ══════════ -->
+      <sc-if value="{{ esCliente }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1; min-height:0; display:flex; flex-direction:column; padding:20px 24px 28px; gap:16px;">
+          <div style="display:flex; gap:7px; flex-wrap:wrap;">
+            <sc-for list="{{ chipsClientes }}" as="c" hint-placeholder-count="4">
+              <button onClick="{{ c.go }}" style="{{ c.style }}">{{ c.nom }}</button>
+            </sc-for>
+          </div>
+
+          <div style="background:#FFFFFF; border:1px solid #E6EAE4; border-radius:14px; box-shadow:0 1px 2px rgba(19,26,23,0.04); overflow:hidden;">
+            <div style="display:flex; align-items:flex-start; gap:14px; padding:18px 20px; border-bottom:1px solid #EEF1EC;">
+              <span style="width:46px; height:46px; flex:none; border-radius:12px; background:#EDF2EF; display:flex; align-items:center; justify-content:center;">
+                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#3E6B58" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V7l7-4 7 4v14"></path><path d="M17 21h4V11l-4-2"></path><path d="M7 11h3M7 15h3"></path></svg>
+              </span>
+              <div style="min-width:0;">
+                <div style="font-size:19px; font-weight:700; letter-spacing:-0.02em;">{{ cli.nom }}</div>
+                <div style="font-size:13px; color:#6B766F; margin-top:2px;">{{ cli.contacto }}</div>
+              </div>
+              <div style="margin-left:auto; text-align:right; flex:none;">
+                <div style="font-size:11.5px; font-weight:600; color:#8A938C;">Saldo pendiente</div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:22px; font-weight:700; font-variant-numeric:tabular-nums; margin-top:2px; color:{{ cli.saldoColor }};">{{ cli.saldo }}</div>
+              </div>
+            </div>
+            <div data-cajetin="1" style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr));">
+              <div style="padding:14px 20px 16px; border-right:1px solid #EEF1EC;">
+                <div style="font-size:11.5px; font-weight:600; color:#8A938C;">Cédula jurídica</div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:14px; font-variant-numeric:tabular-nums; margin-top:4px;">{{ cli.ced }}</div>
+              </div>
+              <div style="padding:14px 20px 16px; border-right:1px solid #EEF1EC;">
+                <div style="font-size:11.5px; font-weight:600; color:#8A938C;">Teléfono</div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:14px; font-variant-numeric:tabular-nums; margin-top:4px;">{{ cli.tel }}</div>
+              </div>
+              <div style="padding:14px 20px 16px; border-right:1px solid #EEF1EC;">
+                <div style="font-size:11.5px; font-weight:600; color:#8A938C;">Contratado</div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600; font-variant-numeric:tabular-nums; margin-top:4px;">{{ cli.contratado }}</div>
+              </div>
+              <div style="padding:14px 20px 16px;">
+                <div style="font-size:11.5px; font-weight:600; color:#8A938C;">Abonado</div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600; font-variant-numeric:tabular-nums; margin-top:4px; color:#157F55;">{{ cli.abonado }}</div>
+              </div>
+            </div>
+          </div>
+
+          <section style="background:#FFFFFF; border:1px solid #E6EAE4; border-radius:14px; box-shadow:0 1px 2px rgba(19,26,23,0.04); overflow:hidden;">
+            <div style="height:54px; display:flex; align-items:center; gap:12px; padding:0 20px; border-bottom:1px solid #EEF1EC;">
+              <span style="font-size:14.5px; font-weight:700; letter-spacing:-0.01em;">Proyectos</span>
+              <button onClick="{{ nuevoProyecto }}" style="margin-left:auto; display:inline-flex; align-items:center; gap:6px; height:34px; padding:0 13px; border:0; background:#0E6B4E; color:#FFFFFF; border-radius:9px; font-size:12.5px; font-weight:600; cursor:pointer; box-shadow:0 1px 2px rgba(14,107,78,0.35); transition:background-color 140ms;" style-hover="background-color:#0A5239">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+                Nuevo proyecto
+              </button>
+            </div>
+            <sc-if value="{{ cli.sinProyectos }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:40px 20px; text-align:center;">
+                <div style="font-size:15px; font-weight:600;">{{ cli.nom }} todavía no tiene proyectos registrados</div>
+                <div style="font-size:12.5px; color:#8A938C; margin-top:4px;">Creá el primero para llevar el control de abonos y saldo.</div>
+              </div>
+            </sc-if>
+            <div data-scroll="1" style="overflow-x:auto;">
+              <table style="width:100%; min-width:920px; border-collapse:separate; border-spacing:0;">
+                <thead>
+                  <tr>
+                    <th style="height:42px; text-align:left; padding:0 20px; background:#FBFCFA; border-bottom:1px solid #E6EAE4; font-size:11.5px; font-weight:600; color:#8A938C;">Código</th>
+                    <th style="text-align:left; padding:0 12px; background:#FBFCFA; border-bottom:1px solid #E6EAE4; font-size:11.5px; font-weight:600; color:#8A938C;">Trabajo</th>
+                    <th style="text-align:left; padding:0 12px; background:#FBFCFA; border-bottom:1px solid #E6EAE4; font-size:11.5px; font-weight:600; color:#8A938C;">Finca / plano</th>
+                    <th style="text-align:right; padding:0 12px; background:#FBFCFA; border-bottom:1px solid #E6EAE4; font-size:11.5px; font-weight:600; color:#8A938C;">Contratado</th>
+                    <th style="text-align:right; padding:0 12px; background:#FBFCFA; border-bottom:1px solid #E6EAE4; font-size:11.5px; font-weight:600; color:#8A938C;">Abonado</th>
+                    <th style="text-align:right; padding:0 12px; background:#FBFCFA; border-bottom:1px solid #E6EAE4; font-size:11.5px; font-weight:700; color:#4A554E;">Saldo</th>
+                    <th style="text-align:left; padding:0 20px 0 12px; background:#FBFCFA; border-bottom:1px solid #E6EAE4; font-size:11.5px; font-weight:600; color:#8A938C;">Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <sc-for list="{{ cli.proyectos }}" as="p" hint-placeholder-count="3">
+                    <tr onClick="{{ p.abrir }}" style="height:52px; cursor:pointer; transition:background-color 140ms;" style-hover="background-color:#F7F9F6">
+                      <td style="padding:0 20px; border-bottom:1px solid #F0F3EF; font-family:'IBM Plex Mono',monospace; font-size:12.5px; font-weight:500; white-space:nowrap;">{{ p.codigo }}</td>
+                      <td style="padding:0 12px; border-bottom:1px solid #F0F3EF; font-size:13.5px; font-weight:600; white-space:nowrap;">{{ p.tipo }}</td>
+                      <td style="padding:0 12px; border-bottom:1px solid #F0F3EF; font-family:'IBM Plex Mono',monospace; font-size:12px; color:#8A938C; white-space:nowrap;">{{ p.finca }}</td>
+                      <td style="padding:0 12px; border-bottom:1px solid #F0F3EF; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums;">{{ p.monto }}</td>
+                      <td style="padding:0 12px; border-bottom:1px solid #F0F3EF; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums; color:#8A938C;">{{ p.abonado }}</td>
+                      <td style="padding:0 12px; border-bottom:1px solid #F0F3EF; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:600; font-variant-numeric:tabular-nums;">{{ p.saldo }}</td>
+                      <td style="padding:0 20px 0 12px; border-bottom:1px solid #F0F3EF; white-space:nowrap;"><span style="{{ p.pill }}">{{ p.estado }}</span></td>
+                    </tr>
+                  </sc-for>
+                  <tr style="height:50px; background:#FBFCFA;">
+                    <td colspan="3" style="padding:0 20px; font-size:12.5px; font-weight:700; color:#4A554E;">Total del cliente</td>
+                    <td style="padding:0 12px; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums;">{{ cli.contratado }}</td>
+                    <td style="padding:0 12px; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums; color:#6B766F;">{{ cli.abonado }}</td>
+                    <td style="padding:0 12px; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:700; font-variant-numeric:tabular-nums;">{{ cli.saldo }}</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </sc-if>
+
+      <!-- ══════════ 6 · FORMULARIO DE PROYECTO ══════════ -->
+      <sc-if value="{{ esProyecto }}" hint-placeholder-val="{{ false }}">
+        <div data-two="1" style="flex:1; min-height:0; display:grid; grid-template-columns:1fr 372px; gap:16px; padding:20px 24px 28px; align-items:start;">
+
+          <section style="background:#FFFFFF; border:1px solid #E6EAE4; border-radius:14px; box-shadow:0 1px 2px rgba(19,26,23,0.04);">
+            <div style="height:54px; display:flex; align-items:center; gap:11px; padding:0 20px; border-bottom:1px solid #EEF1EC;">
+              <span style="font-size:14.5px; font-weight:700; letter-spacing:-0.01em;">Datos del proyecto</span>
+              <span style="display:inline-flex; align-items:center; height:22px; padding:0 9px; border-radius:99px; background:#EDF2EF; color:#3E6B58; font-family:'IBM Plex Mono',monospace; font-size:11.5px; font-weight:600;">{{ pf.codigo }}</span>
+            </div>
+            <div style="padding:18px 20px 20px;">
+              <div data-two="1" style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                <label style="display:block;">
+                  <span style="display:block; font-size:12px; font-weight:600; color:#6B766F; margin-bottom:6px;">Cliente</span>
+                  <select value="{{ pf.cliente }}" onChange="{{ setPfCliente }}" style="width:100%; height:38px; border:1px solid #DDE3DC; border-radius:10px; background:#FFFFFF; padding:0 10px; font-size:13px; outline:none; cursor:pointer;">
+                    <sc-for list="{{ opcionesCliente }}" as="o" hint-placeholder-count="4">
+                      <option value="{{ o.id }}">{{ o.nom }}</option>
+                    </sc-for>
+                  </select>
+                </label>
+                <label style="display:block;">
+                  <span style="display:block; font-size:12px; font-weight:600; color:#6B766F; margin-bottom:6px;">Tipo de trabajo</span>
+                  <select value="{{ pf.tipo }}" onChange="{{ setPfTipo }}" style="width:100%; height:38px; border:1px solid #DDE3DC; border-radius:10px; background:#FFFFFF; padding:0 10px; font-size:13px; outline:none; cursor:pointer;">
+                    <option value="Levantamiento topográfico">Levantamiento topográfico</option>
+                    <option value="Segregación">Segregación</option>
+                    <option value="Catastro">Catastro</option>
+                    <option value="Visado municipal">Visado municipal</option>
+                    <option value="Replanteo">Replanteo</option>
+                  </select>
+                </label>
+                <label style="display:block;">
+                  <span style="display:block; font-size:12px; font-weight:600; color:#6B766F; margin-bottom:6px;">Número de finca</span>
+                  <input value="{{ pf.finca }}" onChange="{{ setPfFinca }}" style="width:100%; height:38px; border:1px solid #DDE3DC; border-radius:10px; background:#FFFFFF; padding:0 10px; font-family:'IBM Plex Mono',monospace; font-size:13px; outline:none; transition:border-color 140ms, box-shadow 140ms;" style-focus="border-color:#0E6B4E; box-shadow:0 0 0 3px rgba(14,107,78,0.12)">
+                </label>
+                <label style="display:block;">
+                  <span style="display:block; font-size:12px; font-weight:600; color:#6B766F; margin-bottom:6px;">Fecha de entrega</span>
+                  <input value="{{ pf.entrega }}" onChange="{{ setPfEntrega }}" style="width:100%; height:38px; border:1px solid #DDE3DC; border-radius:10px; background:#FFFFFF; padding:0 10px; font-family:'IBM Plex Mono',monospace; font-size:13px; outline:none; transition:border-color 140ms, box-shadow 140ms;" style-focus="border-color:#0E6B4E; box-shadow:0 0 0 3px rgba(14,107,78,0.12)">
+                </label>
+                <label style="display:block;">
+                  <span style="display:block; font-size:12px; font-weight:600; color:#6B766F; margin-bottom:6px;">Monto acordado (₡)</span>
+                  <input value="{{ pf.monto }}" onChange="{{ setPfMonto }}" style="width:100%; height:38px; border:1px solid #DDE3DC; border-radius:10px; background:#FFFFFF; padding:0 10px; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums; text-align:right; outline:none; transition:border-color 140ms, box-shadow 140ms;" style-focus="border-color:#0E6B4E; box-shadow:0 0 0 3px rgba(14,107,78,0.12)">
+                </label>
+                <label style="display:block;">
+                  <span style="display:block; font-size:12px; font-weight:600; color:#6B766F; margin-bottom:6px;">Prima pactada (%)</span>
+                  <input value="{{ pf.prima }}" onChange="{{ setPfPrima }}" style="width:100%; height:38px; border:1px solid #DDE3DC; border-radius:10px; background:#FFFFFF; padding:0 10px; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums; text-align:right; outline:none; transition:border-color 140ms, box-shadow 140ms;" style-focus="border-color:#0E6B4E; box-shadow:0 0 0 3px rgba(14,107,78,0.12)">
+                </label>
+              </div>
+
+              <div style="margin-top:22px; padding-top:18px; border-top:1px solid #EEF1EC;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <span style="font-size:14.5px; font-weight:700; letter-spacing:-0.01em;">Registro de abonos</span>
+                  <span style="display:inline-flex; align-items:center; height:21px; padding:0 8px; border-radius:99px; background:#EDF2EF; color:#3E6B58; font-size:11.5px; font-weight:600;">{{ pf.conteoAbonos }}</span>
+                </div>
+
+                <sc-if value="{{ pf.sinAbonos }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-top:12px; background:#F7F9F6; border:1px dashed #D8DFD7; border-radius:12px; padding:24px 16px; text-align:center;">
+                    <div style="font-size:14px; font-weight:600;">Este proyecto no tiene abonos registrados</div>
+                    <div style="font-size:12.5px; color:#8A938C; margin-top:3px;">Registrá la prima pactada de {{ pf.primaMonto }} como primer abono.</div>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ pf.conAbonos }}" hint-placeholder-val="{{ true }}">
+                  <table style="width:100%; border-collapse:separate; border-spacing:0; margin-top:12px;">
+                    <thead>
+                      <tr>
+                        <th style="height:36px; text-align:left; padding:0 12px 0 0; border-bottom:1px solid #EEF1EC; font-size:11.5px; font-weight:600; color:#8A938C;">Fecha</th>
+                        <th style="text-align:left; padding:0 12px; border-bottom:1px solid #EEF1EC; font-size:11.5px; font-weight:600; color:#8A938C;">Referencia</th>
+                        <th style="text-align:right; padding:0 12px; border-bottom:1px solid #EEF1EC; font-size:11.5px; font-weight:600; color:#8A938C;">Monto</th>
+                        <th style="text-align:right; padding:0; border-bottom:1px solid #EEF1EC; font-size:11.5px; font-weight:600; color:#8A938C;">Saldo tras abono</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <sc-for list="{{ pf.abonos }}" as="a" hint-placeholder-count="2">
+                        <tr style="height:44px;">
+                          <td style="padding:0 12px 0 0; border-bottom:1px solid #F3F5F1; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums;">{{ a.fecha }}</td>
+                          <td style="padding:0 12px; border-bottom:1px solid #F3F5F1; font-size:13px; color:#6B766F;">{{ a.ref }}</td>
+                          <td style="padding:0 12px; border-bottom:1px solid #F3F5F1; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; font-variant-numeric:tabular-nums; color:#157F55;">{{ a.monto }}</td>
+                          <td style="padding:0; border-bottom:1px solid #F3F5F1; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums; color:#8A938C;">{{ a.saldo }}</td>
+                        </tr>
+                      </sc-for>
+                    </tbody>
+                  </table>
+                </sc-if>
+
+                <div style="display:flex; gap:10px; align-items:flex-end; margin-top:16px; flex-wrap:wrap;">
+                  <label style="flex:1; min-width:130px;">
+                    <span style="display:block; font-size:12px; font-weight:600; color:#6B766F; margin-bottom:6px;">Fecha del abono</span>
+                    <input value="{{ pf.nuevaFecha }}" onChange="{{ setNuevaFecha }}" style="width:100%; height:38px; border:1px solid #DDE3DC; border-radius:10px; background:#FFFFFF; padding:0 10px; font-family:'IBM Plex Mono',monospace; font-size:13px; outline:none; transition:border-color 140ms, box-shadow 140ms;" style-focus="border-color:#0E6B4E; box-shadow:0 0 0 3px rgba(14,107,78,0.12)">
+                  </label>
+                  <label style="flex:1; min-width:130px;">
+                    <span style="display:block; font-size:12px; font-weight:600; color:#6B766F; margin-bottom:6px;">Referencia</span>
+                    <input value="{{ pf.nuevaRef }}" onChange="{{ setNuevaRef }}" placeholder="SINPE / transferencia" style="width:100%; height:38px; border:1px solid #DDE3DC; border-radius:10px; background:#FFFFFF; padding:0 10px; font-size:13px; outline:none; transition:border-color 140ms, box-shadow 140ms;" style-focus="border-color:#0E6B4E; box-shadow:0 0 0 3px rgba(14,107,78,0.12)">
+                  </label>
+                  <label style="flex:1; min-width:130px;">
+                    <span style="display:block; font-size:12px; font-weight:600; color:#6B766F; margin-bottom:6px;">Monto (₡)</span>
+                    <input value="{{ pf.nuevoMonto }}" onChange="{{ setNuevoMonto }}" placeholder="0,00" style="{{ pf.inputAbonoStyle }}">
+                  </label>
+                  <button onClick="{{ agregarAbono }}" style="height:38px; padding:0 15px; border:0; background:#0E6B4E; color:#FFFFFF; border-radius:10px; font-size:13.5px; font-weight:600; cursor:pointer; box-shadow:0 1px 2px rgba(14,107,78,0.35); transition:background-color 140ms;" style-hover="background-color:#0A5239">Registrar abono</button>
+                </div>
+
+                <sc-if value="{{ pf.error }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-top:12px; background:#FDF3F1; border:1px solid #F2D2CB; border-radius:12px; padding:11px 13px;">
+                    <div style="font-size:12.5px; font-weight:700; color:#A8321F;">Abono no registrado</div>
+                    <div style="font-size:12.5px; color:#5C4A46; margin-top:3px; text-wrap:pretty;">{{ pf.error }}</div>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+          </section>
+
+          <aside style="background:#FFFFFF; border:1px solid #E6EAE4; border-radius:14px; box-shadow:0 1px 2px rgba(19,26,23,0.04);">
+            <div style="height:54px; display:flex; align-items:center; padding:0 20px; border-bottom:1px solid #EEF1EC; font-size:14.5px; font-weight:700; letter-spacing:-0.01em;">Saldo en vivo</div>
+            <div style="padding:18px 20px 20px;">
+              <sc-for list="{{ pf.resumen }}" as="r" hint-placeholder-count="4">
+                <div style="display:flex; align-items:baseline; gap:10px; padding:9px 0; border-bottom:1px solid #F3F5F1;">
+                  <span style="font-size:12.5px; color:#8A938C;">{{ r.k }}</span>
+                  <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums; color:{{ r.color }};">{{ r.v }}</span>
+                </div>
+              </sc-for>
+              <div style="display:flex; align-items:center; gap:10px; margin-top:16px; background:#F1F7F4; border:1px solid #DCE9E3; border-radius:12px; padding:14px 16px;">
+                <span style="font-size:12.5px; font-weight:700; color:#2C3A33;">Saldo pendiente</span>
+                <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:21px; font-weight:700; font-variant-numeric:tabular-nums; color:{{ pf.saldoColor }};">{{ pf.saldo }}</span>
+              </div>
+              <div style="height:8px; background:#EDF0EC; border-radius:99px; margin-top:14px; overflow:hidden;">
+                <div style="height:100%; border-radius:99px; background:linear-gradient(90deg,#1B9E70,#0E6B4E); width:{{ pf.pct }}; transition:width 300ms;"></div>
+              </div>
+              <div style="display:flex; justify-content:space-between; margin-top:7px; font-size:11.5px; color:#8A938C;">
+                <span style="font-family:'IBM Plex Mono',monospace; font-variant-numeric:tabular-nums;">{{ pf.pct }} cobrado</span>
+                <span>Entrega {{ pf.entrega }}</span>
+              </div>
+              <div style="display:flex; gap:9px; margin-top:18px;">
+                <button onClick="{{ guardarProyecto }}" style="flex:1; height:38px; border:0; background:#0E6B4E; color:#FFFFFF; border-radius:10px; font-size:13.5px; font-weight:600; cursor:pointer; box-shadow:0 1px 2px rgba(14,107,78,0.35); transition:background-color 140ms;" style-hover="background-color:#0A5239">Guardar proyecto</button>
+                <button onClick="{{ irCliente }}" style="height:38px; padding:0 15px; border:1px solid #DDE3DC; background:#FFFFFF; color:#2C3A33; border-radius:10px; font-size:13.5px; font-weight:600; cursor:pointer; transition:background-color 140ms;" style-hover="background-color:#F4F6F3">Ver cliente</button>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </sc-if>
+
+    </div>
+  </main>
+
+  <sc-if value="{{ modalEmpleado }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ cerrarNuevoEmpleado }}" style="position:fixed; inset:0; z-index:50; background:rgba(17,30,25,0.42); display:flex; align-items:center; justify-content:center; padding:24px;">
+      <div onClick="{{ stopModal }}" style="width:100%; max-width:620px; max-height:88vh; overflow:auto; background:#FFFFFF; border-radius:18px; box-shadow:0 32px 70px -24px rgba(9,20,15,0.55);">
+        <div style="display:flex; align-items:center; gap:12px; padding:20px 24px 18px; border-bottom:1px solid #EEF1EC;">
+          <span style="width:38px; height:38px; flex:none; border-radius:11px; background:#E9F3EE; display:flex; align-items:center; justify-content:center;">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#0E6B4E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="8" r="3.4"></circle><path d="M3.5 20a6.8 6.8 0 0 1 11.2-4"></path><path d="M18 14v6M15 17h6"></path></svg>
+          </span>
+          <div>
+            <div style="font-size:17px; font-weight:700; letter-spacing:-0.02em;">Agregar empleado</div>
+            <div style="font-size:12.5px; color:#6B766F;">Entra en la planilla del período actual apenas se guarde.</div>
+          </div>
+          <button onClick="{{ cerrarNuevoEmpleado }}" style="margin-left:auto; width:32px; height:32px; flex:none; border:1px solid #E6EAE4; background:#FFFFFF; color:#6B766F; border-radius:9px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background-color 140ms;" style-hover="background-color:#F4F6F3">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+          </button>
+        </div>
+
+        <div style="padding:20px 24px 22px; display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+          <label style="display:block; grid-column:span 2;">
+            <span style="display:block; font-size:12px; font-weight:600; color:#6B766F; margin-bottom:6px;">Nombre completo</span>
+            <input value="{{ ne.nom }}" onChange="{{ setNeNom }}" placeholder="Nombre y dos apellidos" style="{{ ne.styleNom }}">
+          </label>
+          <label style="display:block;">
+            <span style="display:block; font-size:12px; font-weight:600; color:#6B766F; margin-bottom:6px;">Cédula</span>
+            <input value="{{ ne.ced }}" onChange="{{ setNeCed }}" placeholder="1-0000-0000" style="{{ ne.styleCed }}">
+          </label>
+          <label style="display:block;">
+            <span style="display:block; font-size:12px; font-weight:600; color:#6B766F; margin-bottom:6px;">Puesto</span>
+            <input value="{{ ne.puesto }}" onChange="{{ setNePuesto }}" placeholder="Cadenero" style="width:100%; height:38px; border:1px solid #DDE3DC; border-radius:10px; background:#FFFFFF; padding:0 10px; font-size:13px; outline:none; transition:border-color 140ms, box-shadow 140ms;" style-focus="border-color:#0E6B4E; box-shadow:0 0 0 3px rgba(14,107,78,0.12)">
+          </label>
+          <label style="display:block;">
+            <span style="display:block; font-size:12px; font-weight:600; color:#6B766F; margin-bottom:6px;">Modalidad de pago</span>
+            <select value="{{ ne.modo }}" onChange="{{ setNeModo }}" style="width:100%; height:38px; border:1px solid #DDE3DC; border-radius:10px; background:#FFFFFF; padding:0 10px; font-size:13px; outline:none; cursor:pointer;">
+              <option value="semanal">Semanal</option>
+              <option value="quincenal">Quincenal</option>
+              <option value="mensual">Mensual</option>
+            </select>
+          </label>
+          <label style="display:block;">
+            <span style="display:block; font-size:12px; font-weight:600; color:#6B766F; margin-bottom:6px;">Salario base {{ ne.sufijoBase }}</span>
+            <input value="{{ ne.base }}" onChange="{{ setNeBase }}" placeholder="0" style="{{ ne.styleBase }}">
+          </label>
+          <label style="display:block;">
+            <span style="display:block; font-size:12px; font-weight:600; color:#6B766F; margin-bottom:6px;">Fecha de ingreso</span>
+            <input value="{{ ne.ingreso }}" onChange="{{ setNeIngreso }}" placeholder="dd/mm/aaaa" style="width:100%; height:38px; border:1px solid #DDE3DC; border-radius:10px; background:#FFFFFF; padding:0 10px; font-family:'IBM Plex Mono',monospace; font-size:13px; outline:none; transition:border-color 140ms, box-shadow 140ms;" style-focus="border-color:#0E6B4E; box-shadow:0 0 0 3px rgba(14,107,78,0.12)">
+          </label>
+          <label style="display:block;">
+            <span style="display:block; font-size:12px; font-weight:600; color:#6B766F; margin-bottom:6px;">Cuenta IBAN</span>
+            <input value="{{ ne.cta }}" onChange="{{ setNeCta }}" placeholder="CR00 0000 0000 0000 0000 00" style="width:100%; height:38px; border:1px solid #DDE3DC; border-radius:10px; background:#FFFFFF; padding:0 10px; font-family:'IBM Plex Mono',monospace; font-size:12.5px; outline:none; transition:border-color 140ms, box-shadow 140ms;" style-focus="border-color:#0E6B4E; box-shadow:0 0 0 3px rgba(14,107,78,0.12)">
+          </label>
+          <label style="display:block; grid-column:span 2;">
+            <span style="display:block; font-size:12px; font-weight:600; color:#6B766F; margin-bottom:6px;">Deducciones opcionales</span>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <span style="flex:1; min-width:170px;">
+                <span style="display:block; font-size:11.5px; color:#8A938C; margin-bottom:5px;">Solidarista (%)</span>
+                <input value="{{ ne.solid }}" onChange="{{ setNeSolid }}" placeholder="0" style="width:100%; height:38px; border:1px solid #DDE3DC; border-radius:10px; background:#FFFFFF; padding:0 10px; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums; text-align:right; outline:none; transition:border-color 140ms, box-shadow 140ms;" style-focus="border-color:#0E6B4E; box-shadow:0 0 0 3px rgba(14,107,78,0.12)">
+              </span>
+              <span style="flex:1; min-width:170px;">
+                <span style="display:block; font-size:11.5px; color:#8A938C; margin-bottom:5px;">Pensión alimenticia (₡ por período)</span>
+                <input value="{{ ne.embargo }}" onChange="{{ setNeEmbargo }}" placeholder="0" style="width:100%; height:38px; border:1px solid #DDE3DC; border-radius:10px; background:#FFFFFF; padding:0 10px; font-family:'IBM Plex Mono',monospace; font-size:13px; font-variant-numeric:tabular-nums; text-align:right; outline:none; transition:border-color 140ms, box-shadow 140ms;" style-focus="border-color:#0E6B4E; box-shadow:0 0 0 3px rgba(14,107,78,0.12)">
+              </span>
+            </div>
+          </label>
+
+          <div style="grid-column:span 2; background:#F1F7F4; border:1px solid #DCE9E3; border-radius:12px; padding:13px 16px; display:flex; align-items:center; gap:12px;">
+            <span style="font-size:12.5px; font-weight:600; color:#2C3A33;">Neto estimado del período</span>
+            <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:17px; font-weight:700; font-variant-numeric:tabular-nums; color:#0E6B4E;">{{ ne.netoEstimado }}</span>
+          </div>
+
+          <sc-if value="{{ ne.error }}" hint-placeholder-val="{{ false }}">
+            <div style="grid-column:span 2; background:#FDF3F1; border:1px solid #F2D2CB; border-radius:12px; padding:11px 13px;">
+              <div style="font-size:12.5px; font-weight:700; color:#A8321F;">Faltan datos</div>
+              <div style="font-size:12.5px; color:#5C4A46; margin-top:3px; text-wrap:pretty;">{{ ne.error }}</div>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="display:flex; gap:9px; justify-content:flex-end; padding:0 24px 22px;">
+          <button onClick="{{ cerrarNuevoEmpleado }}" style="height:38px; padding:0 15px; border:1px solid #DDE3DC; background:#FFFFFF; color:#2C3A33; border-radius:10px; font-size:13.5px; font-weight:600; cursor:pointer; transition:background-color 140ms;" style-hover="background-color:#F4F6F3">Cancelar</button>
+          <button onClick="{{ guardarEmpleado }}" style="height:38px; padding:0 17px; border:0; background:#0E6B4E; color:#FFFFFF; border-radius:10px; font-size:13.5px; font-weight:600; cursor:pointer; box-shadow:0 1px 2px rgba(14,107,78,0.35); transition:background-color 140ms;" style-hover="background-color:#0A5239">Guardar empleado</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; right:24px; bottom:24px; z-index:40; background:#131F1A; color:#EDF3F0; border-radius:12px; padding:13px 16px; display:flex; align-items:center; gap:12px; box-shadow:0 18px 40px -16px rgba(19,26,23,0.55);">
+      <span style="width:20px; height:20px; flex:none; border-radius:50%; background:#1B9E70; display:flex; align-items:center; justify-content:center;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0A2018" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"></path></svg>
+      </span>
+      <span style="font-size:13.5px; font-weight:500;">{{ toast }}</span>
+      <button onClick="{{ cerrarToast }}" style="background:transparent; border:0; color:#7E8D86; cursor:pointer; padding:0 0 0 6px; display:flex;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+      </button>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;tasaCCSS&quot;:{&quot;editor&quot;:&quot;float&quot;,&quot;default&quot;:10.67,&quot;min&quot;:8,&quot;max&quot;:15,&quot;step&quot;:0.01,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Cálculo&quot;}}">
+class Component extends DCLogic {
+  EMP = [
+    {id:'e1', nom:'Esteban Zúñiga Brenes', puesto:'Topógrafo de campo', ced:'1-0987-0333', ingreso:'01/06/2017', modo:'mensual', base:1050000, cta:'CR93 0151 0800 1002 4488 91', solid:0.05, embargo:0, vacAcum:19.5, vacTom:5, tel:'8712-4409'},
+    {id:'e2', nom:'Marvin Rodríguez Quesada', puesto:'Topógrafo asistente', ced:'1-1042-0873', ingreso:'04/03/2019', modo:'mensual', base:920000, cta:'CR21 0161 0100 1023 8801 55', solid:0.05, embargo:0, vacAcum:16, vacTom:10, tel:'8834-2211'},
+    {id:'e3', nom:'Josué Vargas Chinchilla', puesto:'Cadenero', ced:'1-1723-0955', ingreso:'10/01/2022', modo:'semanal', base:118500, cta:'CR47 0151 0800 1009 3320 74', solid:0, embargo:52000, vacAcum:8.5, vacTom:0, tel:'6042-9917'},
+    {id:'e4', nom:'Randall Mora Jiménez', puesto:'Cadenero', ced:'6-0412-0788', ingreso:'02/05/2023', modo:'semanal', base:112000, cta:'CR03 0161 0100 1044 7712 09', solid:0, embargo:0, vacAcum:6, vacTom:6, tel:'7108-3355'},
+    {id:'e5', nom:'Adrián Céspedes Solano', puesto:'Dibujante CAD', ced:'3-0489-0217', ingreso:'09/11/2020', modo:'quincenal', base:365000, cta:'CR55 0151 0800 1004 1198 30', solid:0.03, embargo:0, vacAcum:14, vacTom:9, tel:'8455-6690'},
+    {id:'e6', nom:'Yendry Alfaro Picado', puesto:'Recepción y archivo', ced:'2-0733-0640', ingreso:'19/02/2024', modo:'quincenal', base:245000, cta:'CR88 0161 0100 1058 0043 12', solid:0, embargo:0, vacAcum:5.5, vacTom:2, tel:'8901-7724'},
+    {id:'e7', nom:'Kimberly Fallas Ureña', puesto:'Asistente administrativa', ced:'1-1588-0421', ingreso:'16/08/2021', modo:'mensual', base:680000, cta:'CR12 0151 0800 1006 5540 88', solid:0.03, embargo:0, vacAcum:12, vacTom:12, tel:'8377-1042'},
+    {id:'e8', nom:'Karla Segura Montero', puesto:'Contabilidad · medio tiempo', ced:'4-0221-0119', ingreso:'11/09/2023', modo:'quincenal', base:310000, cta:'CR69 0161 0100 1061 2287 41', solid:0, embargo:0, vacAcum:7, vacTom:3, tel:'8620-4478'}
+  ];
+
+  CLI = [
+    {id:'c1', nom:'Constructora Vista Real S.A.', ced:'3-101-482910', contacto:'Ing. Laura Bermúdez · laura@vistareal.cr', tel:'2445-8890'},
+    {id:'c2', nom:'Municipalidad de Grecia', ced:'3-014-042064', contacto:'Dpto. de Catastro · catastro@grecia.go.cr', tel:'2494-5000'},
+    {id:'c3', nom:'Ganadera El Cedral S.A.', ced:'3-101-771203', contacto:'Don Álvaro Ugalde · finca El Cedral', tel:'8844-2019'},
+    {id:'c4', nom:'Familia Rojas Ugalde', ced:'2-0518-0334', contacto:'Sra. Marta Rojas · particular', tel:'8712-9038'}
+  ];
+
+  PROY = [
+    {id:'p1', cliente:'c3', codigo:'PT-2026-031', tipo:'Segregación', finca:'Finca 4-00218745', monto:1850000, prima:30, entrega:'30/08/2026', estado:'en campo', abonos:[{fecha:'12/06/2026', ref:'SINPE 8842', monto:555000}]},
+    {id:'p2', cliente:'c1', codigo:'PT-2026-028', tipo:'Levantamiento topográfico', finca:'Finca 2-00591034', monto:2400000, prima:40, entrega:'15/09/2026', estado:'en dibujo', abonos:[{fecha:'02/07/2026', ref:'Transf. BN 44219', monto:960000}]},
+    {id:'p3', cliente:'c2', codigo:'PT-2026-024', tipo:'Replanteo de urbanización', finca:'Finca 2-00107744', monto:5600000, prima:25, entrega:'30/06/2026', estado:'vencido', abonos:[{fecha:'18/04/2026', ref:'Cheque 01188', monto:1400000},{fecha:'22/05/2026', ref:'Transf. BCR 7712', monto:1400000}]},
+    {id:'p4', cliente:'c4', codigo:'PT-2026-019', tipo:'Visado municipal', finca:'Plano C-1284567', monto:320000, prima:50, entrega:'28/03/2026', estado:'cobrado', abonos:[{fecha:'10/03/2026', ref:'Efectivo', monto:160000},{fecha:'28/03/2026', ref:'SINPE 3301', monto:160000}]},
+    {id:'p5', cliente:'c3', codigo:'PT-2026-012', tipo:'Catastro', finca:'Finca 2-00443120', monto:980000, prima:30, entrega:'20/08/2026', estado:'en visado', abonos:[{fecha:'20/02/2026', ref:'SINPE 1194', monto:294000},{fecha:'15/05/2026', ref:'SINPE 2277', monto:196000}]},
+    {id:'p6', cliente:'c1', codigo:'PT-2026-034', tipo:'Replanteo de lotes', finca:'Finca 2-00591035', monto:1250000, prima:30, entrega:'12/09/2026', estado:'en campo', abonos:[]}
+  ];
+
+  FERIADOS = {'2026-08-02':'Virgen de los Ángeles', '2026-09-15':'Día de la Independencia'};
+  MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','setiembre','octubre','noviembre','diciembre'];
+  DOW = ['L','K','M','J','V','S','D'];
+
+  state = {
+    screen:'panel', periodo:'q2-jul',
+    sel:[], detalle:null, ajustes:{e3:{horas:'6'}, e1:{horas:'4'}, e5:{adelanto:'50000'}},
+    pagados:{e4:true, e6:true},
+    empId:'e1', tabEmp:'contrato',
+    cliId:'c3', proyId:'p1',
+    vacEmp:'e3', vacIni:null, vacFin:null,
+    pf:null, pfError:'', nuevaFecha:'02/08/2026', nuevaRef:'', nuevoMonto:'',
+    demo:'normal', toast:'',
+    modalEmpleado:false, neError:'',
+    ne:{nom:'', ced:'', puesto:'', modo:'quincenal', base:'', ingreso:'02/08/2026', cta:'', solid:'', embargo:''}
+  };
+
+  NE_VACIO = {nom:'', ced:'', puesto:'', modo:'quincenal', base:'', ingreso:'02/08/2026', cta:'', solid:'', embargo:''};
+
+  // es-CR devuelve espacio como separador de miles en algunos runtimes; en CR se escribe con punto
+  fmt(n){ const v = Math.round(n*100)/100; return '₡' + v.toLocaleString('de-DE',{minimumFractionDigits:2, maximumFractionDigits:2}); }
+  fmt0(n){ return '₡' + Math.round(n).toLocaleString('de-DE'); }
+  num(v){ const s = String(v==null?'':v).replace(/\s/g,'').replace(/\./g,'').replace(',','.').replace(/[^0-9.\-]/g,''); const x = parseFloat(s); return isNaN(x)?0:x; }
+  tasaCCSS(){ const t = this.props.tasaCCSS; return (typeof t === 'number' ? t : 10.67) / 100; }
+  iniciales(n){ const p = n.split(' '); return (p[0][0] + (p[1] ? p[1][0] : '')).toUpperCase(); }
+
+  isrMes(b){
+    const t = [[942000,0],[1381000,0.10],[2423000,0.15],[4845000,0.20],[Infinity,0.25]];
+    let prev = 0, total = 0;
+    for (const [tope, tasa] of t){ if (b > prev) total += (Math.min(b,tope) - prev) * tasa; prev = tope; }
+    return total;
+  }
+
+  emp(id){ return this.EMP.find(e => e.id === id) || this.EMP[0]; }
+  aj(id){ return this.state.ajustes[id] || {}; }
+
+  calc(e){
+    const a = this.aj(e.id);
+    const mensual = e.modo === 'mensual' ? e.base : e.modo === 'quincenal' ? e.base * 2 : e.base * 4.333;
+    const basePer = e.modo === 'mensual' ? e.base / 2 : e.modo === 'quincenal' ? e.base : e.base * 2;
+    const horas = this.num(a.horas);
+    const extra = horas * (mensual / 240) * 1.5;
+    const bruto = basePer + extra;
+    const ccss = bruto * this.tasaCCSS();
+    const renta = this.isrMes(mensual + extra * 2) / 2;
+    const solid = bruto * e.solid;
+    const embargo = e.embargo;
+    const adelanto = this.num(a.adelanto);
+    const disponible = bruto - ccss - renta - solid - embargo;
+    const neto = disponible - adelanto;
+    const error = adelanto > disponible
+      ? 'El adelanto de ' + this.fmt(adelanto) + ' supera el neto disponible de ' + this.fmt(disponible) + '. Bajá el monto o repartilo en dos períodos.'
+      : '';
+    return {mensual, basePer, horas, extra, bruto, ccss, renta, solid, embargo, adelanto, neto, error, disponible};
+  }
+
+  // píldora de estado — tinte suave + texto fuerte
+  pill(estado){
+    const map = {
+      'pagado':   ['#E4F4EC','#12704A'],
+      'cobrado':  ['#E4F4EC','#12704A'],
+      'vencido':  ['#FBEBE8','#B0392A'],
+      'pendiente':['#FBF1DC','#8A5C08']
+    };
+    const c = map[estado] || ['#EDF2EF','#4A6B5C'];
+    return 'display:inline-flex; align-items:center; gap:6px; height:23px; padding:0 10px; border-radius:99px; background:' + c[0] + '; color:' + c[1] + '; font-size:11.5px; font-weight:700; text-transform:capitalize; white-space:nowrap;';
+  }
+
+  navStyle(activo){
+    return 'display:flex; align-items:center; gap:11px; width:100%; height:40px; padding:0 12px; border:0; border-radius:10px; cursor:pointer;'
+      + 'font-family:inherit; font-size:13.5px; text-align:left; transition:background-color 140ms, color 140ms;'
+      + (activo
+          ? 'background:rgba(255,255,255,0.10); color:#F2F7F4; font-weight:600;'
+          : 'background:transparent; color:#A9B6AF; font-weight:500;');
+  }
+  btnPrimario(){ return 'height:38px; padding:0 15px; border:0; background:#0E6B4E; color:#FFFFFF; border-radius:10px; font-size:13.5px; font-weight:600; cursor:pointer; box-shadow:0 1px 2px rgba(14,107,78,0.35);'; }
+  btnGhost(){ return 'height:38px; padding:0 15px; border:1px solid #DDE3DC; background:#FFFFFF; color:#2C3A33; border-radius:10px; font-size:13.5px; font-weight:600; cursor:pointer;'; }
+  btnMudo(){ return 'height:38px; padding:0 15px; border:1px solid #EAEEE8; background:#F7F9F6; color:#A9B2AB; border-radius:10px; font-size:13.5px; font-weight:600; cursor:not-allowed;'; }
+
+  celdaInput(err){
+    return 'width:82px; height:30px; text-align:right; border:1px solid ' + (err ? '#E5A99E' : 'transparent') + '; border-radius:8px;'
+      + 'background:' + (err ? '#FDF3F1' : 'transparent') + '; font-family:\'IBM Plex Mono\',monospace; font-size:13px; font-variant-numeric:tabular-nums;'
+      + 'color:' + (err ? '#B0392A' : '#131A17') + '; outline:none; padding:0 8px; transition:background-color 140ms, border-color 140ms;';
+  }
+
+  iso(y,m,d){ return y + '-' + String(m+1).padStart(2,'0') + '-' + String(d).padStart(2,'0'); }
+
+  mesData(y, m){
+    const first = new Date(y, m, 1);
+    const off = (first.getDay() + 6) % 7;
+    const total = new Date(y, m+1, 0).getDate();
+    const dias = [];
+    for (let i = 0; i < off; i++) dias.push({n:'', vacio:true, key:'v'+i});
+    for (let d = 1; d <= total; d++){
+      const dt = new Date(y, m, d);
+      const dow = dt.getDay();
+      dias.push({n:d, iso:this.iso(y,m,d), finde:(dow===0||dow===6), feriado:!!this.FERIADOS[this.iso(y,m,d)], key:this.iso(y,m,d)});
+    }
+    return {nombre:this.MESES[m] + ' ' + y, dias};
+  }
+
+  diaStyle(d, sel, edge){
+    const base = 'height:36px; border-radius:9px; font-family:\'IBM Plex Mono\',monospace; font-size:12.5px; font-variant-numeric:tabular-nums; cursor:pointer; padding:0; border:0; transition:background-color 140ms, color 140ms;';
+    if (d.vacio) return 'height:36px; border:0; background:transparent; padding:0;';
+    if (sel && edge) return base + 'background:#0E6B4E; color:#FFFFFF; font-weight:700;';
+    if (sel) return base + 'background:#DCEDE5; color:#0E6B4E; font-weight:600;';
+    if (d.feriado) return base + 'background:#FBF1DC; color:#8A5C08; font-weight:600;';
+    if (d.finde) return base + 'background:#F1F3EF; color:#A5AEA7;';
+    return base + 'background:#FFFFFF; color:#131A17;';
+  }
+
+  pickDia(iso){
+    const s = this.state;
+    if (!s.vacIni || (s.vacIni && s.vacFin)) this.setState({vacIni:iso, vacFin:null});
+    else if (iso < s.vacIni) this.setState({vacIni:iso, vacFin:s.vacIni});
+    else this.setState({vacFin:iso});
+  }
+
+  rangoDias(){
+    const s = this.state;
+    if (!s.vacIni) return [];
+    const fin = s.vacFin || s.vacIni;
+    const out = [];
+    const a = new Date(s.vacIni + 'T00:00:00'), b = new Date(fin + 'T00:00:00');
+    for (let d = new Date(a); d <= b; d.setDate(d.getDate()+1)){
+      const iso = this.iso(d.getFullYear(), d.getMonth(), d.getDate());
+      out.push({iso, dow:d.getDay(), feriado:!!this.FERIADOS[iso]});
+    }
+    return out;
+  }
+
+  fechaCorta(iso){
+    if (!iso) return '—';
+    const p = iso.split('-');
+    return p[2] + '/' + p[1] + '/' + p[0];
+  }
+
+  pfActual(){
+    if (this.state.pf) return this.state.pf;
+    const p = this.PROY.find(x => x.id === this.state.proyId) || this.PROY[0];
+    return {codigo:p.codigo, cliente:p.cliente, tipo:p.tipo, finca:p.finca, entrega:p.entrega, monto:String(p.monto), prima:String(p.prima), abonos:p.abonos.slice()};
+  }
+  setPf(patch){ this.setState({pf:Object.assign({}, this.pfActual(), patch)}); }
+
+  abrirProyecto(id){
+    const p = this.PROY.find(x => x.id === id);
+    this.setState({screen:'proyecto', proyId:id, pfError:'', nuevoMonto:'', nuevaRef:'', detalle:null,
+      pf:{codigo:p.codigo, cliente:p.cliente, tipo:p.tipo, finca:p.finca, entrega:p.entrega, monto:String(p.monto), prima:String(p.prima), abonos:p.abonos.slice()}});
+  }
+
+  saldoProyecto(p){
+    const ab = p.abonos.reduce((s,a) => s + a.monto, 0);
+    return {abonado:ab, saldo:p.monto - ab};
+  }
+
+  setNe(patch){ this.setState(st => ({ne:Object.assign({}, st.ne, patch), neError:''})); }
+
+  guardarEmpleado(){
+    const n = this.state.ne;
+    const faltan = [];
+    if (!n.nom.trim() || n.nom.trim().split(/\s+/).length < 2) faltan.push('el nombre completo');
+    if (!n.ced.trim()) faltan.push('la cédula');
+    if (this.num(n.base) <= 0) faltan.push('el salario base');
+    if (faltan.length){
+      this.setState({neError:'Hace falta ' + faltan.join(', ').replace(/, ([^,]*)$/, ' y $1') + ' para poder calcular la planilla.'});
+      return;
+    }
+    const id = 'e' + (this.EMP.length + 1) + '-' + Date.now().toString(36);
+    this.EMP.push({
+      id, nom:n.nom.trim(), puesto:n.puesto.trim() || 'Sin puesto asignado', ced:n.ced.trim(),
+      ingreso:n.ingreso.trim() || '02/08/2026', modo:n.modo, base:this.num(n.base),
+      cta:n.cta.trim() || 'sin cuenta registrada',
+      solid:this.num(n.solid) / 100, embargo:this.num(n.embargo),
+      vacAcum:0, vacTom:0, tel:'—'
+    });
+    this.setState({modalEmpleado:false, neError:'', ne:Object.assign({}, this.NE_VACIO), empId:id});
+    this.aviso(n.nom.trim().split(' ')[0] + ' agregado a la planilla del período.');
+  }
+
+  go(screen){ this.setState({screen, detalle:null}); }
+  aviso(t){ this.setState({toast:t}); clearTimeout(this._t); this._t = setTimeout(() => this.setState({toast:''}), 3600); }
+
+  renderVals(){
+    const s = this.state;
+    const vacio = s.demo === 'vacio';
+    const errorDemo = s.demo === 'error';
+    const F = n => this.fmt(n);
+
+    const titulos = {
+      panel:['Panel principal', 'Vista del dueño · quincena 2 de julio 2026'],
+      planilla:['Planilla del período', this.EMP.length + ' empleados · semanal, quincenal y mensual en un solo corte'],
+      empleado:['Ficha de empleado', 'Contrato, historial de pagos y vacaciones'],
+      vacaciones:['Calendario de vacaciones', 'Agosto y setiembre 2026 · feriados de ley marcados'],
+      cliente:['Ficha de cliente', 'Proyectos, abonos y saldo pendiente'],
+      proyecto:['Formulario de proyecto', 'Monto acordado, prima pactada y registro de abonos']
+    };
+    const [tit, sub] = titulos[s.screen];
+
+    const pendCount = this.EMP.filter(e => !s.pagados[e.id]).length;
+    const vencidos = this.PROY.filter(p => p.estado === 'vencido').length;
+
+    const badge = (texto, tono) => {
+      if (!texto) return 'display:none;';
+      const c = tono === 'amber' ? ['rgba(214,158,46,0.16)','#E0B357']
+              : tono === 'red'   ? ['rgba(214,90,70,0.18)','#E58C7C']
+              :                    ['rgba(255,255,255,0.08)','#8E9C95'];
+      return 'margin-left:auto; display:inline-flex; align-items:center; height:20px; padding:0 8px; border-radius:99px; background:' + c[0] + '; color:' + c[1] + '; font-size:11px; font-weight:700;';
+    };
+    const nv = (id, texto, tono) => ({
+      go:() => this.go(id),
+      style:this.navStyle(s.screen === id),
+      badge:texto, badgeStyle:badge(texto, tono)
+    });
+
+    const filas = this.EMP.map(e => {
+      const c = this.calc(e);
+      const pagado = !!s.pagados[e.id];
+      const activo = s.detalle === e.id;
+      return {
+        id:e.id, nom:e.nom, ini:this.iniciales(e.nom), sel:s.sel.indexOf(e.id) >= 0,
+        modo:e.modo === 'semanal' ? 'semanal ×2' : e.modo,
+        base:F(c.basePer), horas:(this.aj(e.id).horas || ''), adelanto:(this.aj(e.id).adelanto || ''),
+        bruto:F(c.bruto), ccss:F(c.ccss), renta:c.renta > 0 ? F(c.renta) : '—',
+        otras:(c.solid + c.embargo) > 0 ? F(c.solid + c.embargo) : '—',
+        neto:F(c.neto), estado:pagado ? 'pagado' : 'pendiente', pill:this.pill(pagado ? 'pagado' : 'pendiente'),
+        error:c.error,
+        trStyle:'height:56px; cursor:pointer; transition:background-color 140ms;' + (activo ? 'background:#F1F7F4;' : ''),
+        inputHoras:this.celdaInput(false),
+        inputAdel:this.celdaInput(!!c.error),
+        toggle:() => this.setState(st => ({sel: st.sel.indexOf(e.id) >= 0 ? st.sel.filter(x => x !== e.id) : st.sel.concat([e.id])})),
+        stop:(ev) => ev.stopPropagation(),
+        setHoras:(ev) => { const v = ev.target.value; this.setState(st => ({ajustes:Object.assign({}, st.ajustes, {[e.id]:Object.assign({}, st.ajustes[e.id], {horas:v})})})); },
+        setAdelanto:(ev) => { const v = ev.target.value; this.setState(st => ({ajustes:Object.assign({}, st.ajustes, {[e.id]:Object.assign({}, st.ajustes[e.id], {adelanto:v})})})); },
+        verDetalle:() => this.setState({detalle:e.id})
+      };
+    });
+
+    const tot = this.EMP.reduce((a,e) => {
+      const c = this.calc(e);
+      a.base += c.basePer; a.horas += c.horas; a.bruto += c.bruto; a.ccss += c.ccss;
+      a.renta += c.renta; a.adel += c.adelanto; a.otras += c.solid + c.embargo; a.neto += c.neto;
+      return a;
+    }, {base:0, horas:0, bruto:0, ccss:0, renta:0, adel:0, otras:0, neto:0});
+
+    const pendientes = this.EMP.filter(e => !s.pagados[e.id]).map(e => ({
+      nom:e.nom, ini:this.iniciales(e.nom), modo:e.modo, neto:F(this.calc(e).neto),
+      pagar:() => { this.setState(st => ({pagados:Object.assign({}, st.pagados, {[e.id]:true})})); this.aviso(e.nom.split(' ')[0] + ' marcado como pagado.'); }
+    }));
+
+    const de = s.detalle ? this.emp(s.detalle) : null;
+    const dc = de ? this.calc(de) : null;
+    const det = de ? {
+      nom:de.nom, ini:this.iniciales(de.nom), ced:de.ced, puesto:de.puesto, cta:'Depósito a ' + de.cta,
+      neto:F(dc.neto),
+      lineas:[
+        {label:'Salario base del período', nota:de.modo, monto:F(dc.basePer), color:'#131A17'},
+        {label:'Horas extra', nota:dc.horas ? dc.horas + ' h × 1,5' : 'sin horas', monto:dc.extra > 0 ? '+' + F(dc.extra) : '—', color:'#131A17'},
+        {label:'Bruto del período', nota:'', monto:F(dc.bruto), color:'#131A17'},
+        {label:'CCSS obrero', nota:(this.tasaCCSS()*100).toFixed(2).replace('.',',') + ' %', monto:'−' + F(dc.ccss), color:'#6B766F'},
+        {label:'Impuesto sobre la renta', nota:'escala mensual', monto:dc.renta > 0 ? '−' + F(dc.renta) : '—', color:'#6B766F'},
+        {label:'Asociación solidarista', nota:de.solid ? (de.solid*100) + ' %' : 'no afiliado', monto:dc.solid > 0 ? '−' + F(dc.solid) : '—', color:'#6B766F'},
+        {label:'Pensión alimenticia', nota:de.embargo ? 'orden judicial' : 'sin embargo', monto:dc.embargo > 0 ? '−' + F(dc.embargo) : '—', color:dc.embargo > 0 ? '#B0392A' : '#6B766F'},
+        {label:'Adelanto del período', nota:'vale de caja', monto:dc.adelanto > 0 ? '−' + F(dc.adelanto) : '—', color:'#6B766F'}
+      ],
+      btnLabel:s.pagados[de.id] ? 'Revertir el pago' : 'Marcar como pagado',
+      btnStyle:s.pagados[de.id] ? this.btnGhost() : this.btnPrimario(),
+      pagar:() => { const yaP = !!s.pagados[de.id]; this.setState(st => ({pagados:Object.assign({}, st.pagados, {[de.id]:!yaP})})); this.aviso(yaP ? 'Pago revertido para ' + de.nom.split(' ')[0] + '.' : de.nom.split(' ')[0] + ' marcado como pagado.'); }
+    } : {lineas:[]};
+
+    const e = this.emp(s.empId);
+    const ec = this.calc(e);
+    const empVals = {
+      nom:e.nom, ini:this.iniciales(e.nom), puesto:e.puesto, ced:e.ced, ingreso:e.ingreso,
+      modo:e.modo, base:this.fmt0(e.base) + (e.modo === 'semanal' ? ' / sem' : e.modo === 'quincenal' ? ' / quinc' : ' / mes'),
+      vacSaldo:String(e.vacAcum - e.vacTom).replace('.',','),
+      contrato:[
+        {k:'Puesto', v:e.puesto},
+        {k:'Modalidad de pago', v:e.modo},
+        {k:'Salario base', v:F(e.base)},
+        {k:'Equivalente mensual', v:F(ec.mensual)},
+        {k:'Fecha de ingreso', v:e.ingreso},
+        {k:'Teléfono', v:e.tel},
+        {k:'Cuenta IBAN', v:e.cta}
+      ],
+      deducciones:[
+        {k:'CCSS obrero', v:(this.tasaCCSS()*100).toFixed(2).replace('.',',') + ' %', color:'#131A17'},
+        {k:'Renta (período actual)', v:ec.renta > 0 ? F(ec.renta) : 'exento', color:ec.renta > 0 ? '#131A17' : '#8A938C'},
+        {k:'Asociación solidarista', v:e.solid ? (e.solid*100) + ' %' : 'no afiliado', color:e.solid ? '#131A17' : '#8A938C'},
+        {k:'Pensión alimenticia', v:e.embargo ? F(e.embargo) : 'sin embargo', color:e.embargo ? '#B0392A' : '#8A938C'},
+        {k:'Adelantos vigentes', v:ec.adelanto ? F(ec.adelanto) : 'ninguno', color:ec.adelanto ? '#A8710A' : '#8A938C'}
+      ],
+      pagos:['Quincena 1 · jul 2026','Quincena 2 · jun 2026','Quincena 1 · jun 2026','Quincena 2 · may 2026','Quincena 1 · may 2026','Aguinaldo 2025'].map((p,i) => {
+        const esAg = p.indexOf('Aguinaldo') === 0;
+        const b = ec.basePer * (esAg ? 2 : 1);
+        const d = b * (this.tasaCCSS() + 0.02);
+        return {periodo:p, fecha:['15/07/2026','30/06/2026','15/06/2026','29/05/2026','15/05/2026','18/12/2025'][i], bruto:F(b), ded:esAg ? '—' : '−' + F(d), neto:F(esAg ? b : b - d)};
+      }),
+      sinVacaciones:e.vacTom === 0,
+      vacaciones:e.vacTom === 0 ? [] : [
+        {rango:'22/12/2025 – 02/01/2026', nota:'fin de año', dias:String(Math.min(e.vacTom, 6)).replace('.',',')},
+        {rango:'07/04/2026 – 10/04/2026', nota:'Semana Santa', dias:String(Math.max(e.vacTom - 6, 0)).replace('.',',')}
+      ].filter(v => v.dias !== '0')
+    };
+
+    const ve = this.emp(s.vacEmp);
+    const rango = this.rangoDias();
+    const habiles = rango.filter(d => d.dow !== 0 && d.dow !== 6 && !d.feriado).length;
+    const feriadosEn = rango.filter(d => d.feriado).length;
+    const saldoVe = ve.vacAcum - ve.vacTom;
+    const excede = habiles > saldoVe;
+    const inRange = (iso) => {
+      if (!s.vacIni) return false;
+      const fin = s.vacFin || s.vacIni;
+      return iso >= s.vacIni && iso <= fin;
+    };
+    const meses = [this.mesData(2026, 7), this.mesData(2026, 8)].map((m, mi) => ({
+      nombre:m.nombre,
+      dow:this.DOW,
+      wrapStyle:'padding:18px 20px;' + (mi === 0 ? ' border-right:1px solid #EEF1EC;' : ''),
+      dias:m.dias.map(d => ({
+        n:d.n, key:d.key,
+        style:this.diaStyle(d, !d.vacio && inRange(d.iso), d.iso === s.vacIni || d.iso === s.vacFin),
+        pick:d.vacio ? (() => {}) : (() => this.pickDia(d.iso))
+      }))
+    }));
+
+    const cl = this.CLI.find(c => c.id === s.cliId) || this.CLI[0];
+    const proyCli = this.PROY.filter(p => p.cliente === cl.id);
+    const totCli = proyCli.reduce((a,p) => { const t = this.saldoProyecto(p); a.m += p.monto; a.a += t.abonado; a.s += t.saldo; return a; }, {m:0, a:0, s:0});
+
+    const pf = this.pfActual();
+    const pfMonto = this.num(pf.monto);
+    const pfAbonado = pf.abonos.reduce((a,x) => a + x.monto, 0);
+    const pfSaldo = pfMonto - pfAbonado;
+    const pfPrimaMonto = pfMonto * this.num(pf.prima) / 100;
+    let corr = 0;
+    const pfAbonos = pf.abonos.map(a => { corr += a.monto; return {fecha:a.fecha, ref:a.ref, monto:F(a.monto), saldo:F(pfMonto - corr)}; });
+    const pct = pfMonto > 0 ? Math.max(0, Math.min(100, Math.round(pfAbonado / pfMonto * 100))) : 0;
+
+    const campoNe = (err) => 'width:100%; height:38px; border:1px solid ' + (err ? '#E5A99E' : '#DDE3DC') + '; border-radius:10px; background:' + (err ? '#FDF3F1' : '#FFFFFF') + '; padding:0 10px; font-size:13px; color:#131A17; outline:none; transition:border-color 140ms, background-color 140ms;';
+
+    const chip = (activo) => 'height:32px; padding:0 13px; border-radius:99px; border:1px solid ' + (activo ? '#0E6B4E' : '#E0E6DF') + '; font-size:12.5px; font-weight:600; cursor:pointer; transition:background-color 140ms, border-color 140ms, color 140ms;'
+      + (activo ? 'background:#0E6B4E; color:#FFFFFF;' : 'background:#FFFFFF; color:#4A554E;');
+
+    return {
+      tituloPantalla:tit, subtituloPantalla:sub, periodo:s.periodo,
+      setPeriodo:(ev) => this.setState({periodo:ev.target.value}),
+      nav:{
+        panel:nv('panel',''),
+        planilla:nv('planilla', pendCount ? String(pendCount) : '', 'amber'),
+        vacaciones:nv('vacaciones',''),
+        empleado:nv('empleado', String(this.EMP.length)),
+        cliente:nv('cliente','4'),
+        proyecto:nv('proyecto', vencidos ? String(vencidos) : '', 'red')
+      },
+      demoModos:['normal','vacio','error'].map(m => ({
+        label:m === 'normal' ? 'Datos' : m === 'vacio' ? 'Vacío' : 'Error',
+        go:() => this.setState({demo:m}),
+        style:'flex:1; height:26px; border:0; border-radius:7px; font-family:inherit; font-size:11.5px; font-weight:600; cursor:pointer; transition:background-color 140ms, color 140ms;'
+          + (s.demo === m ? 'background:#1B9E70; color:#06211A;' : 'background:transparent; color:#8E9C95;')
+      })),
+      esPanel:s.screen === 'panel', esPlanilla:s.screen === 'planilla', esEmpleado:s.screen === 'empleado',
+      esVacaciones:s.screen === 'vacaciones', esCliente:s.screen === 'cliente', esProyecto:s.screen === 'proyecto',
+      vacio, conDatos:!vacio,
+      hayError:errorDemo,
+      errorTitulo:'No se pudo sincronizar con el banco',
+      errorDetalle:'El archivo de confirmación del BN del 31/07/2026 llegó incompleto: faltan 3 de 8 transacciones. Los netos mostrados son los calculados, no los confirmados. Volvé a descargar el archivo o marcá los pagos a mano.',
+      reintentar:() => { this.setState({demo:'normal'}); this.aviso('Sincronización reintentada. 8 de 8 transacciones confirmadas.'); },
+      toast:s.toast, cerrarToast:() => this.setState({toast:''}),
+      noop:(ev) => ev.preventDefault(),
+
+      modalEmpleado:s.modalEmpleado,
+      abrirNuevoEmpleado:() => this.setState({modalEmpleado:true, neError:'', ne:Object.assign({}, this.NE_VACIO)}),
+      cerrarNuevoEmpleado:() => this.setState({modalEmpleado:false, neError:''}),
+      stopModal:(ev) => ev.stopPropagation(),
+      guardarEmpleado:() => this.guardarEmpleado(),
+      ne:{
+        nom:s.ne.nom, ced:s.ne.ced, puesto:s.ne.puesto, modo:s.ne.modo, base:s.ne.base,
+        ingreso:s.ne.ingreso, cta:s.ne.cta, solid:s.ne.solid, embargo:s.ne.embargo,
+        error:s.neError,
+        sufijoBase:s.ne.modo === 'semanal' ? '(₡ por semana)' : s.ne.modo === 'quincenal' ? '(₡ por quincena)' : '(₡ por mes)',
+        netoEstimado:this.num(s.ne.base) > 0
+          ? F(this.calc({id:'__nuevo', modo:s.ne.modo, base:this.num(s.ne.base), solid:this.num(s.ne.solid)/100, embargo:this.num(s.ne.embargo)}).neto)
+          : '—',
+        styleNom:campoNe(s.neError && !s.ne.nom.trim()),
+        styleCed:campoNe(s.neError && !s.ne.ced.trim()) + ' font-family:\'IBM Plex Mono\',monospace;',
+        styleBase:campoNe(s.neError && this.num(s.ne.base) <= 0) + ' font-family:\'IBM Plex Mono\',monospace; font-variant-numeric:tabular-nums; text-align:right;'
+      },
+      setNeNom:(ev) => this.setNe({nom:ev.target.value}),
+      setNeCed:(ev) => this.setNe({ced:ev.target.value}),
+      setNePuesto:(ev) => this.setNe({puesto:ev.target.value}),
+      setNeModo:(ev) => this.setNe({modo:ev.target.value}),
+      setNeBase:(ev) => this.setNe({base:ev.target.value}),
+      setNeIngreso:(ev) => this.setNe({ingreso:ev.target.value}),
+      setNeCta:(ev) => this.setNe({cta:ev.target.value}),
+      setNeSolid:(ev) => this.setNe({solid:ev.target.value}),
+      setNeEmbargo:(ev) => this.setNe({embargo:ev.target.value}),
+
+      m1:this.fmt0(tot.neto),
+      m1pie:this.EMP.length + ' empleados · neto a pagar',
+      m2:this.fmt0(this.EMP.filter(x => !s.pagados[x.id]).reduce((a,x) => a + this.calc(x).neto, 0)),
+      m2pie:pendCount + ' de ' + this.EMP.length + ' sin aplicar',
+      m3:this.fmt0(this.PROY.filter(p => p.estado !== 'cobrado').reduce((a,p) => a + this.saldoProyecto(p).saldo, 0)),
+      porEstado:[
+        {label:'en campo', n:'2', style:'display:inline-flex; align-items:center; gap:5px; height:21px; padding:0 8px; border-radius:99px; background:#FBF1DC; color:#8A5C08; font-size:11px; font-weight:600;'},
+        {label:'en dibujo', n:'1', style:'display:inline-flex; align-items:center; gap:5px; height:21px; padding:0 8px; border-radius:99px; background:#EDF2EF; color:#4A6B5C; font-size:11px; font-weight:600;'},
+        {label:'en visado', n:'1', style:'display:inline-flex; align-items:center; gap:5px; height:21px; padding:0 8px; border-radius:99px; background:#EDF2EF; color:#4A6B5C; font-size:11px; font-weight:600;'},
+        {label:'vencido', n:'1', style:'display:inline-flex; align-items:center; gap:5px; height:21px; padding:0 8px; border-radius:99px; background:#FBEBE8; color:#B0392A; font-size:11px; font-weight:600;'}
+      ],
+      pendientes, sinPendientes:pendientes.length === 0,
+      pendientesCuenta:pendCount + ' de ' + this.EMP.length,
+      irPlanilla:() => this.go('planilla'),
+      totalCobrar:this.fmt0(this.PROY.filter(p => p.estado !== 'cobrado').reduce((a,p) => a + this.saldoProyecto(p).saldo, 0)),
+      porCobrar:this.PROY.filter(p => p.estado !== 'cobrado').map(p => {
+        const t = this.saldoProyecto(p);
+        const c = this.CLI.find(x => x.id === p.cliente);
+        return {codigo:p.codigo, cliente:c.nom, saldo:this.fmt0(t.saldo), estado:p.estado, pill:this.pill(p.estado),
+          nota:p.estado === 'vencido' ? 'vencido hace 33 días' : 'entrega ' + p.entrega,
+          abrir:() => this.abrirProyecto(p.id)};
+      }),
+
+      filas, totalFilas:this.EMP.length,
+      todosSel:s.sel.length === this.EMP.length,
+      toggleTodos:() => this.setState(st => ({sel: st.sel.length === this.EMP.length ? [] : this.EMP.map(x => x.id)})),
+      resumenSeleccion:s.sel.length ? s.sel.length + ' seleccionados · ' + F(s.sel.reduce((a,id) => a + this.calc(this.emp(id)).neto, 0)) : 'Ninguna fila seleccionada',
+      selPillStyle:'display:inline-flex; align-items:center; height:32px; padding:0 13px; border-radius:99px; font-size:12.5px; font-weight:600;'
+        + (s.sel.length ? 'background:#E9F3EE; color:#0E6B4E;' : 'background:#EDF0EC; color:#8A938C;'),
+      btnLoteStyle:s.sel.length ? this.btnGhost() : this.btnMudo(),
+      pagarLote:() => {
+        if (!s.sel.length) return;
+        const p = Object.assign({}, s.pagados);
+        s.sel.forEach(id => { p[id] = true; });
+        this.setState({pagados:p, sel:[]});
+        this.aviso(s.sel.length + ' pagos marcados como pagados.');
+      },
+      generarColillas:() => this.aviso('Colillas generadas para ' + this.EMP.length + ' empleados.'),
+      aprobarPlanilla:() => this.aviso('Planilla aprobada · quincena 2 de julio 2026.'),
+      tBase:F(tot.base), tHoras:tot.horas ? String(tot.horas).replace('.',',') + ' h' : '—',
+      tBruto:F(tot.bruto), tCcss:'−' + F(tot.ccss), tRenta:'−' + F(tot.renta),
+      tAdel:tot.adel ? '−' + F(tot.adel) : '—', tOtras:'−' + F(tot.otras), tNeto:F(tot.neto),
+      detalleAbierto:!!s.detalle && !vacio, det,
+      cerrarDetalle:() => this.setState({detalle:null}),
+      irFicha:() => this.setState({screen:'empleado', empId:s.detalle, detalle:null}),
+
+      emp:empVals,
+      chipsEmpleados:this.EMP.map(x => ({
+        nom:x.nom.split(' ').slice(0,2).join(' '),
+        go:() => this.setState({empId:x.id}),
+        style:chip(s.empId === x.id)
+      })),
+      tabsEmp:[['contrato','Contrato'],['pagos','Historial de pagos'],['vac','Vacaciones']].map(([id,label]) => ({
+        label,
+        go:() => this.setState({tabEmp:id}),
+        style:'height:34px; padding:0 15px; border:0; border-radius:8px; font-family:inherit; font-size:13px; font-weight:600; cursor:pointer; transition:background-color 140ms, color 140ms, box-shadow 140ms;'
+          + (s.tabEmp === id ? 'background:#FFFFFF; color:#131A17; box-shadow:0 1px 2px rgba(19,26,23,0.10);' : 'background:transparent; color:#6B766F;')
+      })),
+      tabContrato:s.tabEmp === 'contrato', tabPagos:s.tabEmp === 'pagos', tabVacaciones:s.tabEmp === 'vac',
+      irVacaciones:() => this.setState({screen:'vacaciones', vacEmp:s.empId}),
+
+      meses, vacEmp:s.vacEmp,
+      setVacEmp:(ev) => this.setState({vacEmp:ev.target.value, vacIni:null, vacFin:null}),
+      opcionesEmpleado:this.EMP.map(x => ({id:x.id, nom:x.nom + ' · ' + x.puesto})),
+      limpiarRango:() => this.setState({vacIni:null, vacFin:null}),
+      vac:{
+        acum:String(ve.vacAcum).replace('.',','),
+        tomados:String(ve.vacTom).replace('.',','),
+        saldo:String(saldoVe).replace('.',','),
+        sinRango:!s.vacIni, conRango:!!s.vacIni,
+        desde:this.fechaCorta(s.vacIni), hasta:this.fechaCorta(s.vacFin || s.vacIni),
+        feriados:feriadosEn ? feriadosEn + ' (no se rebajan)' : '0',
+        habiles:String(habiles),
+        excede,
+        mensajeError:'El rango pide ' + habiles + ' días hábiles y ' + ve.nom.split(' ')[0] + ' tiene ' + String(saldoVe).replace('.',',') + '. Recortá ' + String((habiles - saldoVe).toFixed(1)).replace('.',',') + ' días o pasá el resto a adelanto de vacaciones.',
+        btnStyle:'width:100%; margin-top:16px; ' + (excede ? this.btnMudo() : this.btnPrimario())
+      },
+      registrarVac:() => {
+        if (excede) return;
+        this.aviso('Vacaciones registradas: ' + habiles + ' días para ' + ve.nom.split(' ')[0] + '.');
+        this.setState({vacIni:null, vacFin:null});
+      },
+
+      cli:{
+        nom:cl.nom, ced:cl.ced, contacto:cl.contacto, tel:cl.tel,
+        contratado:this.fmt0(totCli.m), abonado:this.fmt0(totCli.a), saldo:this.fmt0(totCli.s),
+        saldoColor:proyCli.some(p => p.estado === 'vencido') ? '#B0392A' : '#131A17',
+        sinProyectos:proyCli.length === 0,
+        proyectos:proyCli.map(p => {
+          const t = this.saldoProyecto(p);
+          return {codigo:p.codigo, tipo:p.tipo, finca:p.finca, monto:this.fmt0(p.monto), abonado:this.fmt0(t.abonado),
+            saldo:this.fmt0(t.saldo), estado:p.estado, pill:this.pill(p.estado), abrir:() => this.abrirProyecto(p.id)};
+        })
+      },
+      chipsClientes:this.CLI.map(x => ({
+        nom:x.nom,
+        go:() => this.setState({cliId:x.id}),
+        style:chip(s.cliId === x.id)
+      })),
+      nuevoProyecto:() => this.aviso('Abrí el formulario de proyecto para registrar uno nuevo.'),
+      irCliente:() => this.setState({screen:'cliente', cliId:pf.cliente}),
+
+      pf:{
+        codigo:pf.codigo, cliente:pf.cliente, tipo:pf.tipo, finca:pf.finca, entrega:pf.entrega,
+        monto:pf.monto, prima:pf.prima,
+        abonos:pfAbonos, sinAbonos:pfAbonos.length === 0, conAbonos:pfAbonos.length > 0,
+        conteoAbonos:pfAbonos.length + ' registrados',
+        primaMonto:F(pfPrimaMonto),
+        nuevaFecha:s.nuevaFecha, nuevaRef:s.nuevaRef, nuevoMonto:s.nuevoMonto,
+        inputAbonoStyle:'width:100%; height:38px; border:1px solid ' + (s.pfError ? '#E5A99E' : '#DDE3DC') + '; border-radius:10px; background:' + (s.pfError ? '#FDF3F1' : '#FFFFFF') + '; padding:0 10px; font-family:\'IBM Plex Mono\',monospace; font-size:13px; font-variant-numeric:tabular-nums; text-align:right; color:' + (s.pfError ? '#B0392A' : '#131A17') + '; outline:none; transition:border-color 140ms, background-color 140ms;',
+        error:s.pfError,
+        resumen:[
+          {k:'Monto acordado', v:F(pfMonto), color:'#131A17'},
+          {k:'Prima pactada · ' + this.num(pf.prima) + ' %', v:F(pfPrimaMonto), color:'#6B766F'},
+          {k:'Abonado a la fecha', v:F(pfAbonado), color:'#157F55'},
+          {k:'Prima cubierta', v:pfAbonado >= pfPrimaMonto ? 'sí' : 'faltan ' + F(pfPrimaMonto - pfAbonado), color:pfAbonado >= pfPrimaMonto ? '#157F55' : '#A8710A'}
+        ],
+        saldo:F(pfSaldo), saldoColor:pfSaldo > 0 ? '#131A17' : '#157F55',
+        pct:pct + '%'
+      },
+      opcionesCliente:this.CLI.map(x => ({id:x.id, nom:x.nom})),
+      setPfCliente:(ev) => this.setPf({cliente:ev.target.value}),
+      setPfTipo:(ev) => this.setPf({tipo:ev.target.value}),
+      setPfFinca:(ev) => this.setPf({finca:ev.target.value}),
+      setPfEntrega:(ev) => this.setPf({entrega:ev.target.value}),
+      setPfMonto:(ev) => this.setPf({monto:ev.target.value}),
+      setPfPrima:(ev) => this.setPf({prima:ev.target.value}),
+      setNuevaFecha:(ev) => this.setState({nuevaFecha:ev.target.value}),
+      setNuevaRef:(ev) => this.setState({nuevaRef:ev.target.value}),
+      setNuevoMonto:(ev) => this.setState({nuevoMonto:ev.target.value, pfError:''}),
+      agregarAbono:() => {
+        const m = this.num(s.nuevoMonto);
+        if (m <= 0){ this.setState({pfError:'Escribí el monto del abono en colones antes de registrarlo.'}); return; }
+        if (m > pfSaldo){ this.setState({pfError:'El abono de ' + F(m) + ' supera el saldo pendiente de ' + F(pfSaldo) + '. Registrá ' + F(pfSaldo) + ' para cerrar el proyecto, o corregí el monto acordado.'}); return; }
+        this.setPf({abonos:pf.abonos.concat([{fecha:s.nuevaFecha, ref:s.nuevaRef || 'sin referencia', monto:m}])});
+        this.setState({nuevoMonto:'', nuevaRef:'', pfError:''});
+        this.aviso('Abono de ' + F(m) + ' registrado en ' + pf.codigo + '.');
+      },
+      guardarProyecto:() => this.aviso('Proyecto ' + pf.codigo + ' guardado.')
+    };
+  }
+}
+</script>
+</body>
+</html>

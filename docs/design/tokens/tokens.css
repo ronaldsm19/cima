@@ -1,0 +1,171 @@
+/* ─────────────────────────────────────────────────────────────
+   Oficina de topografía — tokens
+   Lenguaje: plano catastrado. Papel vellum, tinta china verde,
+   línea de 1 px, rotulación en mayúsculas condensadas.
+
+   Pegar en app/globals.css, después de @tailwind base.
+   ───────────────────────────────────────────────────────────── */
+
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter+Tight:wght@400;500;600&display=swap");
+
+:root {
+  /* Superficies y tinta ─ seis valores, no más */
+  --paper: #f1f2ed;      /* fondo de la aplicación */
+  --surface: #ffffff;    /* tablas, paneles, formularios */
+  --ink: #17211d;        /* texto principal */
+  --ink-soft: #5c6660;   /* rótulos, texto secundario, unidades */
+  --ink-mute: #8e9791;   /* deshabilitado, placeholders */
+  --rule: #d5d9d0;       /* TODAS las divisiones */
+  --accent: #123f35;     /* acciones primarias, elemento activo */
+
+  /* Señal ─ solo estado, nunca decoración */
+  --pagado: #1f6f4a;
+  --pendiente: #b07a0c;
+  --vencido: #c0341a;
+
+  /* Tipografía */
+  --font-rotulo: "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --font-ui: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
+  --font-dato: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --text-11: 11px;
+  --text-12: 12px;
+  --text-14: 14px;   /* base */
+  --text-16: 16px;
+  --text-20: 20px;
+  --text-26: 26px;
+  --leading-ui: 1.45;
+
+  /* Densidad */
+  --row-h: 34px;         /* alto de fila de tabla */
+  --control-h: 32px;     /* botones, inputs, selects */
+  --control-h-sm: 26px;
+  --radius: 3px;
+  --border: 1px;
+  --focus-border: 2px;
+
+  /* Espaciado ─ múltiplos de 4 */
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px;
+  --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px;
+
+  /* Movimiento ─ casi nada */
+  --t: 120ms;
+
+  /* Única sombra permitida: lo que flota de verdad */
+  --shadow-float: 2px 2px 0 rgba(23, 33, 29, 0.18);
+
+  /* shadcn/ui — remapeo de los tokens de la base */
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --popover: var(--surface);
+  --popover-foreground: var(--ink);
+  --primary: var(--accent);
+  --primary-foreground: #ffffff;
+  --secondary: var(--surface);
+  --secondary-foreground: var(--ink);
+  --muted: var(--paper);
+  --muted-foreground: var(--ink-soft);
+  --border: var(--rule);
+  --input: var(--rule);
+  --ring: var(--accent);
+  --destructive: var(--vencido);
+  --destructive-foreground: #ffffff;
+  --radius: 3px;
+}
+
+/* ── Roles tipográficos ─────────────────────────────────── */
+
+/* Rotulación: la voz del cajetín. Encabezados de sección y
+   rótulos de campo, nada más. */
+.rotulo {
+  font-family: var(--font-rotulo);
+  font-variation-settings: "wdth" 125;
+  font-weight: 600;
+  font-size: var(--text-11);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.rotulo-xs {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+}
+
+/* Datos: obligatoria en montos, cédulas, fincas, códigos y fechas
+   en tabla. Los decimales se alinean entre filas o no sirve. */
+.dato {
+  font-family: var(--font-dato);
+  font-variant-numeric: tabular-nums;
+}
+.dato-monto {
+  font-family: var(--font-dato);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: var(--text-14);
+  line-height: var(--leading-ui);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Reglas duras del sistema ───────────────────────────── */
+/* Sin sombras fuera de --shadow-float. Sin gradientes. La
+   jerarquía se hace con peso tipográfico y línea de 1 px. */
+
+.regla   { border-bottom: var(--border) solid var(--rule); }
+.marco   { border: var(--border) solid var(--rule); border-radius: var(--radius); background: var(--surface); }
+
+/* Cajetín: el encabezado de toda entidad. Retícula de celdas de
+   1 px, rótulo arriba, valor en monoespaciada abajo. */
+.cajetin {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: var(--border) solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--surface);
+  overflow: hidden;
+}
+.cajetin > * {
+  padding: 12px 14px 13px;
+  border-right: var(--border) solid var(--rule);
+  border-bottom: var(--border) solid var(--rule);
+}
+@media (max-width: 900px) {
+  .cajetin { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Foco: borde de 2 px en acento, no un anillo difuso. */
+.campo {
+  height: var(--control-h);
+  padding: 0 8px;
+  border: var(--border) solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  outline: none;
+  transition: border-color var(--t);
+}
+.campo:focus {
+  border-width: var(--focus-border);
+  border-color: var(--accent);
+  padding: 0 7px;
+}
+.campo[aria-invalid="true"] { border-color: var(--vencido); color: var(--vencido); }
+
+/* Punto de señal de 6 px. Nunca fondo de fila completa. */
+.punto {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.punto-pagado    { background: var(--pagado); }
+.punto-pendiente { background: var(--pendiente); }
+.punto-vencido   { background: var(--vencido); }

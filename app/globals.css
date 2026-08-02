@@ -1,26 +1,159 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*
+ * Design tokens — v2 ("Sistema interno" handoff README, Design tokens table).
+ * The handoff's tokens/ folder is the old v1 language and must not be used.
+ */
 
 @theme inline {
+  /* shadcn semantic remap */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-jakarta);
+  --font-mono: var(--font-plex-mono);
+  --font-heading: var(--font-jakarta);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  /* --radius: 10px → sm 6 · md 8 (icon/cell) · lg 10 (control) · xl 14 (card) · 2xl 18 (modal) */
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+
+  /* Surfaces */
+  --color-app: #f4f6f3;
+  --color-surface: #ffffff;
+  --color-surface-subtle: #fbfcfa;
+  --color-row-hover: #f7f9f6;
+  --color-tint-active: #f1f7f4;
+
+  /* Lines */
+  --color-line: #e6eae4;
+  --color-line-soft: #eef1ec;
+  --color-line-row: #f0f3ef;
+  --color-line-hair: #f3f5f1;
+  --color-control-border: #dde3dc;
+
+  /* Ink */
+  --color-ink: #131a17;
+  --color-ink-mid: #6b766f;
+  --color-ink-dim: #8a938c;
+  --color-ink-faint: #a5aea7;
+  --color-ink-strong: #4a554e;
+
+  /* Brand */
+  --color-brand: #0e6b4e;
+  --color-brand-hover: #0a5239;
+  --color-brand-light: #1b9e70;
+  --color-brand-tint: #e9f3ee;
+  --color-brand-tint-mid: #dcede5;
+  --color-brand-tint-soft: #f1f7f4;
+  --color-brand-tint-border: #dce9e3;
+
+  /* State — success (pagado, cobrado, abonos) */
+  --color-ok: #157f55;
+  --color-ok-tint: #e4f4ec;
+  --color-ok-text: #12704a;
+
+  /* State — amber (pendiente, feriados, en campo) */
+  --color-warn: #a8710a;
+  --color-warn-tint: #fbf1dc;
+  --color-warn-text: #8a5c08;
+
+  /* State — red (vencido, errores) */
+  --color-bad: #c0392b;
+  --color-bad-tint: #fbebe8;
+  --color-bad-tint-soft: #fdf3f1;
+  --color-bad-border: #f2d2cb;
+  --color-bad-text: #b0392a;
+  --color-bad-text-strong: #a8321f;
+  --color-bad-input-border: #e5a99e;
+
+  /* Sidebar */
+  --color-sidebar: #111e19;
+  --color-sidebar-fg: #a9b6af;
+  --color-sidebar-active: #f2f7f4;
+  --color-sidebar-label: #67766e;
+  --color-sidebar-avatar: #1d3229;
+  --color-sidebar-avatar-fg: #7fd3ae;
+
+  /* Shadows */
+  --shadow-card: 0 1px 2px rgba(19, 26, 23, 0.04);
+  --shadow-card-raised: 0 1px 2px rgba(19, 26, 23, 0.04), 0 18px 40px -30px rgba(19, 26, 23, 0.5);
+  --shadow-primary-btn: 0 1px 2px rgba(14, 107, 78, 0.35);
+  --shadow-toast: 0 18px 40px -16px rgba(19, 26, 23, 0.55);
+  --shadow-modal: 0 32px 70px -24px rgba(9, 20, 15, 0.55);
+  --shadow-tab-active: 0 1px 2px rgba(19, 26, 23, 0.1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --background: #f4f6f3;
+  --foreground: #131a17;
+  --card: #ffffff;
+  --card-foreground: #131a17;
+  --popover: #ffffff;
+  --popover-foreground: #131a17;
+  --primary: #0e6b4e;
+  --primary-foreground: #ffffff;
+  --secondary: #ffffff;
+  --secondary-foreground: #2c3a33;
+  --muted: #f4f6f3;
+  --muted-foreground: #6b766f;
+  --accent: #f1f7f4;
+  --accent-foreground: #0e6b4e;
+  --destructive: #c0392b;
+  --border: #e6eae4;
+  --input: #dde3dc;
+  --ring: #0e6b4e;
+  --radius: 10px;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-app text-ink font-sans;
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  /* Mandatory on montos, cédulas, códigos, fincas, fechas en tabla y días del calendario */
+  .num {
+    font-family: var(--font-plex-mono), ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  .num-right {
+    font-family: var(--font-plex-mono), ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    white-space: nowrap;
+  }
+  /* Field focus per README: brand border + 3px soft ring */
+  .field-focus {
+    @apply focus:border-brand focus:outline-none;
+  }
+  .field-focus:focus {
+    box-shadow: 0 0 0 3px rgba(14, 107, 78, 0.12);
+  }
 }

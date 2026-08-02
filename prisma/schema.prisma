@@ -1,0 +1,538 @@
+// Domain schema — MongoDB via Prisma.
+//
+// Money convention: Prisma's MongoDB connector does not support Decimal, so every
+// monetary amount is stored as INTEGER CENTS in a BigInt field (₡456.844,13 → 45684413).
+// Conversion happens only through lib/db/money.ts; application math uses decimal.js.
+// Business dates (pay dates, vacation days, holidays) are ISO `yyyy-MM-dd` strings —
+// timezone-proof and lexicographically sortable. Audit timestamps are DateTime (UTC).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// ── Enums ────────────────────────────────────────────────────────────────────
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  EMPLEADO
+}
+
+enum EmployeeStatus {
+  ACTIVO
+  INCAPACITADO
+  LIQUIDADO
+}
+
+enum SalaryUnit {
+  SEMANAL
+  QUINCENAL
+  MENSUAL
+}
+
+enum PeriodType {
+  QUINCENAL
+  MENSUAL
+}
+
+enum PeriodStatus {
+  BORRADOR
+  APROBADA
+  PAGADA
+}
+
+enum PaymentStatus {
+  PENDIENTE
+  PAGADO
+}
+
+enum AdjustmentType {
+  BONO
+  VIATICO
+  ADELANTO
+  EMBARGO
+  SOLIDARISTA
+  OTRA_DEDUCCION
+  OTRO_INGRESO
+}
+
+enum AdjustmentMode {
+  MONTO_FIJO
+  PORCENTAJE_BRUTO
+}
+
+enum VacationStatus {
+  SOLICITADA
+  APROBADA
+  RECHAZADA
+  DISFRUTADA
+}
+
+enum ClientKind {
+  FISICA
+  JURIDICA
+}
+
+enum ProjectStatus {
+  COTIZADO
+  ABIERTO
+  EN_PROCESO
+  EN_VISADO
+  ENTREGADO
+  CANCELADO
+}
+
+enum ProjectType {
+  LEVANTAMIENTO
+  PLANO_CATASTRADO
+  REPLANTEO
+  DESLINDE
+  AMOJONAMIENTO
+  CURVAS_NIVEL
+  VISADO_MUNICIPAL
+  SEGREGACION
+  CATASTRO
+  OTRO
+}
+
+enum ExpenseType {
+  GASTO
+  VIATICO
+}
+
+enum Currency {
+  CRC
+  USD
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  APPROVE
+  PAY
+  REVERT
+  ADJUST
+  LOGIN
+}
+
+// ── Access ───────────────────────────────────────────────────────────────────
+
+model User {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  email        String    @unique
+  passwordHash String
+  name         String
+  role         Role
+  active       Boolean   @default(true)
+  lastLoginAt  DateTime?
+  // EMPLEADO users link to their employee record (uniqueness enforced in app code —
+  // Mongo unique indexes reject multiple nulls, so no @unique here)
+  employeeId   String?   @db.ObjectId
+  employee     Employee? @relation(fields: [employeeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  auditLogs     AuditLog[]
+  notifications Notification[]
+}
+
+/// Configurable permission matrix, editable by SUPER_ADMIN in the UI.
+/// SUPER_ADMIN itself always has every permission (hardcoded bypass, cannot lock itself out).
+model RolePermission {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  role          Role
+  permissionKey String
+  allowed       Boolean
+  updatedAt     DateTime @updatedAt
+
+  @@unique([role, permissionKey])
+}
+
+model AuditLog {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  actorId   String      @db.ObjectId
+  actor     User        @relation(fields: [actorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  action    AuditAction
+  entity    String
+  entityId  String
+  before    Json?
+  after     Json?
+  summary   String
+  createdAt DateTime    @default(now())
+
+  @@index([entity, entityId])
+  @@index([actorId, createdAt])
+  @@index([createdAt])
+}
+
+// ── Employees ────────────────────────────────────────────────────────────────
+
+model Employee {
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  fullName         String
+  cedula           String         @unique
+  birthDate        String? // yyyy-MM-dd
+  phone            String?
+  email            String?
+  address          String?
+  position         String
+  hireDate         String // yyyy-MM-dd
+  exitDate         String?
+  status           EmployeeStatus @default(ACTIVO)
+  ccssNumber       String?
+  bankName         String?
+  iban             String?
+  emergencyContact String?
+  // ISR tax credits input
+  numHijos         Int            @default(0)
+  tieneConyuge     Boolean        @default(false)
+  deletedAt        DateTime?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  contracts           EmploymentContract[]
+  payrollItems        PayrollItem[]
+  adjustments         PayrollAdjustment[]
+  vacationRequests    VacationRequest[]
+  vacationAdjustments VacationAdjustment[]
+  projectAssignments  ProjectAssignment[]
+  users               User[]
+
+  @@index([status])
+}
+
+/// Salary is historic: a raise creates a new contract row, never overwrites.
+model EmploymentContract {
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  employeeId   String     @db.ObjectId
+  employee     Employee   @relation(fields: [employeeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  contractType String     @default("indefinido")
+  baseSalary   BigInt // cents, in the unit of salaryUnit
+  currency     Currency   @default(CRC)
+  salaryUnit   SalaryUnit
+  schedule     String? // jornada
+  validFrom    String // yyyy-MM-dd
+  validTo      String? // null = current
+
+  @@index([employeeId, validFrom])
+}
+
+// ── Payroll ──────────────────────────────────────────────────────────────────
+
+model PayrollPeriod {
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  type           PeriodType   @default(QUINCENAL)
+  year           Int
+  month          Int // 1-12
+  numero         Int // quincena 1 (1–15) | 2 (16–end of month)
+  startDate      String // yyyy-MM-dd
+  endDate        String
+  payDate        String
+  status         PeriodStatus @default(BORRADOR)
+  approvedById   String?      @db.ObjectId
+  approvedAt     DateTime?
+  // Legal parameter set pinned at creation and frozen at approval
+  parameterSetId String       @db.ObjectId
+  parameterSet   PayrollParameterSet @relation(fields: [parameterSetId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  items PayrollItem[]
+
+  @@unique([year, month, numero, type])
+  @@index([status])
+}
+
+/// One line per employee per period.
+/// While BORRADOR the snapshot columns stay null and the UI recomputes live via the
+/// engine; approvePayroll writes every snapshot column in one transaction and from
+/// then on the line renders exclusively from the frozen values.
+model PayrollItem {
+  id         String        @id @default(auto()) @map("_id") @db.ObjectId
+  periodId   String        @db.ObjectId
+  period     PayrollPeriod @relation(fields: [periodId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  employeeId String        @db.ObjectId
+  employee   Employee      @relation(fields: [employeeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  contractId String        @db.ObjectId
+
+  // Editable inputs while the period is BORRADOR
+  horasExtra Float  @default(0) // hours, not money (2-decimal app constraint)
+  adelanto   BigInt @default(0) // cents
+
+  // Frozen snapshot (cents) — null until approval
+  salarioBaseSnap    BigInt?
+  salaryUnitSnap     SalaryUnit?
+  mensualEquivalente BigInt?
+  basePeriodo        BigInt?
+  montoHoraExtra     BigInt?
+  montoExtra         BigInt?
+  bruto              BigInt?
+  ccssSem            BigInt?
+  ccssIvm            BigInt?
+  ccssBp             BigInt?
+  ccssTotal          BigInt?
+  renta              BigInt?
+  solidarista        BigInt?
+  embargo            BigInt?
+  otrasDeducciones   BigInt?
+  totalDeducciones   BigInt?
+  neto               BigInt?
+  currency           Currency    @default(CRC)
+  trace              Json? // TraceLine[] — auditable calculation breakdown
+
+  // Per-line payment control
+  paymentStatus PaymentStatus @default(PENDIENTE)
+  paidAt        String? // yyyy-MM-dd
+  paymentMethod String?
+  paymentRef    String?
+
+  @@unique([periodId, employeeId])
+  @@index([employeeId])
+}
+
+/// Bonos, viáticos, adelantos, embargos, solidarista y deducciones puntuales.
+/// The employee form's "Solidarista %" and "Pensión alimenticia ₡" map to recurring
+/// rows here (SOLIDARISTA as PORCENTAJE_BRUTO, EMBARGO as MONTO_FIJO).
+model PayrollAdjustment {
+  id          String         @id @default(auto()) @map("_id") @db.ObjectId
+  employeeId  String         @db.ObjectId
+  employee    Employee       @relation(fields: [employeeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  type        AdjustmentType
+  mode        AdjustmentMode
+  amount      BigInt? // cents, when MONTO_FIJO
+  ratePct     Float? // percent (5 = 5%), when PORCENTAJE_BRUTO
+  currency    Currency       @default(CRC)
+  recurring   Boolean        @default(false)
+  validFrom   String? // yyyy-MM-dd
+  validTo     String?
+  periodId    String?        @db.ObjectId // set for one-off adjustments tied to a period
+  note        String?
+  createdById String         @db.ObjectId
+  deletedAt   DateTime?
+  createdAt   DateTime       @default(now())
+
+  @@index([employeeId, recurring])
+}
+
+/// Legal parameters versioned by fiscal validity — editable in Configuración
+/// without a deploy. Percentages are stored as percent floats (5.5 = 5,5 %) and
+/// converted to Decimal via String() at the engine boundary.
+model PayrollParameterSet {
+  id                          String  @id @default(auto()) @map("_id") @db.ObjectId
+  label                       String // "Parámetros 2026"
+  vigenteDesde                String // yyyy-MM-dd
+  vigenteHasta                String? // null = current
+  tasaSem                     Float // 5.50  — CCSS SEM (worker)
+  tasaIvm                     Float // 4.17  — CCSS IVM (worker)
+  tasaBp                      Float // 1.00  — Banco Popular (worker) → Σ 10.67
+  horaExtraFactor             Float   @default(1.5)
+  horasMensuales              Int     @default(240)
+  factorSemanalAMensual       Float   @default(4.333)
+  creditoFiscalHijoMensual    BigInt  @default(0) // cents — TODO: verificar decreto anual
+  creditoFiscalConyugeMensual BigInt  @default(0) // cents — TODO: verificar decreto anual
+  vacacionesDiasPorMes        Float   @default(1.0)
+  createdAt                   DateTime @default(now())
+  updatedAt                   DateTime @updatedAt
+
+  isrBrackets IsrBracket[]
+  periods     PayrollPeriod[]
+}
+
+/// Monthly ISR brackets (marginal). Amount limits in cents.
+model IsrBracket {
+  id             String              @id @default(auto()) @map("_id") @db.ObjectId
+  parameterSetId String              @db.ObjectId
+  parameterSet   PayrollParameterSet @relation(fields: [parameterSetId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  orden          Int
+  limiteInferior BigInt // cents (monthly)
+  limiteSuperior BigInt? // cents; null = infinity
+  tasaPct        Float // 10 = 10 %
+
+  @@unique([parameterSetId, orden])
+}
+
+// ── Vacations & holidays ─────────────────────────────────────────────────────
+
+model VacationRequest {
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
+  employeeId   String         @db.ObjectId
+  employee     Employee       @relation(fields: [employeeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  startDate    String // yyyy-MM-dd
+  endDate      String
+  businessDays Float // frozen at save, excludes Sat/Sun/holidays
+  status       VacationStatus @default(SOLICITADA)
+  approvedById String?        @db.ObjectId
+  note         String?
+  createdAt    DateTime       @default(now())
+
+  @@index([employeeId, startDate])
+  @@index([status])
+}
+
+/// Manual balance corrections (mandatory reason, audited) and seed opening balances.
+/// Balance = accrual(hireDate→today, vacacionesDiasPorMes) + Σ adjustments − Σ taken.
+model VacationAdjustment {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  employeeId  String   @db.ObjectId
+  employee    Employee @relation(fields: [employeeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  days        Float // signed
+  reason      String
+  createdById String   @db.ObjectId
+  createdAt   DateTime @default(now())
+
+  @@index([employeeId])
+}
+
+model Holiday {
+  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  date            String  @unique // yyyy-MM-dd
+  name            String
+  pagoObligatorio Boolean
+  esTrasladable   Boolean @default(false)
+  recurrenteAnual Boolean @default(true)
+  year            Int
+
+  @@index([year])
+}
+
+// ── Clients & projects ───────────────────────────────────────────────────────
+
+model Client {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  kind        ClientKind
+  name        String
+  cedula      String // física / jurídica / DIMEX
+  contactName String?
+  phone       String?
+  email       String?
+  address     String?
+  provincia   String?
+  canton      String?
+  distrito    String?
+  notes       String?
+  deletedAt   DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  projects Project[]
+}
+
+/// totalAbonado / saldoPendiente / primaCubierta / vencido are DERIVED in
+/// lib/db/projectTotals.ts — never stored.
+model Project {
+  id            String        @id @default(auto()) @map("_id") @db.ObjectId
+  code          String        @unique // PT-2026-031, correlative
+  clientId      String        @db.ObjectId
+  client        Client        @relation(fields: [clientId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  type          ProjectType
+  typeOther     String?
+  description   String?
+  location      String?
+  fincaFolio    String? // "Finca 4-00218745" / folio real
+  planoNumber   String?
+  status        ProjectStatus @default(ABIERTO)
+  startDate     String?
+  dueDate       String? // fecha comprometida / de entrega
+  deliveredDate String?
+  agreedAmount  BigInt // cents
+  primaPct      Float // percent (30 = 30 %)
+  currency      Currency      @default(CRC)
+  includesIva   Boolean       @default(false)
+  quoteNotes    String?
+  deletedAt     DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  payments      ClientPayment[]
+  expenses      ProjectExpense[]
+  assignments   ProjectAssignment[]
+  statusHistory ProjectStatusHistory[]
+
+  @@index([clientId])
+  @@index([status])
+}
+
+model ProjectStatusHistory {
+  id          String         @id @default(auto()) @map("_id") @db.ObjectId
+  projectId   String         @db.ObjectId
+  project     Project        @relation(fields: [projectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  fromStatus  ProjectStatus?
+  toStatus    ProjectStatus
+  changedById String         @db.ObjectId
+  changedAt   DateTime       @default(now())
+  note        String?
+
+  @@index([projectId, changedAt])
+}
+
+/// Abonos del cliente contra un proyecto.
+model ClientPayment {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  projectId    String    @db.ObjectId
+  project      Project   @relation(fields: [projectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  amount       BigInt // cents
+  currency     Currency  @default(CRC)
+  date         String // yyyy-MM-dd
+  method       String?
+  reference    String? // "SINPE 8842"
+  receivedById String    @db.ObjectId
+  deletedAt    DateTime?
+  createdAt    DateTime  @default(now())
+
+  @@index([projectId, date])
+}
+
+/// Feeds the EMPLEADO portal's "mis proyectos".
+model ProjectAssignment {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  projectId     String   @db.ObjectId
+  project       Project  @relation(fields: [projectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  employeeId    String   @db.ObjectId
+  employee      Employee @relation(fields: [employeeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  roleInProject String? // "Topógrafo de campo", "Dibujo"...
+  assignedAt    DateTime @default(now())
+
+  @@unique([projectId, employeeId])
+  @@index([employeeId])
+}
+
+/// Gastos y viáticos por proyecto — rentabilidad = agreedAmount − Σ expenses.
+model ProjectExpense {
+  id             String      @id @default(auto()) @map("_id") @db.ObjectId
+  projectId      String      @db.ObjectId
+  project        Project     @relation(fields: [projectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  type           ExpenseType
+  description    String
+  amount         BigInt // cents
+  currency       Currency    @default(CRC)
+  date           String // yyyy-MM-dd
+  registeredById String      @db.ObjectId
+  deletedAt      DateTime?
+  createdAt      DateTime    @default(now())
+
+  @@index([projectId, date])
+}
+
+// ── Notifications ────────────────────────────────────────────────────────────
+
+model Notification {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String    @db.ObjectId
+  user      User      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  type      String // "VACACION_APROBADA", "PLANILLA_APROBADA", "PAGO_RECORDATORIO"...
+  title     String
+  body      String?
+  link      String?
+  readAt    DateTime?
+  emailedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId, readAt])
+  @@index([createdAt])
+}
