@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState, useTransition } from "react";
 import { toast } from "sonner";
+import { useModalKeys } from "@/components/ds/useModalKeys";
 import { ajustarSaldoVacaciones, registrarVacaciones } from "@/lib/actions/vacaciones";
 import { daysInMonth, formatDateCR, isoDayOfWeek } from "@/lib/format/dates";
 import {
@@ -375,6 +376,8 @@ function AjusteModal({
       onClose();
     });
   };
+
+  useModalKeys({ onClose, onSubmit: submit });
 
   return (
     <div

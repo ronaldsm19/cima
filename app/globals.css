@@ -135,6 +135,40 @@
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
   }
+
+  /* Visible focus for keyboard users only — mouse clicks stay clean (AA) */
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Respect the OS "reduce motion" setting */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@media print {
+  /* Payslips print alone: no shell, no margins fighting the paper */
+  aside,
+  header,
+  [data-sonner-toaster] {
+    display: none !important;
+  }
+  main {
+    padding: 0 !important;
+  }
+  body {
+    background: #ffffff;
+  }
 }
 
 @layer utilities {

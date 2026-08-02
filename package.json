@@ -12,7 +12,8 @@
     "test:watch": "vitest",
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
-    "user:password": "tsx scripts/set-password.ts"
+    "user:password": "tsx scripts/set-password.ts",
+    "backup": "node --env-file=.env scripts/backup.mjs"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.3",

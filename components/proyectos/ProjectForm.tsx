@@ -260,7 +260,15 @@ export function ProjectForm({ mode }: { mode: Mode }) {
             )}
 
             {permisos.abonos && saldo.gt(0) ? (
-              <div className="mt-3 grid grid-cols-[150px_1fr_140px_auto] items-end gap-2.5 max-[960px]:grid-cols-2">
+              <div
+                className="mt-3 grid grid-cols-[150px_1fr_140px_auto] items-end gap-2.5 max-[960px]:grid-cols-2"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !pending) {
+                    e.preventDefault();
+                    registrarUnAbono();
+                  }
+                }}
+              >
                 <div>
                   <label className={label} htmlFor="ab-fecha">Fecha del abono</label>
                   <input id="ab-fecha" type="date" className={`num ${field("_ab")}`}
@@ -329,7 +337,15 @@ export function ProjectForm({ mode }: { mode: Mode }) {
               </table>
             )}
 
-            <div className="mt-3 grid grid-cols-[150px_120px_1fr_140px_auto] items-end gap-2.5 max-[960px]:grid-cols-2">
+            <div
+              className="mt-3 grid grid-cols-[150px_120px_1fr_140px_auto] items-end gap-2.5 max-[960px]:grid-cols-2"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !pending) {
+                  e.preventDefault();
+                  registrarUnGasto();
+                }
+              }}
+            >
               <div>
                 <label className={label} htmlFor="ga-fecha">Fecha</label>
                 <input id="ga-fecha" type="date" className={`num ${field("_ga")}`}

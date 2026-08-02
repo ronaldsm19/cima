@@ -205,7 +205,15 @@ export function FeriadosTable({
       {canCrud ? (
         <div className="rounded-xl border border-line bg-surface p-4 shadow-[0_1px_2px_rgba(19,26,23,0.04)]">
           <div className="mb-2 text-[13.5px] font-bold text-ink">Agregar feriado</div>
-          <div className="flex flex-wrap items-end gap-2.5">
+          <div
+            className="flex flex-wrap items-end gap-2.5"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !pending && nuevo.date && nuevo.name) {
+                e.preventDefault();
+                agregar();
+              }
+            }}
+          >
             <div>
               <label className="mb-1 block text-[11.5px] font-semibold text-ink-dim" htmlFor="fer-fecha">Fecha</label>
               <input id="fer-fecha" type="date" className={`num ${field}`} value={nuevo.date}

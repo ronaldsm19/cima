@@ -4,6 +4,7 @@ import { AlertTriangle, UserPlus, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useMemo, useState, useTransition } from "react";
 import { toast } from "sonner";
+import { useModalKeys } from "@/components/ds/useModalKeys";
 import { createEmployee, updateEmployee } from "@/lib/actions/empleados";
 import {
   SALARY_UNIT_SUFFIX,
@@ -103,6 +104,8 @@ export function EmployeeModal({ params, initial, onClose, onSaved }: EmployeeMod
       onClose();
     });
   };
+
+  useModalKeys({ onClose, onSubmit: submit });
 
   const field = (name: string) =>
     `field-focus h-[38px] w-full rounded-[10px] border bg-surface px-3 text-[13.5px] text-ink placeholder:text-ink-faint ${

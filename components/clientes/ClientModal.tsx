@@ -4,6 +4,7 @@ import { AlertTriangle, Building2, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
+import { useModalKeys } from "@/components/ds/useModalKeys";
 import { createClient, updateClient } from "@/lib/actions/clientes";
 import {
   validateClientForm,
@@ -62,6 +63,8 @@ export function ClientModal({
       onClose();
     });
   };
+
+  useModalKeys({ onClose, onSubmit: submit });
 
   const field = (name: string) =>
     `field-focus h-[38px] w-full rounded-[10px] border bg-surface px-3 text-[13.5px] text-ink placeholder:text-ink-faint ${
