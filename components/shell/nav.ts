@@ -2,6 +2,7 @@ import type { LucideIcon } from "lucide-react";
 import {
   Building2,
   CalendarDays,
+  Calculator,
   FileSpreadsheet,
   Folder,
   LayoutDashboard,
@@ -78,6 +79,12 @@ export const NAV_GROUPS: NavGroup[] = [
     title: "Administración",
     items: [
       {
+        href: "/simulador",
+        label: "Simulador",
+        icon: Calculator,
+        permission: "simulador.usar",
+      },
+      {
         href: "/reportes",
         label: "Reportes",
         icon: FileSpreadsheet,
@@ -103,6 +110,7 @@ export const SCREEN_TITLES: Record<string, { title: string; subtitle: string }> 
   "/clientes": { title: "Clientes", subtitle: "Proyectos, abonos y saldos por cobrar" },
   "/proyectos": { title: "Proyectos", subtitle: "Monto acordado, prima pactada y registro de abonos" },
   "/feriados": { title: "Feriados", subtitle: "Días de pago obligatorio y trasladables" },
+  "/simulador": { title: "Simulador de salarios", subtitle: "Bruto a neto y neto a bruto, sin guardar nada" },
   "/reportes": { title: "Reportes", subtitle: "Exportaciones a Excel" },
   "/configuracion": { title: "Configuración", subtitle: "Parámetros, usuarios y permisos" },
   "/auditoria": { title: "Bitácora", subtitle: "Quién cambió qué y cuándo" },

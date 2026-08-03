@@ -340,6 +340,9 @@ model PayrollParameterSet {
   tasaSem                     Float // 5.50  — CCSS SEM (worker)
   tasaIvm                     Float // 4.17  — CCSS IVM (worker)
   tasaBp                      Float // 1.00  — Banco Popular (worker) → Σ 10.67
+  /// Employer's total social charges, percent. Not deducted from the employee:
+  /// it is what the office pays on top, and drives the real cost per person.
+  tasaPatronal                Float   @default(26.83) // TODO: verificar
   horaExtraFactor             Float   @default(1.5)
   horasMensuales              Int     @default(240)
   factorSemanalAMensual       Float   @default(4.333)

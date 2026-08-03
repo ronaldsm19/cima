@@ -9,6 +9,7 @@ import { centsToDecimal, decimalToCents } from "@/lib/db/money";
 import { prisma } from "@/lib/db/prisma";
 import { projectDerived } from "@/lib/db/projectTotals";
 import { todayCR } from "@/lib/format/dates";
+import { parsePositiveCR } from "@/lib/format/number";
 import { validateAbono } from "@/lib/projects/abonos";
 import {
   projectFormSchema,
@@ -20,7 +21,7 @@ export type ProjectActionResult =
   | { ok: true; projectId: string; code: string }
   | { ok: false; error: string; fields?: string[] };
 
-const money = (raw: string): Decimal => new Decimal(raw.replace(/\./g, "").replace(",", "."));
+const money = parsePositiveCR;
 
 function failProj(error: unknown): ProjectActionResult {
   return {

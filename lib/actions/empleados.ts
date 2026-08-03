@@ -7,6 +7,7 @@ import { notDeleted } from "@/lib/db/filters";
 import { decimalToCents } from "@/lib/db/money";
 import { prisma } from "@/lib/db/prisma";
 import { todayCR } from "@/lib/format/dates";
+import { parsePositiveCR } from "@/lib/format/number";
 import {
   employeeFormSchema,
   validateEmployeeForm,
@@ -18,7 +19,7 @@ export type EmployeeActionResult =
   | { ok: true; employeeId: string }
   | { ok: false; error: string; fields?: string[] };
 
-const money = (raw: string): Decimal => new Decimal(raw.replace(/\./g, "").replace(",", "."));
+const money = parsePositiveCR;
 
 function failEmp(error: unknown): EmployeeActionResult {
   return {

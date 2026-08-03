@@ -10,6 +10,8 @@ export interface PlainEngineParams {
   tasaSem: number;
   tasaIvm: number;
   tasaBp: number;
+  /** Employer's charges, percent — used by the simulator, not deducted. */
+  tasaPatronal: number;
   horaExtraFactor: number;
   horasMensuales: number;
   factorSemanalAMensual: number;
@@ -52,6 +54,8 @@ export const PARAMS_2026_SEED: PlainEngineParams = {
   tasaSem: 5.5,
   tasaIvm: 4.17,
   tasaBp: 1.0,
+  tasaPatronal: 26.83, // TODO: verificar
+
   horaExtraFactor: 1.5,
   horasMensuales: 240,
   factorSemanalAMensual: 4.333,

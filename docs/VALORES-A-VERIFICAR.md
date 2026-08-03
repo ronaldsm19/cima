@@ -8,6 +8,32 @@ planilla, sin tocar código ni volver a desplegar**.
 Mientras no se verifiquen, tratá los números como un borrador: cuadralos contra una
 planilla real ya pagada antes de confiar en ellos.
 
+## 0. Discrepancia pendiente de resolver ⚠️
+
+El Excel de referencia que pasó la oficina
+(`Simulador_Planilla_CCSS_Costa_Rica.xlsx`, citando "Ministerio de Hacienda, tramos de
+renta 2026") **no coincide con los valores sembrados**, que vienen del prototipo de
+diseño:
+
+| Concepto | Sembrado en el sistema | Excel de referencia |
+|---|---|---|
+| Cargas del trabajador | 10,67 % | **10,83 %** |
+| Tramo exento mensual | ₡942.000 | **₡918.000** |
+| Límite tramo 10 % | ₡1.381.000 | **₡1.347.000** |
+| Límite tramo 15 % | ₡2.423.000 | **₡2.364.000** |
+| Límite tramo 20 % | ₡4.845.000 | **₡4.727.000** |
+| Crédito por hijo | ₡0 | **₡1.710 / mes** |
+| Crédito por cónyuge | ₡0 | **₡2.590 / mes** |
+| Cargas patronales | no existía | **26,83 %** |
+
+Los datos del prototipo eran ficticios; los del Excel citan la fuente. **Lo más probable
+es que manden los del Excel**, pero cambiarlos mueve plata real, así que la decisión es
+de la oficina. Se aplican creando un período fiscal nuevo en Configuración → Parámetros
+de planilla (los períodos ya aprobados conservan los suyos).
+
+Las cargas patronales (26,83 %) ya se agregaron al sistema y las usa el simulador para
+mostrar el costo total de cada empleado.
+
 ## 1. Deducciones del trabajador (CCSS)
 
 | Concepto | Valor sembrado | Estado |
@@ -15,7 +41,7 @@ planilla real ya pagada antes de confiar en ellos.
 | SEM (Seguro de Enfermedad y Maternidad) | 5,50 % | a verificar |
 | IVM (Invalidez, Vejez y Muerte) | 4,17 % | a verificar |
 | Ley del Banco Popular | 1,00 % | a verificar |
-| **Total obrero** | **10,67 %** | a verificar |
+| **Total obrero** | **10,67 %** | a verificar — el Excel dice 10,83 % |
 
 El desglose en tres partes sale del reparto habitual; lo que el prototipo daba por
 bueno era solo el total de 10,67 %. Si la oficina usa otro reparto, cambialo: el

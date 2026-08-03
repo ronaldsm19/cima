@@ -48,6 +48,7 @@ export function toPlainParams(set: ParameterSetRow): PlainEngineParams {
     tasaSem: set.tasaSem,
     tasaIvm: set.tasaIvm,
     tasaBp: set.tasaBp,
+    tasaPatronal: set.tasaPatronal,
     horaExtraFactor: set.horaExtraFactor,
     horasMensuales: set.horasMensuales,
     factorSemanalAMensual: set.factorSemanalAMensual,

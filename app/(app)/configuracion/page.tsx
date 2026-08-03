@@ -49,6 +49,7 @@ export default async function ConfiguracionPage() {
     tasaSem: s.tasaSem,
     tasaIvm: s.tasaIvm,
     tasaBp: s.tasaBp,
+    tasaPatronal: s.tasaPatronal,
     horasMensuales: s.horasMensuales,
     horaExtraFactor: s.horaExtraFactor,
     vacacionesDiasPorMes: s.vacacionesDiasPorMes,

@@ -17,6 +17,7 @@ export interface ParamSetRow {
   tasaSem: number;
   tasaIvm: number;
   tasaBp: number;
+  tasaPatronal: number;
   horasMensuales: number;
   horaExtraFactor: number;
   vacacionesDiasPorMes: number;
@@ -39,6 +40,7 @@ export function ParametrosPanel({ sets, vigente }: { sets: ParamSetRow[]; vigent
     tasaSem: base?.tasaSem ?? 5.5,
     tasaIvm: base?.tasaIvm ?? 4.17,
     tasaBp: base?.tasaBp ?? 1,
+    tasaPatronal: base?.tasaPatronal ?? 26.83,
     horaExtraFactor: base?.horaExtraFactor ?? 1.5,
     horasMensuales: base?.horasMensuales ?? 240,
     factorSemanalAMensual: 4.333,
@@ -121,6 +123,7 @@ export function ParametrosPanel({ sets, vigente }: { sets: ParamSetRow[]; vigent
                 {String(s.tasaSem).replace(".", ",")} · IVM {String(s.tasaIvm).replace(".", ",")} · BP{" "}
                 {String(s.tasaBp).replace(".", ",")})
               </span>
+              <span>Patronales {String(s.tasaPatronal).replace(".", ",")} %</span>
               <span>Hora extra ×{String(s.horaExtraFactor).replace(".", ",")} sobre {s.horasMensuales} h</span>
               <span>Vacaciones {String(s.vacacionesDiasPorMes).replace(".", ",")} día/mes</span>
             </div>
@@ -180,6 +183,11 @@ export function ParametrosPanel({ sets, vigente }: { sets: ParamSetRow[]; vigent
               <div className="num flex h-[34px] w-full items-center justify-center rounded-[10px] bg-brand-tint text-[13px] font-bold text-brand">
                 Total {ccssTotal} %
               </div>
+            </div>
+            <div>
+              <label className={label} htmlFor="ps-patronal">Cargas patronales (%)</label>
+              <input id="ps-patronal" inputMode="decimal" className={`num text-right ${field}`} value={values.tasaPatronal}
+                onChange={(e) => setValues((v) => ({ ...v, tasaPatronal: Number(e.target.value.replace(",", ".")) || 0 }))} />
             </div>
             <div>
               <label className={label} htmlFor="ps-hef">Factor de hora extra</label>

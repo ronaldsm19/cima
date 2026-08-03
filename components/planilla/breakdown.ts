@@ -1,4 +1,5 @@
 import { Decimal } from "decimal.js";
+import { parsePositiveCR } from "@/lib/format/number";
 import type { PlainEngineParams } from "@/lib/payroll/params";
 import { computeLine } from "@/lib/planilla/compute";
 import type { PlanillaLineDTO } from "@/lib/planilla/dto";
@@ -68,17 +69,9 @@ export function lineBreakdown(
   };
 }
 
-/** Input field text → decimal string ("50.000,50" · "50000.5" · "" → "50000.50" · "0"). */
+/** Input field text → decimal string ("50.000,50" · "50000.5" · "" → "0"). */
 export function sanitizeMoney(raw: string): string {
-  const cleaned = String(raw).trim().replace(/\s/g, "");
-  if (cleaned === "") return "0";
-  // Accept both "1.234,56" (es-CR) and "1234.56" styles
-  const normalized = /,\d{1,2}$/.test(cleaned)
-    ? cleaned.replace(/\./g, "").replace(",", ".")
-    : cleaned.replace(/,/g, "");
-  const value = Number(normalized);
-  if (!Number.isFinite(value) || value < 0) return "0";
-  return normalized;
+  return parsePositiveCR(raw).toString();
 }
 
 /** Hours field text → bounded number with 2 decimals. */
