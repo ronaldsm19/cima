@@ -53,6 +53,9 @@ export default async function ColillaPage({
         neto: centsToString(item.neto!),
         pagado: item.paymentStatus === "PAGADO",
         paidAt: item.paidAt,
+        aprobadaEl: item.period.approvedAt
+          ? item.period.approvedAt.toISOString().slice(0, 10)
+          : null,
       }}
     />
   );

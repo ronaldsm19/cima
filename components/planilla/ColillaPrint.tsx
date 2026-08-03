@@ -30,6 +30,8 @@ export interface ColillaData {
   neto: string;
   pagado: boolean;
   paidAt: string | null;
+  /** Date the payroll was approved — when these amounts were frozen. */
+  aprobadaEl: string | null;
 }
 
 const MODALIDAD: Record<string, string> = {
@@ -150,6 +152,13 @@ export function ColillaPrint({ data }: { data: ColillaData }) {
           <div className="border-t border-[#C6D0C7] pt-1.5">Recibí conforme</div>
           <div className="border-t border-[#C6D0C7] pt-1.5">Por la empresa</div>
         </footer>
+
+        <p className="mt-4 border-t border-line-soft pt-3 text-[10.5px] leading-snug text-ink-faint">
+          Los montos de esta colilla quedaron congelados
+          {data.aprobadaEl ? ` al aprobar la planilla el ${formatDateCR(data.aprobadaEl)}` : " al aprobar la planilla"}
+          . Un cambio posterior en el salario, en las deducciones fijas o en las tasas de ley
+          no modifica este documento: se aplica a los períodos siguientes.
+        </p>
       </article>
     </div>
   );
