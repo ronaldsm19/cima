@@ -8,14 +8,13 @@ planilla, sin tocar código ni volver a desplegar**.
 Mientras no se verifiquen, tratá los números como un borrador: cuadralos contra una
 planilla real ya pagada antes de confiar en ellos.
 
-## 0. Discrepancia pendiente de resolver ⚠️
+## 0. Valores alineados al Excel de la oficina ✓
 
-El Excel de referencia que pasó la oficina
-(`Simulador_Planilla_CCSS_Costa_Rica.xlsx`, citando "Ministerio de Hacienda, tramos de
-renta 2026") **no coincide con los valores sembrados**, que vienen del prototipo de
-diseño:
+Los parámetros que trae el sistema **ya son los del Excel de referencia** de la oficina
+(`Simulador_Planilla_CCSS_Costa_Rica.xlsx`, que cita "Ministerio de Hacienda, tramos de
+renta 2026"). Se reemplazaron los del prototipo de diseño, que eran ficticios:
 
-| Concepto | Sembrado en el sistema | Excel de referencia |
+| Concepto | Antes (prototipo) | Ahora (Excel) |
 |---|---|---|
 | Cargas del trabajador | 10,67 % | **10,83 %** |
 | Tramo exento mensual | ₡942.000 | **₡918.000** |
@@ -26,43 +25,50 @@ diseño:
 | Crédito por cónyuge | ₡0 | **₡2.590 / mes** |
 | Cargas patronales | no existía | **26,83 %** |
 
-Los datos del prototipo eran ficticios; los del Excel citan la fuente. **Lo más probable
-es que manden los del Excel**, pero cambiarlos mueve plata real, así que la decisión es
-de la oficina. Se aplican creando un período fiscal nuevo en Configuración → Parámetros
-de planilla (los períodos ya aprobados conservan los suyos).
+Los períodos ya aprobados **no cambiaron**: rinden desde su foto congelada, no desde los
+parámetros. Solo se recalculan los períodos en borrador.
 
-Las cargas patronales (26,83 %) ya se agregaron al sistema y las usa el simulador para
-mostrar el costo total de cada empleado.
+### Lo único que quedó inferido
+
+El Excel da el **total** del trabajador (10,83 %) pero no su desglose, y la colilla sí
+muestra las tres partes. El sistema reparte así:
+
+| Parte | Tasa | Estado |
+|---|---|---|
+| SEM (Enfermedad y Maternidad) | 5,50 % | del reparto habitual |
+| IVM (Invalidez, Vejez y Muerte) | **4,33 %** | **inferido** — acá cae la diferencia |
+| Ley del Banco Popular | 1,00 % | del reparto habitual |
+
+El total deducido es correcto; lo que falta confirmar con la CCSS es **cómo se reparte**,
+porque es lo que ve el empleado en su colilla. Se corrige en Configuración sin desplegar.
 
 ## 1. Deducciones del trabajador (CCSS)
 
-| Concepto | Valor sembrado | Estado |
+| Concepto | Valor vigente | Estado |
 |---|---|---|
-| SEM (Seguro de Enfermedad y Maternidad) | 5,50 % | a verificar |
-| IVM (Invalidez, Vejez y Muerte) | 4,17 % | a verificar |
-| Ley del Banco Popular | 1,00 % | a verificar |
-| **Total obrero** | **10,67 %** | a verificar — el Excel dice 10,83 % |
+| SEM (Seguro de Enfermedad y Maternidad) | 5,50 % | a verificar el desglose |
+| IVM (Invalidez, Vejez y Muerte) | 4,33 % | inferido |
+| Ley del Banco Popular | 1,00 % | a verificar el desglose |
+| **Total obrero** | **10,83 %** | ✓ confirmado contra el Excel |
 
-El desglose en tres partes sale del reparto habitual; lo que el prototipo daba por
-bueno era solo el total de 10,67 %. Si la oficina usa otro reparto, cambialo: el
-sistema redondea cada parte por separado para que el desglose de la colilla sume
-exacto.
+El sistema redondea cada parte por separado para que el desglose de la colilla sume
+exacto. Si la CCSS reparte distinto, se cambia en Configuración.
 
 ## 2. Impuesto sobre la renta al salario
 
-Tramos mensuales sembrados (Ministerio de Hacienda actualiza por decreto **cada año**):
+Tramos mensuales vigentes en el sistema (Hacienda los actualiza por decreto **cada
+año**, así que en enero hay que revisarlos):
 
 | Desde | Hasta | Tasa |
 |---|---|---|
-| ₡0 | ₡942.000 | 0 % |
-| ₡942.000 | ₡1.381.000 | 10 % |
-| ₡1.381.000 | ₡2.423.000 | 15 % |
-| ₡2.423.000 | ₡4.845.000 | 20 % |
-| ₡4.845.000 | — | 25 % |
+| ₡0 | ₡918.000 | 0 % |
+| ₡918.000 | ₡1.347.000 | 10 % |
+| ₡1.347.000 | ₡2.364.000 | 15 % |
+| ₡2.364.000 | ₡4.727.000 | 20 % |
+| ₡4.727.000 | — | 25 % |
 
-**Créditos fiscales por hijo y por cónyuge quedaron en ₡0** porque no se confirmó el
-monto vigente. Si la oficina los aplica, cargalos en Configuración; el motor ya los
-resta del impuesto mensual y nunca deja la renta en negativo.
+Créditos fiscales cargados: **₡1.710 por hijo** y **₡2.590 por cónyuge**, mensuales. El
+motor los resta del impuesto y nunca deja la renta en negativo ni genera devolución.
 
 ## 3. Feriados
 

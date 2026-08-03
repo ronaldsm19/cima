@@ -46,27 +46,31 @@ export function toEngineParams(plain: PlainEngineParams): EngineParams {
 }
 
 /**
- * 2026 seed values — "semilla, a verificar" (prompt-01). CCSS worker share
- * 10,67 % split per handoff default; ISR brackets from the handoff table.
- * TODO: verificar contra la normativa vigente y el Excel real de la oficina.
+ * 2026 values, taken from the office's reference spreadsheet
+ * (Simulador_Planilla_CCSS_Costa_Rica.xlsx, citing "Ministerio de Hacienda,
+ * tramos de renta 2026").
+ *
+ * The spreadsheet gives the worker's total (10,83 %) but not its breakdown;
+ * the split below assigns the difference to IVM, matching the published IVM
+ * worker increase. TODO: verificar el desglose SEM/IVM/BP con la CCSS — el
+ * total es lo que se deduce, pero el desglose es lo que ve la colilla.
  */
 export const PARAMS_2026_SEED: PlainEngineParams = {
   tasaSem: 5.5,
-  tasaIvm: 4.17,
-  tasaBp: 1.0,
-  tasaPatronal: 26.83, // TODO: verificar
+  tasaIvm: 4.33,
+  tasaBp: 1.0, // Σ 10,83 %
+  tasaPatronal: 26.83,
 
   horaExtraFactor: 1.5,
   horasMensuales: 240,
   factorSemanalAMensual: 4.333,
   isrBrackets: [
-    { limiteInferior: "0", limiteSuperior: "942000", tasaPct: 0 },
-    { limiteInferior: "942000", limiteSuperior: "1381000", tasaPct: 10 },
-    { limiteInferior: "1381000", limiteSuperior: "2423000", tasaPct: 15 },
-    { limiteInferior: "2423000", limiteSuperior: "4845000", tasaPct: 20 },
-    { limiteInferior: "4845000", limiteSuperior: null, tasaPct: 25 },
+    { limiteInferior: "0", limiteSuperior: "918000", tasaPct: 0 },
+    { limiteInferior: "918000", limiteSuperior: "1347000", tasaPct: 10 },
+    { limiteInferior: "1347000", limiteSuperior: "2364000", tasaPct: 15 },
+    { limiteInferior: "2364000", limiteSuperior: "4727000", tasaPct: 20 },
+    { limiteInferior: "4727000", limiteSuperior: null, tasaPct: 25 },
   ],
-  // TODO: verificar — créditos fiscales por hijo y cónyuge (decreto anual)
-  creditoFiscalHijoMensual: "0",
-  creditoFiscalConyugeMensual: "0",
+  creditoFiscalHijoMensual: "1710",
+  creditoFiscalConyugeMensual: "2590",
 };

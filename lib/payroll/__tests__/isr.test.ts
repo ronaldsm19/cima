@@ -1,15 +1,16 @@
 import { Decimal } from "decimal.js";
 import { describe, expect, it } from "vitest";
 import { isrMensual } from "../isr";
-import { PARAMS_2026_SEED, toEngineParams } from "../params";
+import { toEngineParams } from "../params";
+import { PARAMS_PROTOTIPO } from "./fixtures";
 
-const params = toEngineParams(PARAMS_2026_SEED);
+const params = toEngineParams(PARAMS_PROTOTIPO);
 
 function isr(monthly: number | string): string {
   return isrMensual(new Decimal(monthly), params, 0, false).renta.toFixed(2);
 }
 
-describe("isrMensual — marginal bracket accumulation (2026 seed scale)", () => {
+describe("isrMensual — marginal bracket accumulation (escala del prototipo)", () => {
   it("is zero through the first bracket, inclusive of its edge", () => {
     expect(isr(0)).toBe("0.00");
     expect(isr("941999.99")).toBe("0.00");

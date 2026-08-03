@@ -1,8 +1,9 @@
 import { Decimal } from "decimal.js";
 import { describe, expect, it } from "vitest";
 import { calculatePayrollLine, calculatePeriodTotals } from "../engine";
-import { PARAMS_2026_SEED, toEngineParams } from "../params";
+import { toEngineParams } from "../params";
 import type { PayrollLineInput, ResolvedAdjustment } from "../types";
+import { PARAMS_PROTOTIPO } from "./fixtures";
 
 /**
  * Golden cases verified against the v2 design prototype (its sample employees).
@@ -16,7 +17,7 @@ import type { PayrollLineInput, ResolvedAdjustment } from "../types";
  * value noted.
  */
 
-const params = toEngineParams(PARAMS_2026_SEED);
+const params = toEngineParams(PARAMS_PROTOTIPO);
 
 function line(input: Partial<PayrollLineInput>): PayrollLineInput {
   return {
@@ -274,7 +275,7 @@ describe("rounding invariants (contract)", () => {
 
 describe("tax credits", () => {
   const paramsWithCredits = toEngineParams({
-    ...PARAMS_2026_SEED,
+    ...PARAMS_PROTOTIPO,
     creditoFiscalHijoMensual: "1500",
     creditoFiscalConyugeMensual: "2500",
   });
